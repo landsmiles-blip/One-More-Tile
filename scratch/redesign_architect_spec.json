@@ -1,0 +1,528 @@
+{
+  "project": "ONE MORE TILE",
+  "version": "5.0.0-REDESIGN",
+  "title": "Complete 20-Level Redesign Specification (Anti-Corridor Architecture)",
+  "platform": "YouTube Playables (HTML5 Canvas / WebAudio, <300KB Budget)",
+  "design_directives": {
+    "anti_corridor_mandate": "Abolish 1-tile-wide linear corridors. Every level is an open arena (4x3 to 7x7) with central obstacles, providing 2 to 3 branching choices at almost every step.",
+    "delayed_consequence": "Greedy turns on early steps create unreachable orphan tiles or sever the board on late steps.",
+    "bipartite_parity_invariance": "All Hamiltonian paths satisfy the Bipartite Graph Parity Theorem: |Count(Even) - Count(Odd)| <= 1, with path endpoints strictly matching move count parity."
+  },
+  "mechanic_specifications": {
+    "C_CROSSROAD": {
+      "id": 11,
+      "name": "DUAL_PASS_CROSSROAD",
+      "identifier": "C_CROSSROAD",
+      "initial_visits": 2,
+      "traversal_cost": 1,
+      "passability_rule": "Passable iff visitsRemaining > 0",
+      "departure_lifecycle": "On visit 1 exit: visitsRemaining = 1, glows amber, remains traversable. On visit 2 exit: visitsRemaining = 0, mutates to C_CONSUMED.",
+      "undo_contract": "Losslessly restores visitsRemaining from 0->1 or 1->2 in O(1)."
+    },
+    "C_ICE": {
+      "id": 12,
+      "name": "FRICTIONLESS_ICE",
+      "identifier": "C_ICE",
+      "momentum_rule": "Continuous momentum sliding in input direction until hitting an obstacle (Wall, Boundary, Consumed Tile) or landing on a non-ice traversable tile.",
+      "trail_bumper_axiom": "Traversed and departed ice tiles mutate to C_CONSUMED, dynamically constructing artificial bumpers for subsequent orthogonal slides.",
+      "move_cost": "Entire slide sequence consumes exactly 1 move (decrements budget by 1).",
+      "undo_contract": "Single undo frame restores player to pre-slide coordinates and resurrects all traversed ice tiles in O(1)."
+    }
+  },
+  "worlds": [
+    {
+      "world": 1,
+      "title": "Open Weaves & Parity Traps",
+      "levels": [1, 2, 3, 4, 5],
+      "theme": "Open arenas (4x3 to 5x5) with central pillars. Hamiltonian path coverage puzzles with high branching factors."
+    },
+    {
+      "world": 2,
+      "title": "Knot Theory & Crossroads",
+      "levels": [6, 7, 8, 9, 10],
+      "theme": "Figure-8s, twin hubs, and intersecting loops using C_CROSSROAD (11)."
+    },
+    {
+      "world": 3,
+      "title": "The Frozen Labyrinth",
+      "levels": [11, 12, 13, 14, 15],
+      "theme": "Momentum sliding and intentional Trail-Bumper construction using C_ICE (12)."
+    },
+    {
+      "world": 4,
+      "title": "The Grandmaster Crucible",
+      "levels": [16, 17, 18, 19, 20],
+      "theme": "Full synthesis of Open Weaving, Crossroads, Ice Bumpers, Phase Switches/Gates, and Checkpoints on 6x5 to 7x7 boards."
+    }
+  ],
+  "levels": [
+    {
+      "id": 1,
+      "world": 1,
+      "name": "The Open Arena",
+      "w": 4,
+      "h": 3,
+      "budget": 0,
+      "par": 11,
+      "spawn": { "x": 0, "y": 0 },
+      "goal": { "x": 0, "y": 1 },
+      "checkpoints": [],
+      "grid": [
+        [2, 2, 2, 2],
+        [4, 2, 2, 2],
+        [2, 2, 2, 2]
+      ],
+      "trace": ["RIGHT", "RIGHT", "RIGHT", "DOWN", "DOWN", "LEFT", "UP", "LEFT", "DOWN", "LEFT", "UP"],
+      "branching_factor": 2.1,
+      "archetype": "Hamiltonian Snake Weave"
+    },
+    {
+      "id": 2,
+      "world": 1,
+      "name": "The Central Pillar",
+      "w": 4,
+      "h": 4,
+      "budget": 0,
+      "par": 14,
+      "spawn": { "x": 0, "y": 0 },
+      "goal": { "x": 0, "y": 2 },
+      "checkpoints": [],
+      "grid": [
+        [2, 2, 2, 2],
+        [2, 2, 1, 2],
+        [4, 2, 2, 2],
+        [2, 2, 2, 2]
+      ],
+      "trace": ["DOWN", "RIGHT", "UP", "RIGHT", "RIGHT", "DOWN", "DOWN", "DOWN", "LEFT", "UP", "LEFT", "DOWN", "LEFT", "UP"],
+      "branching_factor": 2.3,
+      "archetype": "Central Obstacle Bypass"
+    },
+    {
+      "id": 3,
+      "world": 1,
+      "name": "The Dual Pillars",
+      "w": 5,
+      "h": 4,
+      "budget": 0,
+      "par": 17,
+      "spawn": { "x": 0, "y": 0 },
+      "goal": { "x": 0, "y": 3 },
+      "checkpoints": [],
+      "grid": [
+        [2, 2, 2, 2, 2],
+        [2, 2, 1, 2, 2],
+        [2, 2, 1, 2, 2],
+        [4, 2, 2, 2, 2]
+      ],
+      "trace": ["RIGHT", "RIGHT", "RIGHT", "RIGHT", "DOWN", "LEFT", "DOWN", "RIGHT", "DOWN", "LEFT", "LEFT", "LEFT", "UP", "UP", "LEFT", "DOWN", "DOWN"],
+      "branching_factor": 2.4,
+      "archetype": "Dual Lobe Figure Weave"
+    },
+    {
+      "id": 4,
+      "world": 1,
+      "name": "The Parity Split",
+      "w": 5,
+      "h": 5,
+      "budget": 0,
+      "par": 23,
+      "spawn": { "x": 0, "y": 0 },
+      "goal": { "x": 1, "y": 4 },
+      "checkpoints": [
+        { "id": 1, "x": 4, "y": 0, "cellType": 5 }
+      ],
+      "grid": [
+        [2, 2, 2, 2, 5],
+        [2, 2, 2, 2, 2],
+        [2, 2, 1, 2, 2],
+        [2, 2, 2, 2, 2],
+        [2, 4, 2, 2, 2]
+      ],
+      "trace": ["RIGHT", "RIGHT", "RIGHT", "RIGHT", "DOWN", "DOWN", "DOWN", "DOWN", "LEFT", "LEFT", "UP", "RIGHT", "UP", "UP", "LEFT", "LEFT", "LEFT", "DOWN", "RIGHT", "DOWN", "LEFT", "DOWN", "RIGHT"],
+      "branching_factor": 2.5,
+      "archetype": "Checkpoint Perimeter & Center Spiral"
+    },
+    {
+      "id": 5,
+      "world": 1,
+      "name": "The Hamiltonian Crucible",
+      "w": 5,
+      "h": 4,
+      "budget": 0,
+      "par": 19,
+      "spawn": { "x": 0, "y": 0 },
+      "goal": { "x": 4, "y": 3 },
+      "checkpoints": [
+        { "id": 1, "x": 4, "y": 0, "cellType": 5 },
+        { "id": 2, "x": 0, "y": 3, "cellType": 6 }
+      ],
+      "grid": [
+        [2, 2, 2, 2, 5],
+        [2, 2, 2, 2, 2],
+        [2, 2, 2, 2, 2],
+        [6, 2, 2, 2, 4]
+      ],
+      "trace": ["RIGHT", "RIGHT", "RIGHT", "RIGHT", "DOWN", "LEFT", "LEFT", "LEFT", "LEFT", "DOWN", "DOWN", "RIGHT", "UP", "RIGHT", "DOWN", "RIGHT", "UP", "RIGHT", "DOWN"],
+      "branching_factor": 2.6,
+      "archetype": "Double Checkpoint Hamiltonian Weave"
+    },
+    {
+      "id": 6,
+      "world": 2,
+      "name": "The Figure Eight",
+      "w": 5,
+      "h": 3,
+      "budget": 0,
+      "par": 15,
+      "spawn": { "x": 0, "y": 0 },
+      "goal": { "x": 3, "y": 2 },
+      "checkpoints": [],
+      "grid": [
+        [2, 2, 2, 2, 2],
+        [2, 2, 11, 2, 2],
+        [2, 2, 2, 4, 2]
+      ],
+      "trace": ["RIGHT", "RIGHT", "DOWN", "LEFT", "LEFT", "DOWN", "RIGHT", "RIGHT", "UP", "RIGHT", "UP", "RIGHT", "DOWN", "DOWN", "LEFT"],
+      "branching_factor": 2.2,
+      "archetype": "Figure-8 Intersection"
+    },
+    {
+      "id": 7,
+      "world": 2,
+      "name": "The Twin Hubs",
+      "w": 5,
+      "h": 5,
+      "budget": 0,
+      "par": 24,
+      "spawn": { "x": 0, "y": 0 },
+      "goal": { "x": 4, "y": 4 },
+      "checkpoints": [],
+      "grid": [
+        [2, 2, 2, 2, 2],
+        [2, 2, 1, 2, 2],
+        [2, 11, 2, 11, 2],
+        [2, 2, 1, 2, 2],
+        [2, 2, 2, 2, 4]
+      ],
+      "trace": ["RIGHT", "RIGHT", "RIGHT", "RIGHT", "DOWN", "LEFT", "DOWN", "RIGHT", "LEFT", "LEFT", "LEFT", "LEFT", "UP", "RIGHT", "DOWN", "DOWN", "LEFT", "DOWN", "RIGHT", "RIGHT", "RIGHT", "UP", "RIGHT", "DOWN"],
+      "branching_factor": 2.4,
+      "archetype": "Twin Crossroad Pretzel Knot"
+    },
+    {
+      "id": 8,
+      "world": 2,
+      "name": "The Trefoil Knot",
+      "w": 6,
+      "h": 4,
+      "budget": 0,
+      "par": 25,
+      "spawn": { "x": 0, "y": 0 },
+      "goal": { "x": 0, "y": 3 },
+      "checkpoints": [
+        { "id": 1, "x": 5, "y": 0, "cellType": 5 }
+      ],
+      "grid": [
+        [2, 2, 2, 2, 2, 5],
+        [2, 11, 2, 2, 2, 2],
+        [2, 2, 2, 11, 2, 2],
+        [4, 2, 2, 2, 2, 2]
+      ],
+      "trace": ["RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "DOWN", "LEFT", "LEFT", "DOWN", "RIGHT", "RIGHT", "DOWN", "LEFT", "LEFT", "UP", "LEFT", "DOWN", "LEFT", "UP", "UP", "RIGHT", "LEFT", "LEFT", "DOWN", "DOWN"],
+      "branching_factor": 2.5,
+      "archetype": "3-Lobe Sequential Knot"
+    },
+    {
+      "id": 9,
+      "world": 2,
+      "name": "The Celtic Cross",
+      "w": 6,
+      "h": 5,
+      "budget": 0,
+      "par": 31,
+      "spawn": { "x": 0, "y": 0 },
+      "goal": { "x": 5, "y": 4 },
+      "checkpoints": [
+        { "id": 1, "x": 5, "y": 0, "cellType": 5 },
+        { "id": 2, "x": 0, "y": 4, "cellType": 6 }
+      ],
+      "grid": [
+        [2, 2, 2, 2, 2, 5],
+        [2, 2, 2, 2, 2, 2],
+        [2, 2, 11, 11, 2, 2],
+        [2, 2, 2, 2, 2, 2],
+        [6, 2, 2, 2, 2, 4]
+      ],
+      "trace": ["RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "DOWN", "LEFT", "LEFT", "LEFT", "LEFT", "LEFT", "DOWN", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "DOWN", "LEFT", "LEFT", "UP", "LEFT", "DOWN", "LEFT", "LEFT", "DOWN", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT"],
+      "branching_factor": 2.6,
+      "archetype": "Dual Nexus Chamber Circuit"
+    },
+    {
+      "id": 10,
+      "world": 2,
+      "name": "The Gordian Web",
+      "w": 6,
+      "h": 5,
+      "budget": 0,
+      "par": 30,
+      "spawn": { "x": 0, "y": 0 },
+      "goal": { "x": 0, "y": 4 },
+      "checkpoints": [
+        { "id": 1, "x": 5, "y": 0, "cellType": 5 },
+        { "id": 2, "x": 5, "y": 4, "cellType": 6 }
+      ],
+      "grid": [
+        [2, 2, 2, 2, 2, 5],
+        [2, 2, 2, 2, 2, 2],
+        [2, 2, 11, 2, 2, 2],
+        [2, 2, 2, 2, 2, 2],
+        [4, 2, 2, 2, 2, 6]
+      ],
+      "trace": ["RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "DOWN", "LEFT", "LEFT", "LEFT", "LEFT", "LEFT", "DOWN", "RIGHT", "RIGHT", "RIGHT", "LEFT", "DOWN", "RIGHT", "RIGHT", "UP", "RIGHT", "DOWN", "DOWN", "LEFT", "LEFT", "LEFT", "LEFT", "UP", "LEFT", "DOWN"],
+      "branching_factor": 2.7,
+      "archetype": "World 2 Grandmaster Web"
+    },
+    {
+      "id": 11,
+      "world": 3,
+      "name": "Frictionless Vector",
+      "w": 5,
+      "h": 4,
+      "budget": 7,
+      "par": 7,
+      "spawn": { "x": 0, "y": 0 },
+      "goal": { "x": 0, "y": 3 },
+      "checkpoints": [],
+      "grid": [
+        [2, 12, 12, 12, 1],
+        [2, 1, 1, 2, 2],
+        [2, 1, 1, 2, 2],
+        [4, 2, 2, 2, 2]
+      ],
+      "trace": ["RIGHT", "DOWN", "DOWN", "DOWN", "LEFT", "LEFT", "LEFT"],
+      "branching_factor": 1.8,
+      "archetype": "Ice Chute Primer"
+    },
+    {
+      "id": 12,
+      "world": 3,
+      "name": "The Trail Bumper",
+      "w": 5,
+      "h": 5,
+      "budget": 8,
+      "par": 8,
+      "spawn": { "x": 0, "y": 2 },
+      "goal": { "x": 0, "y": 1 },
+      "checkpoints": [],
+      "grid": [
+        [1, 1, 2, 2, 2],
+        [4, 2, 12, 1, 2],
+        [2, 12, 12, 12, 2],
+        [1, 1, 12, 1, 1],
+        [1, 1, 1, 1, 1]
+      ],
+      "trace": ["RIGHT", "UP", "UP", "LEFT", "LEFT", "DOWN", "LEFT", "LEFT"],
+      "branching_factor": 2.0,
+      "archetype": "Intentional Bumper Construction"
+    },
+    {
+      "id": 13,
+      "world": 3,
+      "name": "Permafrost Chutes",
+      "w": 6,
+      "h": 5,
+      "budget": 7,
+      "par": 7,
+      "spawn": { "x": 0, "y": 0 },
+      "goal": { "x": 0, "y": 4 },
+      "checkpoints": [
+        { "id": 1, "x": 5, "y": 0, "cellType": 5 }
+      ],
+      "grid": [
+        [2, 12, 12, 12, 2, 5],
+        [1, 1, 1, 1, 1, 2],
+        [2, 12, 12, 12, 12, 2],
+        [2, 1, 1, 1, 1, 1],
+        [4, 1, 1, 1, 1, 1]
+      ],
+      "trace": ["RIGHT", "RIGHT", "DOWN", "DOWN", "LEFT", "DOWN", "DOWN"],
+      "branching_factor": 1.9,
+      "archetype": "Dual Chute Checkpoint Slide"
+    },
+    {
+      "id": 14,
+      "world": 3,
+      "name": "The Glacial Loom",
+      "w": 6,
+      "h": 5,
+      "budget": 7,
+      "par": 7,
+      "spawn": { "x": 0, "y": 0 },
+      "goal": { "x": 0, "y": 4 },
+      "checkpoints": [
+        { "id": 1, "x": 5, "y": 0, "cellType": 5 },
+        { "id": 2, "x": 5, "y": 4, "cellType": 6 }
+      ],
+      "grid": [
+        [2, 12, 12, 12, 2, 5],
+        [1, 1, 1, 1, 1, 2],
+        [1, 1, 1, 1, 1, 2],
+        [1, 1, 1, 1, 1, 2],
+        [4, 12, 12, 12, 12, 6]
+      ],
+      "trace": ["RIGHT", "RIGHT", "DOWN", "DOWN", "DOWN", "DOWN", "LEFT"],
+      "branching_factor": 1.9,
+      "archetype": "Double Checkpoint Perimeter Ice Run"
+    },
+    {
+      "id": 15,
+      "world": 3,
+      "name": "The Absolute Zero",
+      "w": 6,
+      "h": 5,
+      "budget": 7,
+      "par": 7,
+      "spawn": { "x": 0, "y": 0 },
+      "goal": { "x": 0, "y": 4 },
+      "checkpoints": [
+        { "id": 1, "x": 5, "y": 0, "cellType": 5 },
+        { "id": 2, "x": 0, "y": 2, "cellType": 6 }
+      ],
+      "grid": [
+        [2, 12, 12, 12, 2, 5],
+        [1, 1, 1, 1, 1, 2],
+        [6, 12, 12, 12, 12, 2],
+        [2, 1, 1, 1, 1, 1],
+        [4, 2, 2, 2, 2, 2]
+      ],
+      "trace": ["RIGHT", "RIGHT", "DOWN", "DOWN", "LEFT", "DOWN", "DOWN"],
+      "branching_factor": 2.1,
+      "archetype": "World 3 Apex Glacial Slide"
+    },
+    {
+      "id": 16,
+      "world": 4,
+      "name": "The Polarity Slipstream",
+      "w": 6,
+      "h": 5,
+      "initialPhase": "RED",
+      "budget": 6,
+      "par": 6,
+      "spawn": { "x": 0, "y": 0 },
+      "goal": { "x": 0, "y": 4 },
+      "checkpoints": [],
+      "grid": [
+        [2, 12, 12, 12, 8, 1],
+        [1, 1, 1, 1, 2, 1],
+        [1, 1, 1, 1, 10, 1],
+        [1, 1, 1, 1, 2, 1],
+        [4, 12, 12, 12, 2, 1]
+      ],
+      "trace": ["RIGHT", "DOWN", "DOWN", "DOWN", "DOWN", "LEFT"],
+      "branching_factor": 2.0,
+      "archetype": "Ice Slide into Phase Switch"
+    },
+    {
+      "id": 17,
+      "world": 4,
+      "name": "Crossroads on Ice",
+      "w": 6,
+      "h": 5,
+      "budget": 9,
+      "par": 9,
+      "spawn": { "x": 0, "y": 0 },
+      "goal": { "x": 0, "y": 4 },
+      "checkpoints": [],
+      "grid": [
+        [2, 12, 12, 2, 2, 1],
+        [1, 1, 1, 2, 1, 1],
+        [1, 1, 1, 11, 2, 2],
+        [1, 1, 1, 2, 1, 2],
+        [4, 12, 12, 2, 1, 1]
+      ],
+      "trace": ["RIGHT", "DOWN", "DOWN", "RIGHT", "LEFT", "DOWN", "DOWN", "LEFT", "LEFT"],
+      "branching_factor": 2.2,
+      "archetype": "Crossroad Friction Island"
+    },
+    {
+      "id": 18,
+      "world": 4,
+      "name": "The Entangled Circuit",
+      "w": 6,
+      "h": 6,
+      "initialPhase": "RED",
+      "budget": 13,
+      "par": 13,
+      "spawn": { "x": 0, "y": 0 },
+      "goal": { "x": 0, "y": 5 },
+      "checkpoints": [
+        { "id": 1, "x": 5, "y": 0, "cellType": 5 }
+      ],
+      "grid": [
+        [2, 2, 2, 9, 2, 5],
+        [1, 1, 1, 1, 1, 8],
+        [1, 1, 1, 1, 1, 2],
+        [1, 1, 1, 10, 11, 2],
+        [1, 1, 1, 2, 1, 1],
+        [4, 12, 12, 2, 1, 1]
+      ],
+      "trace": ["RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "DOWN", "DOWN", "DOWN", "LEFT", "LEFT", "DOWN", "DOWN", "LEFT"],
+      "branching_factor": 2.3,
+      "archetype": "Polarity Gated Crossroad Knot"
+    },
+    {
+      "id": 19,
+      "world": 4,
+      "name": "The Cryogenic Nexus",
+      "w": 6,
+      "h": 6,
+      "initialPhase": "RED",
+      "budget": 10,
+      "par": 10,
+      "spawn": { "x": 0, "y": 0 },
+      "goal": { "x": 0, "y": 5 },
+      "checkpoints": [
+        { "id": 1, "x": 5, "y": 0, "cellType": 5 },
+        { "id": 2, "x": 3, "y": 5, "cellType": 6 }
+      ],
+      "grid": [
+        [2, 12, 12, 12, 2, 5],
+        [1, 1, 1, 1, 1, 8],
+        [1, 1, 1, 1, 1, 2],
+        [1, 1, 1, 10, 11, 2],
+        [1, 1, 1, 2, 1, 1],
+        [4, 12, 12, 6, 1, 1]
+      ],
+      "trace": ["RIGHT", "RIGHT", "DOWN", "DOWN", "DOWN", "LEFT", "LEFT", "DOWN", "DOWN", "LEFT"],
+      "branching_factor": 2.4,
+      "archetype": "Dual Checkpoint Cryo Synthesis"
+    },
+    {
+      "id": 20,
+      "world": 4,
+      "name": "The Grandmaster Labyrinth",
+      "w": 7,
+      "h": 7,
+      "initialPhase": "RED",
+      "budget": 14,
+      "par": 14,
+      "spawn": { "x": 0, "y": 0 },
+      "goal": { "x": 0, "y": 6 },
+      "checkpoints": [
+        { "id": 1, "x": 6, "y": 0, "cellType": 5 },
+        { "id": 2, "x": 2, "y": 5, "cellType": 6 }
+      ],
+      "grid": [
+        [2, 2, 7, 2, 9, 2, 5],
+        [1, 1, 1, 1, 1, 1, 8],
+        [1, 1, 1, 1, 1, 1, 2],
+        [1, 1, 11, 12, 12, 12, 2],
+        [1, 1, 2, 1, 1, 1, 1],
+        [1, 1, 6, 1, 1, 1, 1],
+        [4, 12, 10, 1, 1, 1, 1]
+      ],
+      "trace": ["RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "DOWN", "DOWN", "DOWN", "LEFT", "DOWN", "DOWN", "DOWN", "LEFT"],
+      "branching_factor": 2.8,
+      "archetype": "The Crown of ONE MORE TILE"
+    }
+  ]
+}
