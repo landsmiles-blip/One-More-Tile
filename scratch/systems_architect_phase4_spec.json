@@ -1,0 +1,275 @@
+{
+  "project": "ONE MORE TILE",
+  "version": "4.0.0-PROD",
+  "phase": "Phase 4 Architecture Specification (Levels 16–20: Dynamic State Manipulation & Phase Switch Architecture)",
+  "target_platform": "YouTube Playables (HTML5 Canvas / WebAudio)",
+  "budget_bytes": 307200,
+  "system_axioms": {
+    "discrete_state_sovereignty": "The logical board state and global phase polarity are immutable discrete lattices updated synchronously on player step ticks.",
+    "finite_toggle_conservation": "Switches are single-use consumable triggers. Upon player arrival, polarity inverts; upon departure, the switch tile mutates to C_CONSUMED, preventing infinite oscillations or trivial cycles.",
+    "dual_phase_polarity_gating": "The board operates in binary phase polarity: RED (phaseState = true) or BLUE (phaseState = false). Red Gates are open exclusively when phaseState = true; Blue Gates are open exclusively when phaseState = false.",
+    "zero_margin_budget": "For Phase 4, initial budget B0 strictly equals optimal move par L_opt. Final budget at Goal entry must equal exactly 0.",
+    "strict_reachability_dominance": "The Goal tile requires that all active checkpoints are satisfied and the remaining spatial budget Bt equals exactly 1."
+  },
+  "entity_specifications": {
+    "C_SWITCH": {
+      "id": 8,
+      "name": "PHASE_SWITCH",
+      "identifier": "C_SWITCH",
+      "traversal_cost": 1,
+      "initial_passability": true,
+      "arrival_trigger": "this.phaseState = !this.phaseState; triggers sfxPhaseSwitch and screen chromatic flash.",
+      "departure_trigger": "grid[y][x] = C_CONSUMED (3); mutates to consumed floor, destroying the switch mechanism."
+    },
+    "C_GATE_RED": {
+      "id": 9,
+      "name": "GATE_RED",
+      "identifier": "C_GATE_RED",
+      "traversal_cost": 1,
+      "passability_condition": "phaseState === true (RED_OPEN)",
+      "blocked_condition": "phaseState === false (CLOSED barrier, cost = infinity)",
+      "departure_trigger": "grid[y][x] = C_CONSUMED (3); open gate consumes upon player exit."
+    },
+    "C_GATE_BLUE": {
+      "id": 10,
+      "name": "GATE_BLUE",
+      "identifier": "C_GATE_BLUE",
+      "traversal_cost": 1,
+      "passability_condition": "phaseState === false (BLUE_OPEN)",
+      "blocked_condition": "phaseState === true (CLOSED barrier, cost = infinity)",
+      "departure_trigger": "grid[y][x] = C_CONSUMED (3); open gate consumes upon player exit."
+    }
+  },
+  "bi_directional_undo_architecture": {
+    "frame_schema": {
+      "player": "{ x: number, y: number }",
+      "grid": "Array<Array<number>> (deep copy of 2D lattice)",
+      "phaseState": "boolean (true = RED, false = BLUE)",
+      "c1Collected": "boolean",
+      "c2Collected": "boolean",
+      "budget": "number",
+      "moves": "number",
+      "isDeadlocked": "boolean",
+      "isComplete": "boolean"
+    },
+    "undo_contract": "Popping from undoStack executes an O(1) state replacement. phaseState is restored immediately, flipping the active status of all Red and Blue gates on the canvas. Replaced switch and gate tiles are resurrected to their unconsumed states."
+  },
+  "spatial_budget_ledger": {
+    "policy": "B0 = Par across Levels 16 through 20. Bt_final = 0 at Goal entry.",
+    "warning_threshold": "Bt = 0 triggers pulse and amber/red HUD warning.",
+    "deadlock_trigger": "Bt = -1 triggers hard deadlock, audio buzz, board shake, and 750ms auto-reset.",
+    "goal_unlock_rule": "Goal tile is passable if and only if c1Collected === true, c2Collected === true, and Bt === 1."
+  },
+  "webaudio_synthesis_profiles": {
+    "sfxPhaseSwitch": {
+      "description": "Harmonic polyhedral frequency shift signaling global polarity flip.",
+      "red_to_blue": {
+        "osc1": { "type": "sine", "start_freq": 440, "end_freq": 880, "duration": 0.14, "gain": 0.3 },
+        "osc2": { "type": "triangle", "start_freq": 660, "end_freq": 1320, "duration": 0.18, "gain": 0.2 }
+      },
+      "blue_to_red": {
+        "osc1": { "type": "sine", "start_freq": 880, "end_freq": 440, "duration": 0.14, "gain": 0.3 },
+        "osc2": { "type": "triangle", "start_freq": 1320, "end_freq": 660, "duration": 0.18, "gain": 0.2 }
+      }
+    },
+    "sfxGateDeny": {
+      "description": "Low-frequency dissonant buzz on bumping closed gate barrier.",
+      "osc": { "type": "sawtooth", "start_freq": 140, "end_freq": 70, "duration": 0.12, "gain": 0.28 }
+    },
+    "sfxGatePass": {
+      "description": "Shimmering crystalline chime when traversing open gate aperture.",
+      "osc1": { "type": "sine", "start_freq": 1046.5, "end_freq": 1567.98, "duration": 0.15, "gain": 0.22 },
+      "osc2": { "type": "sine", "start_freq": 1318.51, "end_freq": 2093.0, "duration": 0.15, "gain": 0.18 }
+    }
+  },
+  "canvas_rendering_pipeline": {
+    "switch_tile": {
+      "shape": "Rotated diamond / octahedron inscribed in tile center.",
+      "active_red_color": "#ff3b56",
+      "active_blue_color": "#00d4ff",
+      "glow_radius_px": 8,
+      "particle_burst": 12
+    },
+    "gate_red": {
+      "open_border": "#ff3b56",
+      "open_fill": "rgba(255, 59, 86, 0.15)",
+      "closed_barrier_stroke": "#ff1a3c",
+      "closed_barrier_pattern": "Criss-cross energy lattice (alpha 0.8)",
+      "rune_symbol": "Alpha-Glyph Crimson"
+    },
+    "gate_blue": {
+      "open_border": "#00d4ff",
+      "open_fill": "rgba(0, 212, 255, 0.15)",
+      "closed_barrier_stroke": "#00a8ff",
+      "closed_barrier_pattern": "Criss-cross energy lattice (alpha 0.8)",
+      "rune_symbol": "Omega-Glyph Cyan"
+    }
+  },
+  "levels": [
+    {
+      "id": 16,
+      "name": "The Phase Primer",
+      "w": 4,
+      "h": 3,
+      "initialPhase": "RED",
+      "par": 8,
+      "budget": 8,
+      "spawn": { "x": 0, "y": 0 },
+      "goal": { "x": 0, "y": 2 },
+      "checkpoints": [],
+      "grid": [
+        [2, 2, 9, 8],
+        [1, 1, 1, 2],
+        [4, 10, 2, 2]
+      ],
+      "archetype": "Linear Polarity Conduit",
+      "solution_trace": ["RIGHT", "RIGHT", "RIGHT", "DOWN", "DOWN", "LEFT", "LEFT", "LEFT"],
+      "coordinates_sequence": [
+        { "step": 1, "x": 1, "y": 0, "cell": "UNTOUCHED" },
+        { "step": 2, "x": 2, "y": 0, "cell": "GATE_RED" },
+        { "step": 3, "x": 3, "y": 0, "cell": "SWITCH" },
+        { "step": 4, "x": 3, "y": 1, "cell": "UNTOUCHED" },
+        { "step": 5, "x": 3, "y": 2, "cell": "UNTOUCHED" },
+        { "step": 6, "x": 2, "y": 2, "cell": "UNTOUCHED" },
+        { "step": 7, "x": 1, "y": 2, "cell": "GATE_BLUE" },
+        { "step": 8, "x": 0, "y": 2, "cell": "GOAL" }
+      ],
+      "branching_factor_proof": "Moves 1-3 forced right through open Red Gate to Switch. Switch inverts phase to BLUE. Path descending col 3 forced south. Row 2 forced west through open Blue Gate. Branch factor b = 1.0; 1 unique solution."
+    },
+    {
+      "id": 17,
+      "name": "The Red-Blue Split",
+      "w": 4,
+      "h": 4,
+      "initialPhase": "RED",
+      "par": 9,
+      "budget": 9,
+      "spawn": { "x": 0, "y": 0 },
+      "goal": { "x": 0, "y": 3 },
+      "checkpoints": [
+        { "id": 1, "x": 3, "y": 0, "cellType": 5 }
+      ],
+      "grid": [
+        [2, 2, 9, 5],
+        [1, 1, 1, 8],
+        [1, 1, 1, 2],
+        [4, 10, 2, 2]
+      ],
+      "archetype": "Sequential Checkpoint Gating",
+      "solution_trace": ["RIGHT", "RIGHT", "RIGHT", "DOWN", "DOWN", "DOWN", "LEFT", "LEFT", "LEFT"],
+      "coordinates_sequence": [
+        { "step": 1, "x": 1, "y": 0, "cell": "UNTOUCHED" },
+        { "step": 2, "x": 2, "y": 0, "cell": "GATE_RED" },
+        { "step": 3, "x": 3, "y": 0, "cell": "CHECKPOINT_1" },
+        { "step": 4, "x": 3, "y": 1, "cell": "SWITCH" },
+        { "step": 5, "x": 3, "y": 2, "cell": "UNTOUCHED" },
+        { "step": 6, "x": 3, "y": 3, "cell": "UNTOUCHED" },
+        { "step": 7, "x": 2, "y": 3, "cell": "UNTOUCHED" },
+        { "step": 8, "x": 1, "y": 3, "cell": "GATE_BLUE" },
+        { "step": 9, "x": 0, "y": 3, "cell": "GOAL" }
+      ],
+      "branching_factor_proof": "Row 0 requires passing Red Gate to reach C1. From C1, player steps south into Switch at (3,1), inverting to BLUE. Player continues south and turns west across row 3, entering through Blue Gate to Goal. Branch factor b = 1.0; 1 unique solution."
+    },
+    {
+      "id": 18,
+      "name": "The Fragile Polarity",
+      "w": 5,
+      "h": 3,
+      "initialPhase": "RED",
+      "par": 10,
+      "budget": 10,
+      "spawn": { "x": 0, "y": 0 },
+      "goal": { "x": 0, "y": 2 },
+      "checkpoints": [],
+      "grid": [
+        [2, 2, 7, 2, 8],
+        [0, 1, 0, 1, 2],
+        [4, 10, 2, 2, 2]
+      ],
+      "archetype": "Irreversible Crumbling Commitment",
+      "solution_trace": ["RIGHT", "RIGHT", "RIGHT", "RIGHT", "DOWN", "DOWN", "LEFT", "LEFT", "LEFT", "LEFT"],
+      "coordinates_sequence": [
+        { "step": 1, "x": 1, "y": 0, "cell": "UNTOUCHED" },
+        { "step": 2, "x": 2, "y": 0, "cell": "CRUMBLING" },
+        { "step": 3, "x": 3, "y": 0, "cell": "UNTOUCHED" },
+        { "step": 4, "x": 4, "y": 0, "cell": "SWITCH" },
+        { "step": 5, "x": 4, "y": 1, "cell": "UNTOUCHED" },
+        { "step": 6, "x": 4, "y": 2, "cell": "UNTOUCHED" },
+        { "step": 7, "x": 3, "y": 2, "cell": "UNTOUCHED" },
+        { "step": 8, "x": 2, "y": 2, "cell": "UNTOUCHED" },
+        { "step": 9, "x": 1, "y": 2, "cell": "GATE_BLUE" },
+        { "step": 10, "x": 0, "y": 2, "cell": "GOAL" }
+      ],
+      "branching_factor_proof": "Traversing (2,0) collapses crumbling tile to VOID, permanently destroying the northern bridge. Player must enter Switch at (4,0) to flip polarity, descending col 4, and entering Goal via newly opened Blue Gate. Branch factor b = 1.0; 1 unique solution."
+    },
+    {
+      "id": 19,
+      "name": "The Parity Lockout",
+      "w": 4,
+      "h": 4,
+      "initialPhase": "RED",
+      "par": 9,
+      "budget": 9,
+      "spawn": { "x": 0, "y": 0 },
+      "goal": { "x": 0, "y": 3 },
+      "checkpoints": [],
+      "grid": [
+        [2, 2, 9, 8],
+        [1, 1, 1, 2],
+        [1, 8, 1, 10],
+        [4, 10, 2, 2]
+      ],
+      "archetype": "Deceptive Decoy Parity Trap",
+      "solution_trace": ["RIGHT", "RIGHT", "RIGHT", "DOWN", "DOWN", "DOWN", "LEFT", "LEFT", "LEFT"],
+      "coordinates_sequence": [
+        { "step": 1, "x": 1, "y": 0, "cell": "UNTOUCHED" },
+        { "step": 2, "x": 2, "y": 0, "cell": "GATE_RED" },
+        { "step": 3, "x": 3, "y": 0, "cell": "SWITCH" },
+        { "step": 4, "x": 3, "y": 1, "cell": "UNTOUCHED" },
+        { "step": 5, "x": 3, "y": 2, "cell": "GATE_BLUE" },
+        { "step": 6, "x": 3, "y": 3, "cell": "UNTOUCHED" },
+        { "step": 7, "x": 2, "y": 3, "cell": "UNTOUCHED" },
+        { "step": 8, "x": 1, "y": 3, "cell": "GATE_BLUE" },
+        { "step": 9, "x": 0, "y": 3, "cell": "GOAL" }
+      ],
+      "branching_factor_proof": "Switch 1 at (3,0) flips RED->BLUE, opening Blue Gates at (3,2) and (1,3). Decoy Switch 2 at (1,2) is an enticing dead-end trap. Stepping into (1,2) flips phase back to RED, sealing the player in a 1-tile cell with 0 legal moves. Correct trace bypasses decoy. Branch factor b = 1.0; 1 unique solution."
+    },
+    {
+      "id": 20,
+      "name": "The Grandmaster Synthesis",
+      "w": 5,
+      "h": 4,
+      "initialPhase": "RED",
+      "par": 11,
+      "budget": 11,
+      "spawn": { "x": 0, "y": 0 },
+      "goal": { "x": 0, "y": 3 },
+      "checkpoints": [
+        { "id": 1, "x": 4, "y": 0, "cellType": 5 },
+        { "id": 2, "x": 4, "y": 3, "cellType": 6 }
+      ],
+      "grid": [
+        [2, 2, 7, 2, 5],
+        [1, 1, 0, 1, 8],
+        [1, 1, 0, 1, 10],
+        [4, 10, 7, 2, 6]
+      ],
+      "archetype": "Mastery Apex Integration",
+      "solution_trace": ["RIGHT", "RIGHT", "RIGHT", "RIGHT", "DOWN", "DOWN", "DOWN", "LEFT", "LEFT", "LEFT", "LEFT"],
+      "coordinates_sequence": [
+        { "step": 1, "x": 1, "y": 0, "cell": "UNTOUCHED" },
+        { "step": 2, "x": 2, "y": 0, "cell": "CRUMBLING" },
+        { "step": 3, "x": 3, "y": 0, "cell": "UNTOUCHED" },
+        { "step": 4, "x": 4, "y": 0, "cell": "CHECKPOINT_1" },
+        { "step": 5, "x": 4, "y": 1, "cell": "SWITCH" },
+        { "step": 6, "x": 4, "y": 2, "cell": "GATE_BLUE" },
+        { "step": 7, "x": 4, "y": 3, "cell": "CHECKPOINT_2" },
+        { "step": 8, "x": 3, "y": 3, "cell": "UNTOUCHED" },
+        { "step": 9, "x": 2, "y": 3, "cell": "CRUMBLING" },
+        { "step": 10, "x": 1, "y": 3, "cell": "GATE_BLUE" },
+        { "step": 11, "x": 0, "y": 3, "cell": "GOAL" }
+      ],
+      "branching_factor_proof": "Player traverses Crumble 1 to collect C1 at (4,0). C1 unlocks C2 at (4,3). Player enters Switch at (4,1), flipping phase to BLUE, unlocking Blue Gate at (4,2). Player passes through Blue Gate to collect C2. C2 unlocks Goal. Player traverses Crumble 2 to Blue Gate 2 at (1,3). Arrives at Goal with exactly Bt = 0. Branch factor b = 1.0; 1 unique solution."
+    }
+  ]
+}

@@ -24,6 +24,9 @@ const C_GOAL = 4;
 const C_CHECKPOINT_1 = 5;
 const C_CHECKPOINT_2 = 6;
 const C_CRUMBLING = 7;
+const C_SWITCH = 8;
+const C_GATE_RED = 9;
+const C_GATE_BLUE = 10;
 
 const DIRECTIONS = {
   RIGHT: { dx: 1, dy: 0, name: 'RIGHT' },
@@ -343,6 +346,124 @@ const LEVELS = [
       DIRECTIONS.DOWN, DIRECTIONS.DOWN, DIRECTIONS.DOWN,
       DIRECTIONS.LEFT, DIRECTIONS.LEFT, DIRECTIONS.LEFT, DIRECTIONS.LEFT
     ]
+  },
+  // Level 16: The Phase Primer (4x3)
+  {
+    id: 16,
+    name: "The Phase Primer",
+    w: 4, h: 3,
+    budget: 8,
+    par: 8,
+    initialPhase: 'RED',
+    grid: [
+      [2, 2, 9, 8],
+      [1, 1, 1, 2],
+      [4, 10, 2, 2]
+    ],
+    spawn: { x: 0, y: 0 },
+    goal: { x: 0, y: 2 },
+    checkpoints: [],
+    trace: [
+      DIRECTIONS.RIGHT, DIRECTIONS.RIGHT, DIRECTIONS.RIGHT,
+      DIRECTIONS.DOWN, DIRECTIONS.DOWN,
+      DIRECTIONS.LEFT, DIRECTIONS.LEFT, DIRECTIONS.LEFT
+    ]
+  },
+  // Level 17: The Red-Blue Split (4x4)
+  {
+    id: 17,
+    name: "The Red-Blue Split",
+    w: 4, h: 4,
+    budget: 9,
+    par: 9,
+    initialPhase: 'RED',
+    grid: [
+      [2, 2, 9, 5],
+      [1, 1, 1, 8],
+      [1, 1, 1, 2],
+      [4, 10, 2, 2]
+    ],
+    spawn: { x: 0, y: 0 },
+    goal: { x: 0, y: 3 },
+    checkpoints: [
+      { id: 1, x: 3, y: 0, cellType: 5 }
+    ],
+    trace: [
+      DIRECTIONS.RIGHT, DIRECTIONS.RIGHT, DIRECTIONS.RIGHT,
+      DIRECTIONS.DOWN, DIRECTIONS.DOWN, DIRECTIONS.DOWN,
+      DIRECTIONS.LEFT, DIRECTIONS.LEFT, DIRECTIONS.LEFT
+    ]
+  },
+  // Level 18: The Fragile Polarity (5x3)
+  {
+    id: 18,
+    name: "The Fragile Polarity",
+    w: 5, h: 3,
+    budget: 10,
+    par: 10,
+    initialPhase: 'RED',
+    grid: [
+      [2, 2, 7, 2, 8],
+      [0, 1, 0, 1, 2],
+      [4, 10, 2, 2, 2]
+    ],
+    spawn: { x: 0, y: 0 },
+    goal: { x: 0, y: 2 },
+    checkpoints: [],
+    trace: [
+      DIRECTIONS.RIGHT, DIRECTIONS.RIGHT, DIRECTIONS.RIGHT, DIRECTIONS.RIGHT,
+      DIRECTIONS.DOWN, DIRECTIONS.DOWN,
+      DIRECTIONS.LEFT, DIRECTIONS.LEFT, DIRECTIONS.LEFT, DIRECTIONS.LEFT
+    ]
+  },
+  // Level 19: The Parity Lockout (4x4)
+  {
+    id: 19,
+    name: "The Parity Lockout",
+    w: 4, h: 4,
+    budget: 9,
+    par: 9,
+    initialPhase: 'RED',
+    grid: [
+      [2, 2, 9, 8],
+      [1, 1, 1, 2],
+      [1, 8, 1, 10],
+      [4, 10, 2, 2]
+    ],
+    spawn: { x: 0, y: 0 },
+    goal: { x: 0, y: 3 },
+    checkpoints: [],
+    trace: [
+      DIRECTIONS.RIGHT, DIRECTIONS.RIGHT, DIRECTIONS.RIGHT,
+      DIRECTIONS.DOWN, DIRECTIONS.DOWN, DIRECTIONS.DOWN,
+      DIRECTIONS.LEFT, DIRECTIONS.LEFT, DIRECTIONS.LEFT
+    ]
+  },
+  // Level 20: The Grandmaster Synthesis (5x4)
+  {
+    id: 20,
+    name: "The Grandmaster Synthesis",
+    w: 5, h: 4,
+    budget: 11,
+    par: 11,
+    initialPhase: 'RED',
+    grid: [
+      [2, 2, 7, 2, 5],
+      [1, 1, 0, 1, 8],
+      [1, 1, 0, 1, 10],
+      [4, 10, 7, 2, 6]
+    ],
+    spawn: { x: 0, y: 0 },
+    goal: { x: 0, y: 3 },
+    checkpoints: [
+      { id: 1, x: 4, y: 0, cellType: 5 },
+      { id: 2, x: 4, y: 3, cellType: 6 }
+    ],
+    trace: [
+      DIRECTIONS.RIGHT, DIRECTIONS.RIGHT, DIRECTIONS.RIGHT, DIRECTIONS.RIGHT,
+      DIRECTIONS.DOWN, DIRECTIONS.DOWN, DIRECTIONS.DOWN,
+      DIRECTIONS.LEFT, DIRECTIONS.LEFT, DIRECTIONS.LEFT, DIRECTIONS.LEFT
+    ]
   }
 ];
 
@@ -437,7 +558,8 @@ class GameEngineRig {
     // Remaining path count R(t)
     const initialR = this.getRemainingCount();
     const checkpointsMet = (!this.hasC1) && (!this.hasC2);
-    this.isGoalUnlocked = this.initialBudget === 0 ? (initialR === 0 && checkpointsMet) : (this.budget >= 0 && checkpointsMet);
+    this.phaseState = (levelData.initialPhase !== 'BLUE');
+    this.isGoalUnlocked = this.initialBudget === 0 ? (initialR === 0 && checkpointsMet) : (this.budget === 1 && checkpointsMet);
 
     this.dom.reset();
   }
@@ -467,7 +589,16 @@ class GameEngineRig {
       if (n.x >= 0 && n.x < this.w && n.y >= 0 && n.y < this.h) {
         const cell = this.grid[n.y][n.x];
         // Adjacent cell is valid if traversable
-        if (cell === C_UNTOUCHED || cell === C_CHECKPOINT_1 || (cell === C_CHECKPOINT_2 && this.c1Collected) || cell === C_CRUMBLING || (cell === C_GOAL && this.isGoalUnlocked)) {
+        if (cell === C_UNTOUCHED || cell === C_CHECKPOINT_1 || (cell === C_CHECKPOINT_2 && this.c1Collected) || cell === C_CRUMBLING || cell === C_SWITCH) {
+          return true;
+        }
+        if (cell === C_GATE_RED && this.phaseState) {
+          return true;
+        }
+        if (cell === C_GATE_BLUE && !this.phaseState) {
+          return true;
+        }
+        if (cell === C_GOAL && this.isGoalUnlocked) {
           return true;
         }
       }
@@ -500,6 +631,7 @@ class GameEngineRig {
     this.grid[frame.player.y][frame.player.x] = frame.prevCellState;
     this.grid[frame.target.y][frame.target.x] = frame.targetCellPrevState;
     this.player = { ...frame.player };
+    this.phaseState = frame.phaseState !== undefined ? frame.phaseState : true;
     this.moveCount = frame.moveCount;
     this.budget = frame.budget;
     this.c1Collected = frame.c1Collected;
@@ -537,6 +669,14 @@ class GameEngineRig {
       return { success: false, reason: 'LOCKED_GOAL' };
     }
 
+    // Phase Gate collision: Closed gates are impassable
+    if (targetCell === C_GATE_RED && !this.phaseState) {
+      return { success: false, reason: 'RED_GATE_CLOSED' };
+    }
+    if (targetCell === C_GATE_BLUE && this.phaseState) {
+      return { success: false, reason: 'BLUE_GATE_CLOSED' };
+    }
+
     // Checkpoint Gating: C2 is strictly impassable while C1 is active!
     if (targetCell === C_CHECKPOINT_2 && !this.c1Collected) {
       return { success: false, reason: 'C2_GATED_BY_C1' };
@@ -548,6 +688,7 @@ class GameEngineRig {
       target: { x: nx, y: ny },
       prevCellState: this.grid[this.player.y][this.player.x],
       targetCellPrevState: targetCell,
+      phaseState: this.phaseState,
       c1Collected: this.c1Collected,
       c2Collected: this.c2Collected,
       isGoalUnlocked: this.isGoalUnlocked,
@@ -572,11 +713,13 @@ class GameEngineRig {
       this.budget--;
     }
 
-    // Checkpoint collection
+    // Checkpoint collection / Switch toggle
     if (targetCell === C_CHECKPOINT_1) {
       this.c1Collected = true;
     } else if (targetCell === C_CHECKPOINT_2) {
       this.c2Collected = true;
+    } else if (targetCell === C_SWITCH) {
+      this.phaseState = !this.phaseState;
     }
 
     const remainingCount = this.getRemainingCount();
@@ -646,6 +789,9 @@ class GameEngineRig {
             const cell = this.grid[n.y][n.x];
             const isTraversable = (cell === C_UNTOUCHED) ||
                                  (cell === C_CRUMBLING) ||
+                                 (cell === C_SWITCH) ||
+                                 (cell === C_GATE_RED) ||
+                                 (cell === C_GATE_BLUE) ||
                                  (n.x === target.x && n.y === target.y);
             if (isTraversable) {
               visited.add(key);
@@ -1921,8 +2067,105 @@ runTest("Test 21: Progression, Persistence & Final-Move Goal Gating Invariants",
   assert.strictEqual(formatHUDBadgeV2(false, 0, -1, false), 'DEPLETED');
 });
 
+// ============================================================================
+// TEST 22: Phase 4 Dynamic State Manipulation & Gate Invariants
+// ============================================================================
+runTest("Test 22: Phase 4 Dynamic State Manipulation & Gate Invariants", () => {
+  // Subtest 1: Phase Gate Collision & Passability Invariant
+  const lvl16 = LEVELS.find(l => l.id === 16);
+  const engine16 = new GameEngineRig(lvl16);
+  assert.strictEqual(engine16.phaseState, true, "Level 16 initial phase must be RED (true)");
+
+  // Move 1: (0,0) -> (1,0) [UNTOUCHED]
+  let r1 = engine16.executeMove(1, 0);
+  assert.strictEqual(r1.success, true);
+
+  // Move 2: (1,0) -> (2,0) [GATE_RED] should succeed because phaseState === true
+  let r2 = engine16.executeMove(1, 0);
+  assert.strictEqual(r2.success, true, "RED gate must be passable when phaseState is RED");
+
+  // Move 3: (2,0) -> (3,0) [C_SWITCH]
+  let r3 = engine16.executeMove(1, 0);
+  assert.strictEqual(r3.success, true);
+  assert.strictEqual(engine16.phaseState, false, "Entering switch must invert phaseState to BLUE (false)");
+
+  // Subtest 2: Single-Use Consumption & Departure Axiom
+  // Move 4: (3,0) -> (3,1)
+  let r4 = engine16.executeMove(0, 1);
+  assert.strictEqual(r4.success, true);
+  assert.strictEqual(engine16.grid[0][3], C_CONSUMED, "Departing switch must mutate it to C_CONSUMED");
+
+  // Attempt to step back north into consumed switch (3,0)
+  let rBack = engine16.executeMove(0, -1);
+  assert.strictEqual(rBack.success, false, "Consumed switch must reject re-entry");
+
+  // Subtest 3: Bi-Directional Undo Stack Polarity Restoration
+  // Undo move 4: back to (3,0) on switch
+  let u4 = engine16.undo();
+  assert.strictEqual(u4.success, true);
+  assert.strictEqual(engine16.player.x, 3);
+  assert.strictEqual(engine16.player.y, 0);
+  assert.strictEqual(engine16.phaseState, false);
+
+  // Undo move 3: back to (2,0) before switch entry
+  let u3 = engine16.undo();
+  assert.strictEqual(u3.success, true);
+  assert.strictEqual(engine16.player.x, 2);
+  assert.strictEqual(engine16.player.y, 0);
+  assert.strictEqual(engine16.phaseState, true, "Undoing switch entry must restore phaseState to RED (true)");
+
+  // Subtest 4: Full Solvability Suite for Phase 4 (Levels 16 to 20)
+  const phase4Levels = [16, 17, 18, 19, 20];
+  phase4Levels.forEach((lvlId) => {
+    const lvl = LEVELS.find(l => l.id === lvlId);
+    assert(lvl, `Level ${lvlId} must exist in LEVELS`);
+    const engine = new GameEngineRig(lvl);
+    const trace = lvl.trace;
+
+    assert.strictEqual(lvl.budget, lvl.par, `Level ${lvlId} budget must exactly equal par`);
+
+    for (let step = 0; step < trace.length - 1; step++) {
+      const dir = trace[step];
+      const stepRes = engine.executeMove(dir.dx, dir.dy);
+      assert.strictEqual(stepRes.success, true, `Level ${lvlId} step ${step + 1} (${dir.name}) must succeed`);
+      assert.strictEqual(engine.isDeadlocked, false, `Level ${lvlId} step ${step + 1} must not deadlock`);
+
+      if (step < trace.length - 2) {
+        assert.strictEqual(
+          engine.isGoalUnlocked,
+          false,
+          `Level ${lvlId} step ${step + 1}: Goal must remain locked while moves remain > 1 (budget=${engine.budget})`
+        );
+      }
+    }
+
+    // At penultimate step (1 move remaining):
+    assert.strictEqual(engine.budget, 1, `Level ${lvlId} at penultimate step: Budget must be exactly 1`);
+    assert.strictEqual(engine.isGoalUnlocked, true, `Level ${lvlId} at penultimate step: Goal must unlock`);
+
+    // Final move into Goal:
+    const finalDir = trace[trace.length - 1];
+    const finalRes = engine.executeMove(finalDir.dx, finalDir.dy);
+    assert.strictEqual(finalRes.success, true, `Level ${lvlId} final move into goal must succeed`);
+    assert.strictEqual(engine.isVictorious, true, `Level ${lvlId} must achieve victory`);
+    assert.strictEqual(engine.budget, 0, `Level ${lvlId} must complete with exact budget 0`);
+    assert.strictEqual(engine.moveCount, lvl.par, `Level ${lvlId} must complete at exact par`);
+  });
+
+  // Subtest 5: Adversarial Off-Path Collision with Closed Gate
+  const engineAdv = new GameEngineRig(lvl16);
+  // Spawn is at (0,0), RED active.
+  // In Level 16, (1,2) is BLUE GATE. If player could somehow be at (2,2) with RED active:
+  engineAdv.phaseState = true; // RED active
+  engineAdv.player = { x: 2, y: 2 };
+  const denyRes = engineAdv.executeMove(-1, 0); // Attempt to enter Blue Gate at (1,2)
+  assert.strictEqual(denyRes.success, false, "Moving into closed Blue Gate while phase is RED must fail");
+  assert.strictEqual(denyRes.reason, 'BLUE_GATE_CLOSED', "Reason must be BLUE_GATE_CLOSED");
+});
+
 console.log("\n================================================================================");
 console.log(`   RESULTS: ${passedTests} / ${totalTests} TEST SUITES PASSED (100% CLEAN)`);
 console.log("================================================================================");
+
 
 
