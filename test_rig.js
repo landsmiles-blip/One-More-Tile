@@ -23,6 +23,7 @@ const C_CONSUMED = 3;
 const C_GOAL = 4;
 const C_CHECKPOINT_1 = 5;
 const C_CHECKPOINT_2 = 6;
+const C_CRUMBLING = 7;
 
 const DIRECTIONS = {
   RIGHT: { dx: 1, dy: 0, name: 'RIGHT' },
@@ -220,6 +221,128 @@ const LEVELS = [
       DIRECTIONS.LEFT, DIRECTIONS.LEFT,
       DIRECTIONS.UP, DIRECTIONS.RIGHT
     ]
+  },
+  // Level 11: The Greedy Snare (4x4)
+  {
+    id: 11,
+    name: "The Greedy Snare",
+    w: 4, h: 4,
+    budget: 8,
+    par: 8,
+    grid: [
+      [2, 2, 5, 2],
+      [2, 1, 1, 2],
+      [2, 1, 6, 2],
+      [2, 2, 2, 4]
+    ],
+    spawn: { x: 0, y: 0 },
+    goal: { x: 3, y: 3 },
+    checkpoints: [
+      { id: 1, x: 2, y: 0, cellType: 5 },
+      { id: 2, x: 2, y: 2, cellType: 6 }
+    ],
+    trace: [
+      DIRECTIONS.RIGHT, DIRECTIONS.RIGHT, DIRECTIONS.RIGHT,
+      DIRECTIONS.DOWN, DIRECTIONS.DOWN, DIRECTIONS.LEFT,
+      DIRECTIONS.DOWN, DIRECTIONS.RIGHT
+    ]
+  },
+  // Level 12: The Double Cross (4x3)
+  {
+    id: 12,
+    name: "The Double Cross",
+    w: 4, h: 3,
+    budget: 9,
+    par: 9,
+    grid: [
+      [2, 2, 2, 5],
+      [2, 2, 2, 2],
+      [6, 2, 4, 2]
+    ],
+    spawn: { x: 1, y: 0 },
+    goal: { x: 2, y: 2 },
+    checkpoints: [
+      { id: 1, x: 3, y: 0, cellType: 5 },
+      { id: 2, x: 0, y: 2, cellType: 6 }
+    ],
+    trace: [
+      DIRECTIONS.RIGHT, DIRECTIONS.RIGHT, DIRECTIONS.DOWN,
+      DIRECTIONS.LEFT, DIRECTIONS.LEFT, DIRECTIONS.LEFT,
+      DIRECTIONS.DOWN, DIRECTIONS.RIGHT, DIRECTIONS.RIGHT
+    ]
+  },
+  // Level 13: The Fragile Span (5x3)
+  {
+    id: 13,
+    name: "The Fragile Span",
+    w: 5, h: 3,
+    budget: 10,
+    par: 10,
+    grid: [
+      [2, 2, 7, 2, 5],
+      [0, 1, 0, 1, 2],
+      [4, 2, 7, 2, 2]
+    ],
+    spawn: { x: 0, y: 0 },
+    goal: { x: 0, y: 2 },
+    checkpoints: [
+      { id: 1, x: 4, y: 0, cellType: 5 }
+    ],
+    trace: [
+      DIRECTIONS.RIGHT, DIRECTIONS.RIGHT, DIRECTIONS.RIGHT, DIRECTIONS.RIGHT,
+      DIRECTIONS.DOWN, DIRECTIONS.DOWN, DIRECTIONS.LEFT,
+      DIRECTIONS.LEFT, DIRECTIONS.LEFT, DIRECTIONS.LEFT
+    ]
+  },
+  // Level 14: The False Haven (4x4)
+  {
+    id: 14,
+    name: "The False Haven",
+    w: 4, h: 4,
+    budget: 9,
+    par: 9,
+    grid: [
+      [2, 2, 2, 5],
+      [2, 1, 7, 2],
+      [2, 0, 1, 2],
+      [4, 2, 2, 6]
+    ],
+    spawn: { x: 0, y: 0 },
+    goal: { x: 0, y: 3 },
+    checkpoints: [
+      { id: 1, x: 3, y: 0, cellType: 5 },
+      { id: 2, x: 3, y: 3, cellType: 6 }
+    ],
+    trace: [
+      DIRECTIONS.RIGHT, DIRECTIONS.RIGHT, DIRECTIONS.RIGHT,
+      DIRECTIONS.DOWN, DIRECTIONS.DOWN, DIRECTIONS.DOWN,
+      DIRECTIONS.LEFT, DIRECTIONS.LEFT, DIRECTIONS.LEFT
+    ]
+  },
+  // Level 15: The Gauntlet of Ruin (5x4)
+  {
+    id: 15,
+    name: "The Gauntlet of Ruin",
+    w: 5, h: 4,
+    budget: 11,
+    par: 11,
+    grid: [
+      [2, 2, 7, 2, 5],
+      [2, 1, 0, 1, 2],
+      [2, 1, 0, 1, 2],
+      [4, 2, 7, 2, 6]
+    ],
+    spawn: { x: 0, y: 0 },
+    goal: { x: 0, y: 3 },
+    checkpoints: [
+      { id: 1, x: 4, y: 0, cellType: 5 },
+      { id: 2, x: 4, y: 3, cellType: 6 }
+    ],
+    trace: [
+      DIRECTIONS.RIGHT, DIRECTIONS.RIGHT, DIRECTIONS.RIGHT, DIRECTIONS.RIGHT,
+      DIRECTIONS.DOWN, DIRECTIONS.DOWN, DIRECTIONS.DOWN,
+      DIRECTIONS.LEFT, DIRECTIONS.LEFT, DIRECTIONS.LEFT, DIRECTIONS.LEFT
+    ]
   }
 ];
 
@@ -309,6 +432,7 @@ class GameEngineRig {
     this.hasC2 = (levelData.checkpoints && levelData.checkpoints.some(c => c.id === 2)) || false;
     this.c1Collected = false;
     this.c2Collected = false;
+    this.history = [];
 
     // Remaining path count R(t)
     const initialR = this.getRemainingCount();
@@ -323,7 +447,7 @@ class GameEngineRig {
     for (let y = 0; y < this.h; y++) {
       for (let x = 0; x < this.w; x++) {
         const cell = this.grid[y][x];
-        if ((cell === C_UNTOUCHED || cell === C_CHECKPOINT_1 || cell === C_CHECKPOINT_2) && !(x === this.player.x && y === this.player.y)) {
+        if ((cell === C_UNTOUCHED || cell === C_CHECKPOINT_1 || cell === C_CHECKPOINT_2 || cell === C_CRUMBLING) && !(x === this.player.x && y === this.player.y)) {
           count++;
         }
       }
@@ -343,7 +467,7 @@ class GameEngineRig {
       if (n.x >= 0 && n.x < this.w && n.y >= 0 && n.y < this.h) {
         const cell = this.grid[n.y][n.x];
         // Adjacent cell is valid if traversable
-        if (cell === C_UNTOUCHED || cell === C_CHECKPOINT_1 || (cell === C_CHECKPOINT_2 && this.c1Collected) || (cell === C_GOAL && this.isGoalUnlocked)) {
+        if (cell === C_UNTOUCHED || cell === C_CHECKPOINT_1 || (cell === C_CHECKPOINT_2 && this.c1Collected) || cell === C_CRUMBLING || (cell === C_GOAL && this.isGoalUnlocked)) {
           return true;
         }
       }
@@ -368,6 +492,25 @@ class GameEngineRig {
   restart() {
     this.dom.reset();
     this.loadLevel(this.level);
+  }
+
+  undo() {
+    if (this.history.length === 0 || this.isVictorious) return { success: false };
+    const frame = this.history.pop();
+    this.grid[frame.player.y][frame.player.x] = frame.prevCellState;
+    this.grid[frame.target.y][frame.target.x] = frame.targetCellPrevState;
+    this.player = { ...frame.player };
+    this.moveCount = frame.moveCount;
+    this.budget = frame.budget;
+    this.c1Collected = frame.c1Collected;
+    this.c2Collected = frame.c2Collected;
+    this.isGoalUnlocked = frame.isGoalUnlocked;
+    this.isDeadlocked = frame.isDeadlocked;
+    if (!this.isDeadlocked) {
+      this.dom.deadlockBanner.visible = false;
+      this.dom.deadlockBanner.classes.delete('show');
+    }
+    return { success: true, player: { ...this.player }, budget: this.budget };
   }
 
   executeMove(dx, dy) {
@@ -399,8 +542,26 @@ class GameEngineRig {
       return { success: false, reason: 'C2_GATED_BY_C1' };
     }
 
+    // Record history frame for undo
+    this.history.push({
+      player: { ...this.player },
+      target: { x: nx, y: ny },
+      prevCellState: this.grid[this.player.y][this.player.x],
+      targetCellPrevState: targetCell,
+      c1Collected: this.c1Collected,
+      c2Collected: this.c2Collected,
+      isGoalUnlocked: this.isGoalUnlocked,
+      budget: this.budget,
+      moveCount: this.moveCount,
+      isDeadlocked: this.isDeadlocked
+    });
+
     // --- MICRO-FRAME STEP 1: Record departure ---
-    this.grid[this.player.y][this.player.x] = C_CONSUMED;
+    if (this.grid[this.player.y][this.player.x] === C_CRUMBLING) {
+      this.grid[this.player.y][this.player.x] = C_VOID;
+    } else {
+      this.grid[this.player.y][this.player.x] = C_CONSUMED;
+    }
 
     // --- MICRO-FRAME STEP 2: Update player position & budget ---
     this.player.x += dx;
@@ -1273,6 +1434,179 @@ runTest("Test 15: Phase 2 Dynamic Vertical Centering & Positive originY across V
         `${vp.name} Level ${lvl.id}: Grid must fit vertically inside canvas rect`
       );
     });
+  });
+});
+
+// ----------------------------------------------------------------------------
+// TEST 16: Phase 3 Crumbling Tile Mutation (C_CRUMBLING -> C_VOID on exit)
+// ----------------------------------------------------------------------------
+runTest("Test 16: Phase 3 Crumbling Tile Mutation (C_CRUMBLING -> C_VOID on exit)", () => {
+  const lvl13 = LEVELS[12]; // Level 13
+  const engine = new GameEngineRig(lvl13);
+
+  assert.strictEqual(engine.grid[0][2], C_CRUMBLING, "Tile (2,0) must start as C_CRUMBLING");
+
+  // Move 1: RIGHT to (1,0)
+  const m1 = engine.executeMove(1, 0);
+  assert.strictEqual(m1.success, true);
+  assert.strictEqual(engine.grid[0][0], C_CONSUMED, "Standard departure tile mutates to C_CONSUMED");
+
+  // Move 2: RIGHT to (2,0) - Enter crumbling tile
+  const m2 = engine.executeMove(1, 0);
+  assert.strictEqual(m2.success, true);
+  assert.strictEqual(engine.player.x, 2);
+  assert.strictEqual(engine.player.y, 0);
+
+  // Move 3: RIGHT to (3,0) - Depart crumbling tile
+  const m3 = engine.executeMove(1, 0);
+  assert.strictEqual(m3.success, true);
+  assert.strictEqual(engine.player.x, 3);
+  assert.strictEqual(engine.player.y, 0);
+  assert.strictEqual(engine.grid[0][2], C_VOID, "Crumbling tile must collapse directly to C_VOID = 0 on exit");
+
+  // Adversarial: Attempt to step back into the collapsed chasm
+  const blocked = engine.executeMove(-1, 0);
+  assert.strictEqual(blocked.success, false, "Stepping into collapsed chasm must be rejected");
+  assert.strictEqual(blocked.reason, 'IMPASSABLE_CELL');
+  assert.strictEqual(engine.player.x, 3, "Player must remain at (3,0)");
+});
+
+// ----------------------------------------------------------------------------
+// TEST 17: Phase 3 Zero Margin for Error (Bt = 0 at Goal, detour triggers Bt = -1 deadlock)
+// ----------------------------------------------------------------------------
+runTest("Test 17: Phase 3 Zero Margin for Error (Bt = 0 at Goal, detour triggers Bt = -1 deadlock)", () => {
+  // Adversarial test on Level 11: take an extraneous detour step down to (0,1)
+  const lvl11 = LEVELS[10]; // Level 11: budget = 8, par = 8
+  const engine = new GameEngineRig(lvl11);
+
+  // Intentional detour move DOWN to (0,1)
+  const m1 = engine.executeMove(0, 1);
+  assert.strictEqual(m1.success, true);
+  assert.strictEqual(engine.budget, 7);
+
+  // Move 7 more steps (total 8 moves) to exhaust budget to Bt = 0
+  engine.executeMove(0, 1); // to (0,2) -> Bt = 6
+  engine.executeMove(0, 1); // to (0,3) -> Bt = 5
+  engine.executeMove(1, 0); // to (1,3) -> Bt = 4
+  engine.executeMove(1, 0); // to (2,3) -> Bt = 3
+  engine.executeMove(0, -1); // to (2,2) -> Bt = 2 (C2 blocked because C1 not collected!)
+  // Instead move to (1,3) is consumed, but let's test moving when budget hits 0:
+  // Re-instantiate a clean budget-depletion test:
+  const engine2 = new GameEngineRig(lvl11);
+  // Execute 8 moves on terrain:
+  engine2.executeMove(1, 0); // (1,0) Bt = 7
+  engine2.executeMove(1, 0); // (2,0) C1 Bt = 6
+  engine2.executeMove(1, 0); // (3,0) Bt = 5
+  engine2.executeMove(0, 1); // (3,1) Bt = 4
+  engine2.executeMove(0, 1); // (3,2) Bt = 3
+  engine2.executeMove(-1, 0); // (2,2) C2 Bt = 2
+  engine2.executeMove(0, 1); // (2,3) Bt = 1
+  // Move 8 to (1,3) instead of Goal (3,3)
+  engine2.executeMove(-1, 0); // (1,3) Bt = 0 (WARNING STATE)
+  assert.strictEqual(engine2.budget, 0, "Budget reaches 0");
+  assert.strictEqual(engine2.isDeadlocked, false, "Bt = 0 is warning state");
+
+  // Move 9 (detour past par): moves to (0,3) -> Bt = -1 (DEADLOCK!)
+  const mDead = engine2.executeMove(-1, 0);
+  assert.strictEqual(engine2.budget, -1, "Budget drops to -1");
+  assert.strictEqual(engine2.isDeadlocked, true, "Bt = -1 triggers DEADLOCK");
+  assert.strictEqual(engine2.dom.deadlockBanner.visible, true);
+
+  // Locked down: further inputs rejected
+  const mBlocked = engine2.executeMove(0, -1);
+  assert.strictEqual(mBlocked.success, false);
+  assert.strictEqual(mBlocked.reason, 'DEADLOCKED');
+});
+
+// ----------------------------------------------------------------------------
+// TEST 18: Phase 3 Bi-Directional Undo Stack (restores C_CRUMBLING losslessly)
+// ----------------------------------------------------------------------------
+runTest("Test 18: Phase 3 Bi-Directional Undo Stack (restores C_CRUMBLING losslessly)", () => {
+  const lvl13 = LEVELS[12];
+  const engine = new GameEngineRig(lvl13);
+
+  // Walk: (0,0) -> (1,0) -> (2,0)[CR] -> (3,0)[CR collapses]
+  engine.executeMove(1, 0);
+  engine.executeMove(1, 0);
+  engine.executeMove(1, 0);
+
+  assert.strictEqual(engine.player.x, 3);
+  assert.strictEqual(engine.grid[0][2], C_VOID, "Tile is collapsed to void");
+
+  // Undo 1: Back to (2,0)
+  const u1 = engine.undo();
+  assert.strictEqual(u1.success, true);
+  assert.strictEqual(engine.player.x, 2);
+  assert.strictEqual(engine.player.y, 0);
+  assert.strictEqual(engine.grid[0][2], C_CRUMBLING, "Departure tile restored to C_CRUMBLING");
+  assert.strictEqual(engine.grid[0][3], C_UNTOUCHED, "Target tile restored to C_UNTOUCHED");
+
+  // Undo 2: Back to (1,0)
+  const u2 = engine.undo();
+  assert.strictEqual(u2.success, true);
+  assert.strictEqual(engine.player.x, 1);
+  assert.strictEqual(engine.grid[0][2], C_CRUMBLING, "Tile (2,0) remains C_CRUMBLING");
+
+  // Re-step onto (2,0) and verify it is walkable again
+  const reStep = engine.executeMove(1, 0);
+  assert.strictEqual(reStep.success, true, "Restored crumbling tile can be stepped on again");
+  assert.strictEqual(engine.player.x, 2);
+});
+
+// ----------------------------------------------------------------------------
+// TEST 19: Phase 3 Levels 11 to 15 Deterministic Solvability Traces
+// ----------------------------------------------------------------------------
+runTest("Test 19: Phase 3 Levels 11 to 15 Deterministic Solvability Traces", () => {
+  const phase3Levels = LEVELS.slice(10, 15);
+
+  phase3Levels.forEach((lvl) => {
+    const engine = new GameEngineRig(lvl);
+    const trace = lvl.trace;
+
+    trace.forEach((dir, stepIdx) => {
+      const res = engine.executeMove(dir.dx, dir.dy);
+      assert.strictEqual(
+        res.success,
+        true,
+        `Level ${lvl.id} step ${stepIdx + 1} (${dir.name}): Move rejected with reason ${res.reason}`
+      );
+      assert.strictEqual(
+        engine.isDeadlocked,
+        false,
+        `Level ${lvl.id} step ${stepIdx + 1}: Unexpected premature deadlock!`
+      );
+    });
+
+    assert.strictEqual(
+      engine.player.x,
+      lvl.goal.x,
+      `Level ${lvl.id}: Player X (${engine.player.x}) does not match Goal X (${lvl.goal.x})`
+    );
+    assert.strictEqual(
+      engine.player.y,
+      lvl.goal.y,
+      `Level ${lvl.id}: Player Y (${engine.player.y}) does not match Goal Y (${lvl.goal.y})`
+    );
+    assert.strictEqual(
+      engine.isVictorious,
+      true,
+      `Level ${lvl.id} (${lvl.name}): Must achieve Victory`
+    );
+    assert.strictEqual(
+      engine.isDeadlocked,
+      false,
+      `Level ${lvl.id} (${lvl.name}): Must not be deadlocked`
+    );
+    assert.strictEqual(
+      engine.moveCount,
+      lvl.par,
+      `Level ${lvl.id}: Move count (${engine.moveCount}) must match par (${lvl.par})`
+    );
+    assert.strictEqual(
+      engine.budget,
+      0,
+      `Level ${lvl.id}: Remaining budget at Goal must be EXACTLY 0 (Zero Margin for Error)`
+    );
   });
 });
 

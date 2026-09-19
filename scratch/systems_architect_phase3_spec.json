@@ -1,0 +1,292 @@
+{
+  "project": "ONE MORE TILE",
+  "version": "3.0.0-PROD",
+  "phase": "Phase 3 Architecture Specification (Levels 11–15)",
+  "target_platform": "YouTube Playables (HTML5 Canvas / WebAudio)",
+  "budget_bytes": 307200,
+  "system_axioms": {
+    "discrete_state_sovereignty": "The logical board state is an immutable integer lattice updated instantaneously on discrete ticks.",
+    "permanent_space_consumption": "Ordinary traversable tiles exit-mutate to CONSUMED_HISTORY. Crumbling tiles exit-mutate to VOID.",
+    "strict_orthogonality": "All movement, adjacency, pathing, and connectivity checks are strictly Manhattan L1 metric. Diagonals prohibited.",
+    "zero_margin_budget": "For Phase 3, initial Spatial Budget B0 equals exact optimal move count L_opt. Final budget at Goal entry must equal exactly 0.",
+    "reachability_dominance": "Topological reachability strictly dominates objective satisfaction. g in C_player takes precedence."
+  },
+  "mechanic_crumbling_tile": {
+    "cell_enum": {
+      "id": 7,
+      "name": "CRUMBLING_TILE",
+      "identifier": "C_CRUMBLING",
+      "traversal_cost": 1,
+      "initial_passability": true
+    },
+    "state_transition_lifecycle": {
+      "on_enter": "Player occupies the crumbling tile. Logical position snaps instantaneously; tile enters active vibration state.",
+      "on_exit": "Departure from C_CRUMBLING bypasses C_CONSUMED and mutates directly to C_VOID = 0. The substrate plate and metadata conduit vectors are obliterated.",
+      "post_exit_state": "C_VOID (Absolute impassable chasm; grid[y][x] = 0; traversal cost = infinity). Attempting to re-enter is strictly rejected with a wall deflection thump."
+    },
+    "webaudio_synthesis": {
+      "function_name": "playTileCrumble",
+      "synthesis_profile": {
+        "sub_bass_rumble": {
+          "oscillator_type": "triangle",
+          "start_frequency_hz": 95,
+          "end_frequency_hz": 30,
+          "duration_sec": 0.18,
+          "gain_peak": 0.38
+        },
+        "brittle_snap": {
+          "oscillator_type": "sawtooth",
+          "start_frequency_hz": 1850,
+          "end_frequency_hz": 850,
+          "duration_sec": 0.08,
+          "gain_peak": 0.22
+        }
+      }
+    },
+    "canvas_rendering_pipeline": {
+      "base_color": "#252836",
+      "border_color": "#ff9933",
+      "border_width_px": 1.5,
+      "fissure_decals": {
+        "stroke_style": "rgba(255, 153, 51, 0.75)",
+        "line_width_px": 1.5,
+        "crack_points_normalized": [
+          [0.15, 0.2],
+          [0.45, 0.5],
+          [0.55, 0.4],
+          [0.85, 0.8]
+        ]
+      },
+      "occupied_vibration": {
+        "amplitude_px": 1.2,
+        "frequency_hz": 24.0
+      },
+      "collapse_particle_burst": {
+        "color": "#4a5568",
+        "particle_count": 14,
+        "radius_min": 2,
+        "radius_max": 4,
+        "decay_rate": 0.035
+      }
+    },
+    "bi_directional_undo": {
+      "rule": "BiDirectionalStateFrame stores prevCellState = C_CRUMBLING. Upon undoing a move away from a collapsed crumbling tile, grid[y][x] is restored directly to C_CRUMBLING (7) in O(1) time without state drift."
+    }
+  },
+  "difficulty_and_retention_architecture": {
+    "target_platform_loop": "YouTube Playables micro-session 'rage-replay' loop. Frictionless instant restart (<16ms) coupled with ruthless spatial precision.",
+    "zero_margin_policy": {
+      "rule": "B0 = L_opt across Levels 11 through 15",
+      "goal_entry_budget": "Bt_final == 0",
+      "deadlock_trigger": "Taking any single extraneous move decrements budget to Bt = -1, instantly triggering hard deadlock, extinguishing the Goal flame, shaking the screen, and displaying the retry banner."
+    },
+    "psychological_misdirection_archetypes": [
+      {
+        "name": "The Greedy Snare",
+        "mechanism": "Spawn placed adjacent to a direct, visible corridor to C1. Stepping into C1 consumes the only articulation cut-vertex, permanently severing access to C2 or stranding the player."
+      },
+      {
+        "name": "The Double Cross",
+        "mechanism": "Intersecting paths crossing a central hub tile. Traversing the hub on the outbound leg destroys the bridge for the return leg."
+      },
+      {
+        "name": "The One-Way Chasm Bridge",
+        "mechanism": "Fragile span across absolute void. The moment the player steps off onto an island, the bridge evaporates into void, forbidding any retreat."
+      },
+      {
+        "name": "The False Haven",
+        "mechanism": "An apparent safe side-pocket or shortcut. Stepping into it collapses a crumbling tile, isolating the player in a dead-end pocket."
+      }
+    ]
+  },
+  "levels_11_to_15_blueprints": [
+    {
+      "id": 11,
+      "name": "The Greedy Snare",
+      "archetype": "The Greedy Snare (Misdirection & Choke Severance)",
+      "dimensions": { "w": 4, "h": 4 },
+      "initial_budget": 8,
+      "par": 8,
+      "spawn": { "x": 0, "y": 0 },
+      "goal": { "x": 3, "y": 3 },
+      "checkpoints": [
+        { "id": 1, "x": 2, "y": 0, "cellType": 5 },
+        { "id": 2, "x": 2, "y": 2, "cellType": 6 }
+      ],
+      "grid": [
+        [2, 2, 5, 2],
+        [2, 1, 1, 2],
+        [2, 1, 6, 2],
+        [2, 2, 2, 4]
+      ],
+      "pedagogical_lesson": "Rejection of the greedy instinct. Taking an extra turn or detouring into the west corridor drains the budget or creates dead-end entrapment.",
+      "verified_trace": [
+        { "step": 1, "dir": { "dx": 1, "dy": 0, "name": "RIGHT" }, "target": { "x": 1, "y": 0 }, "remaining_budget": 7 },
+        { "step": 2, "dir": { "dx": 1, "dy": 0, "name": "RIGHT" }, "target": { "x": 2, "y": 0 }, "event": "CONSUME_C1_UNBLOCK_C2", "remaining_budget": 6 },
+        { "step": 3, "dir": { "dx": 1, "dy": 0, "name": "RIGHT" }, "target": { "x": 3, "y": 0 }, "remaining_budget": 5 },
+        { "step": 4, "dir": { "dx": 0, "dy": 1, "name": "DOWN" }, "target": { "x": 3, "y": 1 }, "remaining_budget": 4 },
+        { "step": 5, "dir": { "dx": 0, "dy": 1, "name": "DOWN" }, "target": { "x": 3, "y": 2 }, "remaining_budget": 3 },
+        { "step": 6, "dir": { "dx": -1, "dy": 0, "name": "LEFT" }, "target": { "x": 2, "y": 2 }, "event": "CONSUME_C2", "remaining_budget": 2 },
+        { "step": 7, "dir": { "dx": 0, "dy": 1, "name": "DOWN" }, "target": { "x": 2, "y": 3 }, "event": "ALL_CHECKPOINTS_CLEAR_GOAL_UNLOCKS", "remaining_budget": 1 },
+        { "step": 8, "dir": { "dx": 1, "dy": 0, "name": "RIGHT" }, "target": { "x": 3, "y": 3 }, "remaining_budget": 0, "terminal": true }
+      ]
+    },
+    {
+      "id": 12,
+      "name": "The Double Cross",
+      "archetype": "The Double Cross (Central Intersection Scheduling)",
+      "dimensions": { "w": 4, "h": 3 },
+      "initial_budget": 9,
+      "par": 9,
+      "spawn": { "x": 1, "y": 0 },
+      "goal": { "x": 2, "y": 2 },
+      "checkpoints": [
+        { "id": 1, "x": 3, "y": 0, "cellType": 5 },
+        { "id": 2, "x": 0, "y": 2, "cellType": 6 }
+      ],
+      "grid": [
+        [2, 2, 2, 5],
+        [2, 2, 2, 2],
+        [6, 2, 4, 2]
+      ],
+      "pedagogical_lesson": "Navigating intersecting corridors. Crossing the central intersection (2,1) on the outbound trip severs the return bridge from C2 to Goal.",
+      "verified_trace": [
+        { "step": 1, "dir": { "dx": 1, "dy": 0, "name": "RIGHT" }, "target": { "x": 2, "y": 0 }, "remaining_budget": 8 },
+        { "step": 2, "dir": { "dx": 1, "dy": 0, "name": "RIGHT" }, "target": { "x": 3, "y": 0 }, "event": "CONSUME_C1_UNBLOCK_C2", "remaining_budget": 7 },
+        { "step": 3, "dir": { "dx": 0, "dy": 1, "name": "DOWN" }, "target": { "x": 3, "y": 1 }, "remaining_budget": 6 },
+        { "step": 4, "dir": { "dx": -1, "dy": 0, "name": "LEFT" }, "target": { "x": 2, "y": 1 }, "event": "CROSS_CENTRAL_INTERSECTION", "remaining_budget": 5 },
+        { "step": 5, "dir": { "dx": -1, "dy": 0, "name": "LEFT" }, "target": { "x": 1, "y": 1 }, "remaining_budget": 4 },
+        { "step": 6, "dir": { "dx": -1, "dy": 0, "name": "LEFT" }, "target": { "x": 0, "y": 1 }, "remaining_budget": 3 },
+        { "step": 7, "dir": { "dx": 0, "dy": 1, "name": "DOWN" }, "target": { "x": 0, "y": 2 }, "event": "CONSUME_C2", "remaining_budget": 2 },
+        { "step": 8, "dir": { "dx": 1, "dy": 0, "name": "RIGHT" }, "target": { "x": 1, "y": 2 }, "event": "ALL_CHECKPOINTS_CLEAR_GOAL_UNLOCKS", "remaining_budget": 1 },
+        { "step": 9, "dir": { "dx": 1, "dy": 0, "name": "RIGHT" }, "target": { "x": 2, "y": 2 }, "remaining_budget": 0, "terminal": true }
+      ]
+    },
+    {
+      "id": 13,
+      "name": "The Fragile Span",
+      "archetype": "The Fragile Span (Introduction of Crumbling Bridges)",
+      "dimensions": { "w": 5, "h": 3 },
+      "initial_budget": 10,
+      "par": 10,
+      "spawn": { "x": 0, "y": 0 },
+      "goal": { "x": 0, "y": 2 },
+      "checkpoints": [
+        { "id": 1, "x": 4, "y": 0, "cellType": 5 }
+      ],
+      "grid": [
+        [2, 2, 7, 2, 5],
+        [0, 1, 0, 1, 2],
+        [4, 2, 7, 2, 2]
+      ],
+      "pedagogical_lesson": "One-way bridge crossing across void chasms. Stepping off C_CRUMBLING permanently destroys the tile into C_VOID, forbidding return.",
+      "verified_trace": [
+        { "step": 1, "dir": { "dx": 1, "dy": 0, "name": "RIGHT" }, "target": { "x": 1, "y": 0 }, "remaining_budget": 9 },
+        { "step": 2, "dir": { "dx": 1, "dy": 0, "name": "RIGHT" }, "target": { "x": 2, "y": 0 }, "event": "ENTER_CRUMBLING_SPAN_1", "remaining_budget": 8 },
+        { "step": 3, "dir": { "dx": 1, "dy": 0, "name": "RIGHT" }, "target": { "x": 3, "y": 0 }, "event": "EXIT_CRUMBLING_SPAN_1_COLLAPSES_TO_VOID", "remaining_budget": 7 },
+        { "step": 4, "dir": { "dx": 1, "dy": 0, "name": "RIGHT" }, "target": { "x": 4, "y": 0 }, "event": "CONSUME_C1", "remaining_budget": 6 },
+        { "step": 5, "dir": { "dx": 0, "dy": 1, "name": "DOWN" }, "target": { "x": 4, "y": 1 }, "remaining_budget": 5 },
+        { "step": 6, "dir": { "dx": 0, "dy": 1, "name": "DOWN" }, "target": { "x": 4, "y": 2 }, "remaining_budget": 4 },
+        { "step": 7, "dir": { "dx": -1, "dy": 0, "name": "LEFT" }, "target": { "x": 3, "y": 2 }, "remaining_budget": 3 },
+        { "step": 8, "dir": { "dx": -1, "dy": 0, "name": "LEFT" }, "target": { "x": 2, "y": 2 }, "event": "ENTER_CRUMBLING_SPAN_2", "remaining_budget": 2 },
+        { "step": 9, "dir": { "dx": -1, "dy": 0, "name": "LEFT" }, "target": { "x": 1, "y": 2 }, "event": "EXIT_CRUMBLING_SPAN_2_COLLAPSES_TO_VOID", "remaining_budget": 1 },
+        { "step": 10, "dir": { "dx": -1, "dy": 0, "name": "LEFT" }, "target": { "x": 0, "y": 2 }, "remaining_budget": 0, "terminal": true }
+      ]
+    },
+    {
+      "id": 14,
+      "name": "The False Haven",
+      "archetype": "The False Haven (Crumbling Deception & Perimeter Trap)",
+      "dimensions": { "w": 4, "h": 4 },
+      "initial_budget": 9,
+      "par": 9,
+      "spawn": { "x": 0, "y": 0 },
+      "goal": { "x": 0, "y": 3 },
+      "checkpoints": [
+        { "id": 1, "x": 3, "y": 0, "cellType": 5 },
+        { "id": 2, "x": 3, "y": 3, "cellType": 6 }
+      ],
+      "grid": [
+        [2, 2, 2, 5],
+        [2, 1, 7, 2],
+        [2, 0, 1, 2],
+        [4, 2, 2, 6]
+      ],
+      "pedagogical_lesson": "Resisting deceptive shortcuts. Entering the crumbling central pocket (2,1) collapses the bridge behind the player, trapping them against Wall (2,2) and Void (1,2).",
+      "verified_trace": [
+        { "step": 1, "dir": { "dx": 1, "dy": 0, "name": "RIGHT" }, "target": { "x": 1, "y": 0 }, "remaining_budget": 8 },
+        { "step": 2, "dir": { "dx": 1, "dy": 0, "name": "RIGHT" }, "target": { "x": 2, "y": 0 }, "remaining_budget": 7 },
+        { "step": 3, "dir": { "dx": 1, "dy": 0, "name": "RIGHT" }, "target": { "x": 3, "y": 0 }, "event": "CONSUME_C1_UNBLOCK_C2", "remaining_budget": 6 },
+        { "step": 4, "dir": { "dx": 0, "dy": 1, "name": "DOWN" }, "target": { "x": 3, "y": 1 }, "remaining_budget": 5 },
+        { "step": 5, "dir": { "dx": 0, "dy": 1, "name": "DOWN" }, "target": { "x": 3, "y": 2 }, "remaining_budget": 4 },
+        { "step": 6, "dir": { "dx": 0, "dy": 1, "name": "DOWN" }, "target": { "x": 3, "y": 3 }, "event": "CONSUME_C2", "remaining_budget": 3 },
+        { "step": 7, "dir": { "dx": -1, "dy": 0, "name": "LEFT" }, "target": { "x": 2, "y": 3 }, "remaining_budget": 2 },
+        { "step": 8, "dir": { "dx": -1, "dy": 0, "name": "LEFT" }, "target": { "x": 1, "y": 3 }, "event": "ALL_CHECKPOINTS_CLEAR_GOAL_UNLOCKS", "remaining_budget": 1 },
+        { "step": 9, "dir": { "dx": -1, "dy": 0, "name": "LEFT" }, "target": { "x": 0, "y": 3 }, "remaining_budget": 0, "terminal": true }
+      ]
+    },
+    {
+      "id": 15,
+      "name": "The Gauntlet of Ruin",
+      "archetype": "Apex Master Exam (Multiple Crumbling Spans & Chasm Routing)",
+      "dimensions": { "w": 5, "h": 4 },
+      "initial_budget": 11,
+      "par": 11,
+      "spawn": { "x": 0, "y": 0 },
+      "goal": { "x": 0, "y": 3 },
+      "checkpoints": [
+        { "id": 1, "x": 4, "y": 0, "cellType": 5 },
+        { "id": 2, "x": 4, "y": 3, "cellType": 6 }
+      ],
+      "grid": [
+        [2, 2, 7, 2, 5],
+        [2, 1, 0, 1, 2],
+        [2, 1, 0, 1, 2],
+        [4, 2, 7, 2, 6]
+      ],
+      "pedagogical_lesson": "Apex synthesis of fragile bridges, ordered waypoints, void avoidance, and exact zero-margin budget execution. One false step collapses the route.",
+      "verified_trace": [
+        { "step": 1, "dir": { "dx": 1, "dy": 0, "name": "RIGHT" }, "target": { "x": 1, "y": 0 }, "remaining_budget": 10 },
+        { "step": 2, "dir": { "dx": 1, "dy": 0, "name": "RIGHT" }, "target": { "x": 2, "y": 0 }, "event": "ENTER_NORTH_CRUMBLING_BRIDGE", "remaining_budget": 9 },
+        { "step": 3, "dir": { "dx": 1, "dy": 0, "name": "RIGHT" }, "target": { "x": 3, "y": 0 }, "event": "EXIT_NORTH_BRIDGE_COLLAPSES_TO_VOID", "remaining_budget": 8 },
+        { "step": 4, "dir": { "dx": 1, "dy": 0, "name": "RIGHT" }, "target": { "x": 4, "y": 0 }, "event": "CONSUME_C1_UNBLOCK_C2", "remaining_budget": 7 },
+        { "step": 5, "dir": { "dx": 0, "dy": 1, "name": "DOWN" }, "target": { "x": 4, "y": 1 }, "remaining_budget": 6 },
+        { "step": 6, "dir": { "dx": 0, "dy": 1, "name": "DOWN" }, "target": { "x": 4, "y": 2 }, "remaining_budget": 5 },
+        { "step": 7, "dir": { "dx": 0, "dy": 1, "name": "DOWN" }, "target": { "x": 4, "y": 3 }, "event": "CONSUME_C2", "remaining_budget": 4 },
+        { "step": 8, "dir": { "dx": -1, "dy": 0, "name": "LEFT" }, "target": { "x": 3, "y": 3 }, "remaining_budget": 3 },
+        { "step": 9, "dir": { "dx": -1, "dy": 0, "name": "LEFT" }, "target": { "x": 2, "y": 3 }, "event": "ENTER_SOUTH_CRUMBLING_BRIDGE", "remaining_budget": 2 },
+        { "step": 10, "dir": { "dx": -1, "dy": 0, "name": "LEFT" }, "target": { "x": 1, "y": 3 }, "event": "EXIT_SOUTH_BRIDGE_COLLAPSES_TO_VOID", "remaining_budget": 1 },
+        { "step": 11, "dir": { "dx": -1, "dy": 0, "name": "LEFT" }, "target": { "x": 0, "y": 3 }, "remaining_budget": 0, "terminal": true }
+      ]
+    }
+  ],
+  "stage_centering_phase3_matrix": [
+    {
+      "viewport": "Mobile Portrait (390 x 844)",
+      "shell_rect": { "width": 374, "height": 764 },
+      "max_grid_size": { "cols": 5, "rows": 4 },
+      "calculated_tile_size": 63,
+      "calculated_grid_height": 252,
+      "calculated_origin_y": 256,
+      "origin_y_strictly_positive": true
+    },
+    {
+      "viewport": "Desktop Fullscreen (1920 x 1080)",
+      "shell_rect": { "width": 416, "height": 792 },
+      "max_grid_size": { "cols": 5, "rows": 4 },
+      "calculated_tile_size": 70,
+      "calculated_grid_height": 280,
+      "calculated_origin_y": 256,
+      "origin_y_strictly_positive": true
+    },
+    {
+      "viewport": "Foldable Square (600 x 600)",
+      "shell_rect": { "width": 416, "height": 512 },
+      "max_grid_size": { "cols": 5, "rows": 4 },
+      "calculated_tile_size": 70,
+      "calculated_grid_height": 280,
+      "calculated_origin_y": 116,
+      "origin_y_strictly_positive": true
+    }
+  ]
+}
