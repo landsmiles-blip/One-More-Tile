@@ -1,0 +1,102 @@
+{
+  "project": "ONE MORE TILE",
+  "version": "3.2.0-PROGRESSION",
+  "document_type": "Progression, Persistence & Goal Gating Architecture Specification",
+  "audit_reference": "Level 9 Shortcut & Level 10 Progression Playtest Feedback",
+  "systems_resolved": [
+    "Premature Goal Entry Prevention in Spatial Budget Levels",
+    "Goal Unlock Calibration at Final Move (Bt === 1)",
+    "Level 7 Budget Recalibration (B0 = 2, Par = 2)",
+    "750ms Auto-Reset Protocol on Hard Deadlock",
+    "Progression Lock & LocalStorage Persistence Schema"
+  ],
+  "premature_goal_entry_prevention": {
+    "playtest_defect": "On Level 9 (budget: 6, par: 6), the Goal was unlocked from the start because budget >= 0. The player took an unintended 4-move shortcut through (1,1) directly into the Goal with 3 moves remaining, skipping 3 tiles and trivializing the puzzle.",
+    "architectural_invariant": "In all Spatial Budget levels (Levels 7, 9, 11, 12, 13, 14, 15), the Goal is an IMPASSABLE MONOLITH while budget > 1. It unlocks ONLY when all checkpoints are met AND the player is on their final move (budget === 1).",
+    "formal_unlock_predicate": {
+      "spatial_budget_mode": {
+        "rule": "isGoalUnlocked(t) <=> (allCheckpointsCollected && budget === 1)",
+        "impassable_condition": "budget > 1 || !allCheckpointsCollected",
+        "attempt_rejection": "Attempting to enter Goal while budget > 1 triggers playWallBump(), rejects movement, and preserves avatar at departure coordinate. Zero state mutation."
+      },
+      "clear_all_mode": {
+        "rule": "isGoalUnlocked(t) <=> (allCheckpointsCollected && untouchedTilesCount === 0)",
+        "impassable_condition": "untouchedTilesCount > 0 || !allCheckpointsCollected"
+      }
+    },
+    "final_move_and_victory_sequence": {
+      "at_budget_1": [
+        "Goal tile ignites radiant golden flame",
+        "HUD status badge turns golden: GOAL UNLOCKED",
+        "Audio cue: playGoalRekindle()",
+        "Goal mutates from impassable wall to traversable terminal sink"
+      ],
+      "step_into_unlocked_goal": [
+        "Player enters Goal coordinate",
+        "Budget decrements from 1 to exactly 0 (Zero Margin for Error)",
+        "Terminal Entry Check triggers triggerVictory()",
+        "Level marked conquered, progression saved to localStorage"
+      ],
+      "detour_instead_of_goal": [
+        "If player takes another move away from the Goal at budget === 1:",
+        "Budget decrements from 1 to 0 (HUD: LAST MOVE, warning amber pulse)",
+        "The following move decrements budget from 0 to -1 -> CRITICAL DEADLOCK",
+        "Goal snuffs out flame into cracked obsidian (playGoalExtinguish)",
+        "750ms auto-reset timer armed"
+      ]
+    },
+    "level_7_calibration": {
+      "level_id": 7,
+      "name": "The Spatial Budget",
+      "calibrated_budget": 2,
+      "par": 2,
+      "trace": [
+        { "step": 1, "dir": { "dx": 1, "dy": 0 }, "target": { "x": 1, "y": 0 }, "budget_after": 1, "event": "GOAL_AT_1_1_UNLOCKS" },
+        { "step": 2, "dir": { "dx": 0, "dy": 1 }, "target": { "x": 1, "y": 1 }, "budget_after": 0, "event": "LEVEL_VICTORY" }
+      ]
+    }
+  },
+  "auto_reset_on_failure": {
+    "trigger_condition": "isDeadlocked === true (Entrapment or Spatial Budget depleted at Bt = -1)",
+    "latency_ms": 750,
+    "execution_flow": [
+      "Step 1: Deadlock detected in evaluateBoardState() or executeMove().",
+      "Step 2: Engine displays deadlock banner ('Deadlock — Press R to Restart or Tap Undo') and extinguishes Goal.",
+      "Step 3: Arm auto-reset timer: autoResetTimer = setTimeout(() => this.restart(), 750).",
+      "Step 4: If timer expires without player input: invoke restart(), resetting board to pristine initial state in <16ms.",
+      "Step 5: If player taps Undo within 750ms: cancel timer immediately via clearTimeout(autoResetTimer), clear deadlock banner, restore previous state, and rekindle Goal."
+    ]
+  },
+  "progression_lock_and_persistence": {
+    "anti_skip_policy": "Under no circumstances can an unconquered level be accessed or skipped. Level selection is strictly clamped: requestedLevel <= unlockedLevel.",
+    "localstorage_key": "one_more_tile_save_v1",
+    "schema": {
+      "version": 1,
+      "unlockedLevel": "number (1-indexed, e.g. 1..15)",
+      "currentLevel": "number (0-indexed, index in LEVELS array)",
+      "stars": "{ [levelId: number]: number }",
+      "lastPlayedTimestamp": "number"
+    },
+    "lifecycle": {
+      "on_game_boot": [
+        "Read localStorage.getItem('one_more_tile_save_v1').",
+        "If null or corrupted, initialize default: { version: 1, unlockedLevel: 1, currentLevel: 0, stars: {} }.",
+        "Clamp currentLevel = Math.min(save.currentLevel, save.unlockedLevel - 1).",
+        "Load level at currentLevel, resuming exactly where player left off across browser refreshes."
+      ],
+      "on_level_victory": [
+        "Let currentLevelId = this.level.id.",
+        "Calculate stars earned (Tier 1: 1 star, Tier 2: 2 stars, Tier 3: 3 stars if !hasUndone).",
+        "Update save.stars[currentLevelId] = Math.max(save.stars[currentLevelId] || 0, starsEarned).",
+        "Update save.unlockedLevel = Math.max(save.unlockedLevel, currentLevelId + 1).",
+        "Update save.currentLevel = currentLevelId (next level index).",
+        "Write updated JSON payload to localStorage."
+      ],
+      "on_next_level_click": [
+        "Verify nextIndex < unlockedLevel.",
+        "If valid, advance engine: loadLevel(nextIndex).",
+        "If nextIndex exceeds unlockedLevel or campaign end, loop to level 0 or remain on current."
+      ]
+    }
+  }
+}

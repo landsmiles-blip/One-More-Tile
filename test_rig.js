@@ -135,12 +135,12 @@ const LEVELS = [
       DIRECTIONS.LEFT, DIRECTIONS.LEFT, DIRECTIONS.LEFT
     ]
   },
-  // Level 7: The Spatial Budget (4x2, Budget Bt = 3)
+  // Level 7: The Spatial Budget (4x2, Budget Bt = 2, Par = 2)
   {
     id: 7,
     name: "The Spatial Budget",
     w: 4, h: 2,
-    budget: 3,
+    budget: 2,
     par: 2,
     grid: [
       [2, 2, 2, 2],
@@ -579,26 +579,29 @@ class GameEngineRig {
       this.c2Collected = true;
     }
 
-    // --- MICRO-FRAME STEP 3: Goal Unlock Mutation ---
     const remainingCount = this.getRemainingCount();
-    const checkpointsMet = (!this.hasC1 || this.c1Collected) && (!this.hasC2 || this.c2Collected);
-
-    if (this.initialBudget === 0) {
-      if (remainingCount === 0 && checkpointsMet) {
-        this.isGoalUnlocked = true;
-      }
-    } else {
-      if (this.budget >= 0 && checkpointsMet) {
-        this.isGoalUnlocked = true;
-      } else if (this.budget < 0) {
-        this.isGoalUnlocked = false;
-        this.triggerDeadlock();
-      }
-    }
 
     // --- MICRO-FRAME STEP 4: Terminal Entry Check ---
     if (this.player.x === this.goal.x && this.player.y === this.goal.y && this.isGoalUnlocked) {
       this.triggerVictory();
+    }
+
+    // --- MICRO-FRAME STEP 3: Goal Unlock Mutation ---
+    if (!this.isVictorious) {
+      const checkpointsMet = (!this.hasC1 || this.c1Collected) && (!this.hasC2 || this.c2Collected);
+
+      if (this.initialBudget === 0) {
+        this.isGoalUnlocked = (remainingCount === 0 && checkpointsMet);
+      } else {
+        if (this.budget < 0) {
+          this.isGoalUnlocked = false;
+          this.triggerDeadlock();
+        } else if (checkpointsMet && this.budget === 1) {
+          this.isGoalUnlocked = true;
+        } else {
+          this.isGoalUnlocked = false;
+        }
+      }
     }
 
     // --- MICRO-FRAME STEP 5: Deadlock Evaluation (only if NOT victorious) ---
@@ -1381,35 +1384,33 @@ runTest("Test 12: Phase 2 Checkpoint Gating (C2 impassable while C1 active)", ()
 // TEST 13: Phase 2 Spatial Budget Invariant (Bt = 0 warning, Bt = -1 deadlock)
 // ----------------------------------------------------------------------------
 runTest("Test 13: Phase 2 Spatial Budget Invariant (Bt = 0 warning, Bt = -1 deadlock)", () => {
-  // Level 7: 4x2, Budget Bt = 3, Par = 2, Spawn (0,0), Goal (1,1)
+  // Level 7: 4x2, Budget Bt = 2, Par = 2, Spawn (0,0), Goal (1,1)
   const lvl7 = LEVELS[6];
   const engine = new GameEngineRig(lvl7);
 
-  // Move 1: RIGHT to (1,0) -> Bt = 2
-  engine.executeMove(1, 0);
-  assert.strictEqual(engine.budget, 2);
-  assert.strictEqual(engine.isDeadlocked, false);
-
-  // Move 2: RIGHT to (2,0) -> Bt = 1
-  engine.executeMove(1, 0);
+  // Move 1: RIGHT to (1,0) -> Bt = 1 (Goal unlocks)
+  const m1 = engine.executeMove(1, 0);
+  assert.strictEqual(m1.success, true);
   assert.strictEqual(engine.budget, 1);
+  assert.strictEqual(engine.isGoalUnlocked, true, "Goal unlocks at Bt = 1");
   assert.strictEqual(engine.isDeadlocked, false);
 
-  // Move 3: RIGHT to (3,0) -> Bt = 0 (WARNING STATE)
-  engine.executeMove(1, 0);
+  // Move 2: Detour RIGHT to (2,0) -> Bt = 0 (WARNING STATE)
+  const m2 = engine.executeMove(1, 0);
+  assert.strictEqual(m2.success, true);
   assert.strictEqual(engine.budget, 0, "Budget must reach 0");
   assert.strictEqual(engine.isDeadlocked, false, "Bt = 0 is warning state, not deadlock");
 
-  // Move 4: DOWN to (3,1) -> Bt = -1 (DEADLOCK TRIGGERED!)
-  const m4 = engine.executeMove(0, 1);
+  // Move 3: Detour RIGHT to (3,0) -> Bt = -1 (DEADLOCK TRIGGERED!)
+  const m3 = engine.executeMove(1, 0);
   assert.strictEqual(engine.budget, -1, "Budget must decrement to -1");
   assert.strictEqual(engine.isDeadlocked, true, "Bt = -1 must trigger DEADLOCK");
   assert.strictEqual(engine.dom.deadlockBanner.visible, true, "Deadlock banner must be visible");
 
   // Subsequent move must be rejected
-  const m5 = engine.executeMove(-1, 0);
-  assert.strictEqual(m5.success, false, "Move during deadlock must be rejected");
-  assert.strictEqual(m5.reason, 'DEADLOCKED');
+  const m4 = engine.executeMove(0, 1);
+  assert.strictEqual(m4.success, false, "Move during deadlock must be rejected");
+  assert.strictEqual(m4.reason, 'DEADLOCKED');
 });
 
 // ----------------------------------------------------------------------------
@@ -1779,7 +1780,149 @@ runTest("Test 20: UX Audit & Sequential Reachability Verification", () => {
   assert.strictEqual(formatHUDBadge(false, 1, -1, false), 'DEPLETED');
 });
 
+// ----------------------------------------------------------------------------
+// TEST 21: Progression, Persistence & Final-Move Goal Gating Invariants
+// ----------------------------------------------------------------------------
+runTest("Test 21: Progression, Persistence & Final-Move Goal Gating Invariants", () => {
+  // Subtest 1: Level 9 Premature Goal Entry Attack Rejection
+  const lvl9 = LEVELS[8];
+  const engine9Attack = new GameEngineRig(lvl9);
+
+  // Shortcut route: (0,0) -> (1,0) -> (1,1) -> (1,2)
+  engine9Attack.executeMove(1, 0); // to (1,0), budget = 5
+  engine9Attack.executeMove(0, 1); // to (1,1), budget = 4
+  engine9Attack.executeMove(0, 1); // to (1,2), budget = 3
+
+  assert.strictEqual(engine9Attack.player.x, 1);
+  assert.strictEqual(engine9Attack.player.y, 2);
+  assert.strictEqual(engine9Attack.budget, 3, "Moves left must be 3");
+  assert.strictEqual(engine9Attack.isGoalUnlocked, false, "Goal MUST remain locked when budget > 1");
+
+  // Attempt to step LEFT into Goal (0,2) with 3 moves left: MUST BE REJECTED!
+  const attackRes = engine9Attack.executeMove(-1, 0);
+  assert.strictEqual(attackRes.success, false, "Premature entry into Goal must be REJECTED");
+  assert.strictEqual(attackRes.reason, 'LOCKED_GOAL', "Reason must be LOCKED_GOAL");
+  assert.strictEqual(engine9Attack.player.x, 1, "Player must remain at (1,2)");
+  assert.strictEqual(engine9Attack.player.y, 2);
+  assert.strictEqual(engine9Attack.isVictorious, false, "Must NOT trigger false victory");
+
+  // Diversion into east column (2,2) -> (2,1) -> (2,0): terminates in hard entrapment deadlock
+  engine9Attack.executeMove(1, 0); // to (2,2), budget = 2
+  engine9Attack.executeMove(0, -1); // to (2,1), budget = 1
+  engine9Attack.executeMove(0, -1); // to (2,0), budget = 0
+  assert.strictEqual(engine9Attack.player.x, 2);
+  assert.strictEqual(engine9Attack.player.y, 0);
+  assert.strictEqual(engine9Attack.isDeadlocked, true, "Player must be trapped at (2,0) in deadlock");
+
+  // Legitimate perimeter route: (0,0) -> (1,0) -> (2,0) -> (2,1) -> (2,2) -> (1,2) -> (0,2)[Goal]
+  const engine9Legit = new GameEngineRig(lvl9);
+  engine9Legit.executeMove(1, 0);  // (1,0), budget 5
+  engine9Legit.executeMove(1, 0);  // (2,0), budget 4
+  engine9Legit.executeMove(0, 1);  // (2,1), budget 3
+  engine9Legit.executeMove(0, 1);  // (2,2), budget 2
+  engine9Legit.executeMove(-1, 0); // (1,2), budget 1
+
+  assert.strictEqual(engine9Legit.player.x, 1);
+  assert.strictEqual(engine9Legit.player.y, 2);
+  assert.strictEqual(engine9Legit.budget, 1, "Budget must reach exactly 1 before Goal entry");
+  assert.strictEqual(engine9Legit.isGoalUnlocked, true, "Goal MUST unlock when budget === 1");
+
+  // Step 6: Step into Goal (0,2)
+  const finalMove = engine9Legit.executeMove(-1, 0);
+  assert.strictEqual(finalMove.success, true, "Final step into unlocked Goal must succeed");
+  assert.strictEqual(engine9Legit.isVictorious, true, "Legitimate route must achieve Victory");
+  assert.strictEqual(engine9Legit.budget, 0, "Final budget must be exactly 0 (Zero Margin for Error)");
+  assert.strictEqual(engine9Legit.moveCount, 6, "Move count must match par 6 exactly");
+
+  // Subtest 2: Level 7 Calibrated Budget (B0 = 2, Par = 2)
+  const lvl7 = LEVELS[6];
+  const engine7 = new GameEngineRig(lvl7);
+  assert.strictEqual(lvl7.budget, 2, "Level 7 budget must be calibrated to 2");
+  assert.strictEqual(lvl7.par, 2, "Level 7 par must be 2");
+
+  engine7.executeMove(1, 0); // to (1,0), budget drops 2 -> 1
+  assert.strictEqual(engine7.budget, 1);
+  assert.strictEqual(engine7.isGoalUnlocked, true, "Level 7 Goal unlocks at Bt = 1");
+
+  engine7.executeMove(0, 1); // to (1,1)[Goal]
+  assert.strictEqual(engine7.isVictorious, true, "Level 7 finishes in victory");
+  assert.strictEqual(engine7.budget, 0, "Level 7 finishes with Bt = 0");
+
+  // Subtest 3: Universal Final-Move Unlock Invariant across all Budget Levels (7, 9, 11, 12, 13, 14, 15)
+  const budgetLevels = [7, 9, 11, 12, 13, 14, 15];
+  budgetLevels.forEach((lvlId) => {
+    const lvl = LEVELS.find(l => l.id === lvlId);
+    const engine = new GameEngineRig(lvl);
+    const trace = lvl.trace;
+
+    for (let step = 0; step < trace.length - 1; step++) {
+      engine.executeMove(trace[step].dx, trace[step].dy);
+      if (step < trace.length - 2) {
+        assert.strictEqual(
+          engine.isGoalUnlocked,
+          false,
+          `Level ${lvlId} step ${step + 1}: Goal must remain locked while moves remain > 1 (budget=${engine.budget})`
+        );
+      }
+    }
+
+    // At penultimate step (trace.length - 1):
+    assert.strictEqual(
+      engine.budget,
+      1,
+      `Level ${lvlId} at penultimate step: Budget must be exactly 1`
+    );
+    assert.strictEqual(
+      engine.isGoalUnlocked,
+      true,
+      `Level ${lvlId} at penultimate step: Goal MUST be unlocked for terminal entry`
+    );
+
+    // Final move into Goal:
+    const lastDir = trace[trace.length - 1];
+    const lastRes = engine.executeMove(lastDir.dx, lastDir.dy);
+    assert.strictEqual(lastRes.success, true, `Level ${lvlId} terminal move must succeed`);
+    assert.strictEqual(engine.isVictorious, true, `Level ${lvlId} must achieve victory`);
+    assert.strictEqual(engine.budget, 0, `Level ${lvlId} must finish with exact budget 0`);
+  });
+
+  // Subtest 4: Progression Storage Anti-Skip & Clamping
+  function mockStorageSim(savedUnlocked, savedCurrent) {
+    let unlocked = Math.max(1, Math.min(LEVELS.length, savedUnlocked));
+    let current = Math.max(0, Math.min(unlocked - 1, savedCurrent));
+    return { unlocked, current };
+  }
+
+  const s1 = mockStorageSim(1, 0);
+  assert.strictEqual(s1.unlocked, 1);
+  assert.strictEqual(s1.current, 0);
+
+  // Attempt to skip ahead to Level 10 when only Level 3 is unlocked
+  const s2 = mockStorageSim(3, 9);
+  assert.strictEqual(s2.unlocked, 3);
+  assert.strictEqual(s2.current, 2, "Current level must be clamped to unlockedLevel - 1 (Level 3)");
+
+  // Subtest 5: HUD Badge in Budget Mode with Goal Unlocked
+  function formatHUDBadgeV2(isClearAll, remainingCount, budget, isGoalUnlocked) {
+    if (isClearAll) {
+      return isGoalUnlocked ? 'GOAL UNLOCKED' : `TILES LEFT: ${remainingCount}`;
+    } else {
+      if (isGoalUnlocked) return 'GOAL UNLOCKED';
+      if (budget > 1) return `MOVES LEFT: ${budget}`;
+      if (budget === 1) return `MOVES LEFT: 1`;
+      if (budget === 0) return `LAST MOVE`;
+      return 'DEPLETED';
+    }
+  }
+
+  assert.strictEqual(formatHUDBadgeV2(false, 3, 3, false), 'MOVES LEFT: 3');
+  assert.strictEqual(formatHUDBadgeV2(false, 1, 1, true), 'GOAL UNLOCKED');
+  assert.strictEqual(formatHUDBadgeV2(false, 0, 0, false), 'LAST MOVE');
+  assert.strictEqual(formatHUDBadgeV2(false, 0, -1, false), 'DEPLETED');
+});
+
 console.log("\n================================================================================");
 console.log(`   RESULTS: ${passedTests} / ${totalTests} TEST SUITES PASSED (100% CLEAN)`);
 console.log("================================================================================");
+
 

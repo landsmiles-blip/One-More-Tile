@@ -795,12 +795,12 @@
         goal: { x: 0, y: 2 },
         checkpoints: []
       },
-      // Level 7: The Spatial Budget (4x2, Budget Bt = 3)
+      // Level 7: The Spatial Budget (4x2, Budget Bt = 2, Par = 2)
       {
         id: 7,
         name: "The Spatial Budget",
         w: 4, h: 2,
-        budget: 3,
+        budget: 2,
         par: 2,
         grid: [
           [2, 2, 2, 2],
@@ -1037,14 +1037,62 @@
         this.domRestartBtn = document.getElementById('restart-btn');
         this.domNextBtn = document.getElementById('next-btn');
 
+        this.autoResetTimer = null;
+        this.initStorage();
         this.initDOMEvents();
         window.addEventListener('resize', () => this.resize());
         
-        this.loadLevel(0);
+        this.loadLevel(this.currentLevelIndex);
         requestAnimationFrame((t) => this.loop(t));
       }
 
+      initStorage() {
+        const STORAGE_KEY = 'one_more_tile_save_v1';
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (raw) {
+            const data = JSON.parse(raw);
+            if (data && typeof data.unlockedLevel === 'number') {
+              this.unlockedLevel = Math.max(1, Math.min(LEVELS.length, data.unlockedLevel));
+              const current = typeof data.currentLevel === 'number' ? data.currentLevel : 0;
+              this.currentLevelIndex = Math.max(0, Math.min(this.unlockedLevel - 1, current));
+              this.starsEarned = data.stars || {};
+              return;
+            }
+          }
+        } catch (e) {
+          console.warn("Storage read error, using defaults", e);
+        }
+        this.unlockedLevel = 1;
+        this.currentLevelIndex = 0;
+        this.starsEarned = {};
+      }
+
+      saveProgress() {
+        const STORAGE_KEY = 'one_more_tile_save_v1';
+        try {
+          const data = {
+            version: 1,
+            unlockedLevel: this.unlockedLevel || 1,
+            currentLevel: this.currentLevelIndex || 0,
+            stars: this.starsEarned || {},
+            lastPlayedTimestamp: Date.now()
+          };
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        } catch (e) {
+          console.warn("Storage write error", e);
+        }
+      }
+
+      clearAutoResetTimer() {
+        if (this.autoResetTimer) {
+          clearTimeout(this.autoResetTimer);
+          this.autoResetTimer = null;
+        }
+      }
+
       resetDOMState() {
+        this.clearAutoResetTimer();
         this.isVictorious = false;
         this.isDeadlocked = false;
         this.softDeadlock = false;
@@ -1063,8 +1111,13 @@
       }
 
       loadLevel(index) {
-        if (index < 0 || index >= LEVELS.length) index = 0;
+        if (index < 0) index = 0;
+        if (index >= LEVELS.length) index = 0;
+        if (this.unlockedLevel && index > this.unlockedLevel - 1) {
+          index = this.unlockedLevel - 1;
+        }
         this.currentLevelIndex = index;
+        this.saveProgress();
         this.level = LEVELS[index];
 
         // Clone grid and initialize metadata
@@ -1159,6 +1212,7 @@
       }
 
       restart() {
+        this.clearAutoResetTimer();
         sound.playMove(0);
         this.resetDOMState();
         this.loadLevel(this.currentLevelIndex);
@@ -1354,12 +1408,14 @@
             this.lockGoal();
           }
         } else {
-          // Budget levels: Bt < 0 triggers immediate deadlock
+          // Spatial Budget levels: Goal ONLY unlocks on final move (budget === 1)
           if (this.budget < 0) {
             this.extinguishGoal();
             this.triggerHardDeadlock();
-          } else if (checkpointsMet) {
+          } else if (checkpointsMet && this.budget === 1) {
             this.unlockGoal();
+          } else {
+            this.lockGoal();
           }
         }
 
@@ -1486,16 +1542,38 @@
         if (this.isVictorious) return; // Strict race condition block
         this.isDeadlocked = true;
         sound.playGoalExtinguish();
-        this.showDeadlockBanner("Deadlock — Press R to Restart");
+        this.showDeadlockBanner("Deadlock — Press R to Restart or Tap Undo");
+
+        // 750ms Auto-Reset Protocol (Preserves player agency if they tap Undo)
+        this.clearAutoResetTimer();
+        this.autoResetTimer = setTimeout(() => {
+          if (this.isDeadlocked && !this.isVictorious) {
+            this.restart();
+          }
+        }, 750);
       }
 
       triggerVictory() {
         this.isVictorious = true;
         this.isDeadlocked = false;
         this.softDeadlock = false;
+        this.clearAutoResetTimer();
         this.hideDeadlockBanner();
         sound.playVictory();
         this.spawnTileParticles(this.player.x, this.player.y, '#ffd700', 30);
+
+        // Update campaign progression and high-water star marks
+        const levelId = this.level.id;
+        const delta = this.moveCount - this.level.par;
+        const stars = (!this.hasUndone && delta === 0) ? 3 : (delta <= 2 ? 2 : 1);
+        if (!this.starsEarned) this.starsEarned = {};
+        this.starsEarned[levelId] = Math.max(this.starsEarned[levelId] || 0, stars);
+
+        if (this.currentLevelIndex + 1 < LEVELS.length) {
+          this.unlockedLevel = Math.max(this.unlockedLevel || 1, this.currentLevelIndex + 2);
+        }
+        this.saveProgress();
+
         this.showModal();
       }
 
@@ -1505,6 +1583,7 @@
       undo() {
         if (this.history.length === 0 || this.isVictorious) return;
 
+        this.clearAutoResetTimer();
         sound.ensureContext();
         sound.playUndo();
 
@@ -1593,7 +1672,10 @@
             this.domBudgetTag.className = "budget-badge" + (this.softDeadlock ? " dead" : "");
           }
         } else {
-          if (this.budget > 1) {
+          if (this.goalUnlocked) {
+            this.domBudgetTag.textContent = "GOAL UNLOCKED";
+            this.domBudgetTag.className = "budget-badge ready";
+          } else if (this.budget > 1) {
             this.domBudgetTag.textContent = `MOVES LEFT: ${this.budget}`;
             this.domBudgetTag.className = "budget-badge";
           } else if (this.budget === 1) {
@@ -1672,6 +1754,8 @@
       }
 
       nextLevel() {
+        if (!this.isVictorious) return; // Strict progression lock: cannot advance without victory!
+
         if (this.currentLevelIndex < LEVELS.length - 1) {
           this.loadLevel(this.currentLevelIndex + 1);
         } else {
