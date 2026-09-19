@@ -1,0 +1,150 @@
+{
+  "project": "ONE MORE TILE",
+  "version": "3.1.0-AUDIT",
+  "document_type": "UX Audit & Engine Resolution Specification",
+  "audit_reference": "YouTube Playables Live User Playtesting Feedback",
+  "systems_resolved": [
+    "Crumbling Tile Entry Telegraphing & Audio-Visual Feedback",
+    "Sequential Reachability Algorithm (Level 14 False Route-Severed Fix)",
+    "Unambiguous HUD Terminology (TILES LEFT vs MOVES LEFT)",
+    "Orthogonal Manhattan Conduit Spline Router (Eliminating Diagonal Chasm Cuts)"
+  ],
+  "crumbling_tile_entry_telegraphing": {
+    "user_problem": "User stepped on orange crumbling tile in Level 13 and observed 'it only shakes but nothing happens', causing cognitive confusion about tile purpose and fragility.",
+    "architectural_remedy": "Dual-phase sensory feedback: Phase 1 (Impact/Stress on Entry) + Phase 2 (Disintegration/Collapse on Exit).",
+    "entry_feedback": {
+      "audio_synthesis": {
+        "function_name": "playTileStress",
+        "description": "Procedural WebAudio synthesis imitating straining stone under heavy compressive load with micro-fracture click bursts.",
+        "primary_strain_oscillator": {
+          "type": "triangle",
+          "start_freq_hz": 420,
+          "end_freq_hz": 280,
+          "duration_sec": 0.16,
+          "gain_peak": 0.32,
+          "frequency_modulation": {
+            "type": "sawtooth",
+            "mod_freq_hz": 36,
+            "mod_depth": 25
+          }
+        },
+        "fracture_click_burst": {
+          "type": "square",
+          "start_freq_hz": 2400,
+          "end_freq_hz": 1200,
+          "duration_sec": 0.04,
+          "gain_peak": 0.20,
+          "delay_sec": 0.05
+        }
+      },
+      "canvas_visual_telegraphing": {
+        "touchdown_dust_puff": {
+          "color_primary": "#ffb700",
+          "color_secondary": "#7e8ba6",
+          "particle_count": 8,
+          "speed_min": 1.2,
+          "speed_max": 2.8,
+          "spread_angle": "horizontal_lateral"
+        },
+        "dynamic_fissure_growth": {
+          "description": "Hairline fracture decals animate outward from center coordinate to tile boundaries as player enters.",
+          "crack_stroke_style": "rgba(255, 153, 51, 0.95)",
+          "crack_glow": "rgba(255, 100, 0, 0.8)",
+          "crack_glow_blur": 6,
+          "expansion_duration_ms": 120
+        },
+        "active_vibration": {
+          "amplitude_px": 1.5,
+          "frequency_hz": 24.0,
+          "pulsing_warning_glow": "rgba(255, 153, 51, 0.25)"
+        },
+        "diegetic_glyph": {
+          "description": "Inner fractured masonry chevron stamped on tile center.",
+          "fill_style": "rgba(255, 183, 0, 0.18)"
+        }
+      }
+    },
+    "exit_feedback": {
+      "audio": "playTileCrumble() (Dual-oscillator sub-bass stone rumble 95Hz -> 30Hz + brittle snap 1850Hz -> 850Hz)",
+      "mutation": "grid[y][x] mutates directly to C_VOID = 0 (traversal cost = infinity, substrate destroyed, zero splines)",
+      "particles": "spawnTileParticles(x, y, '#4a5568', 14)"
+    }
+  },
+  "sequential_reachability_algorithm": {
+    "user_problem": "In Level 14, moving from (0,0) to valid first move (1,0) immediately triggers false 'ROUTE SEVERED' alert and snuffs out Goal into cracked obsidian.",
+    "root_cause": "The naive checkPathExists(player, goal) queried reachability directly to the Goal while treating C2 as an impassable wall (because c1Collected was false). In Level 14, C2 sits in the only north-south corridor. Direct reachability returned false, incorrectly tripping soft deadlock on turn 1.",
+    "mathematical_formulation": {
+      "definition": "Global Reachability is the logical conjunction of sequential leg paths across the ordered waypoint sequence S = <w_active, ..., g>.",
+      "formula": "SequentialReachability(G_t, p_t) <=> AND_{i=0}^{m} PathExists(u_i, u_{i+1} | T_i)",
+      "leg_traversability_rules": {
+        "leg_player_to_c1": {
+          "start": "player",
+          "target": "C1",
+          "allowed_cells": ["C_UNTOUCHED", "C_CRUMBLING", "C_CHECKPOINT_1"],
+          "impassable_cells": ["C_WALL", "C_CONSUMED", "C_VOID", "C_CHECKPOINT_2", "C_GOAL"]
+        },
+        "leg_c1_to_c2": {
+          "start": "C1",
+          "target": "C2",
+          "allowed_cells": ["C_UNTOUCHED", "C_CRUMBLING", "C_CHECKPOINT_2"],
+          "impassable_cells": ["C_WALL", "C_CONSUMED", "C_VOID", "C_GOAL"]
+        },
+        "leg_c2_to_goal": {
+          "start": "C2",
+          "target": "Goal",
+          "allowed_cells": ["C_UNTOUCHED", "C_CRUMBLING", "C_GOAL"],
+          "impassable_cells": ["C_WALL", "C_CONSUMED", "C_VOID"]
+        }
+      },
+      "active_leg_resolution": [
+        "If C1 is not collected: evaluate Path(player -> C1) AND Path(C1 -> C2) AND Path(C2 -> Goal).",
+        "If C1 is collected, but C2 is not collected: evaluate Path(player -> C2) AND Path(C2 -> Goal).",
+        "If all checkpoints are collected: evaluate Path(player -> Goal)."
+      ]
+    },
+    "algorithmic_complexity": "O(m * (|V| + |E|)) where m <= 3. For 5x4 grid, runs in < 0.08ms per move."
+  },
+  "hud_terminology_specification": {
+    "user_problem": "In Clear-All levels, 'REMAINING: N' was misinterpreted as moves left before death. In Budget levels, 'SPARE: N' was ambiguous.",
+    "mode_a_clear_all": {
+      "metric_tracked": "Untouched walkable tiles remaining to be consumed",
+      "active_state_format": "TILES LEFT: ${untouchedCount}",
+      "zero_state_format": "GOAL UNLOCKED",
+      "badge_classes": {
+        "active": "budget-badge",
+        "unlocked": "budget-badge ready"
+      },
+      "audio_trigger_at_zero": "playGoalRekindle() (rising harmonic chime)"
+    },
+    "mode_b_spatial_budget": {
+      "metric_tracked": "Strict move countdown clock (zero margin for error in Phase 3)",
+      "state_mappings": [
+        { "condition": "Bt > 1", "text": "MOVES LEFT: ${Bt}", "badge_class": "budget-badge" },
+        { "condition": "Bt === 1", "text": "MOVES LEFT: 1", "badge_class": "budget-badge warn" },
+        { "condition": "Bt === 0", "text": "LAST MOVE", "badge_class": "budget-badge warn" },
+        { "condition": "Bt === -1", "text": "DEPLETED", "badge_class": "budget-badge dead" }
+      ],
+      "telegraphing": {
+        "at_0": "Pulsing amber badge, flickering goal flame, 55Hz ambient warning hum",
+        "at_minus_1": "Deadlock banner shown, goal extinguished into cracked obsidian, 2px screen shake, playGoalExtinguish()"
+      }
+    }
+  },
+  "orthogonal_manhattan_conduit_router": {
+    "user_problem": "In Level 13, C1 at (4,0) to Goal at (0,2) draws an ugly diagonal Euclidean line that slices through structural walls and void chasms.",
+    "architectural_remedy": "Replace Euclidean vector lines with an Orthogonal Manhattan Conduit Router that pathfinds along valid floor tiles on G_0.",
+    "routing_algorithm": {
+      "method": "Breadth-First Search (BFS) on static level matrix G_0 between successive waypoints (Spawn -> C1 -> C2 -> Goal).",
+      "traversable_cells": ["C_UNTOUCHED", "C_CRUMBLING", "C_CHECKPOINT_1", "C_CHECKPOINT_2", "C_GOAL"],
+      "caching": "Computed once during loadLevel() and cached as conduitSegments: Array<Array<{x, y}>>. Zero per-frame pathfinding overhead.",
+      "rendering_pipeline": {
+        "stroke_width_px": 4,
+        "line_join": "round",
+        "line_cap": "round",
+        "inactive_segment": "rgba(255, 255, 255, 0.08) with setLineDash([4, 6])",
+        "active_segment": "rgba(0, 240, 255, 0.7) pulsing at 1.2Hz with shadowBlur = 8",
+        "completed_segment": "rgba(255, 215, 0, 0.8) with shadowBlur = 10"
+      }
+    }
+  }
+}

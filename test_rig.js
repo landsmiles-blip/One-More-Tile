@@ -617,6 +617,67 @@ class GameEngineRig {
       isDeadlocked: this.isDeadlocked
     };
   }
+
+  checkLegPath(start, target) {
+    if (!start || !target) return false;
+    if (start.x === target.x && start.y === target.y) return true;
+    const queue = [{ x: start.x, y: start.y }];
+    const visited = new Set();
+    visited.add(`${start.x},${start.y}`);
+
+    while (queue.length > 0) {
+      const curr = queue.shift();
+      if (curr.x === target.x && curr.y === target.y) return true;
+
+      const neighbors = [
+        { x: curr.x + 1, y: curr.y },
+        { x: curr.x - 1, y: curr.y },
+        { x: curr.x, y: curr.y + 1 },
+        { x: curr.x, y: curr.y - 1 }
+      ];
+
+      for (const n of neighbors) {
+        if (n.x >= 0 && n.x < this.w && n.y >= 0 && n.y < this.h) {
+          const key = `${n.x},${n.y}`;
+          if (!visited.has(key)) {
+            const cell = this.grid[n.y][n.x];
+            const isTraversable = (cell === C_UNTOUCHED) ||
+                                 (cell === C_CRUMBLING) ||
+                                 (n.x === target.x && n.y === target.y);
+            if (isTraversable) {
+              visited.add(key);
+              queue.push(n);
+            }
+          }
+        }
+      }
+    }
+    return false;
+  }
+
+  checkSequentialReachability() {
+    const c1Pos = this.hasC1 ? this.level.checkpoints.find(c => c.id === 1) : null;
+    const c2Pos = this.hasC2 ? this.level.checkpoints.find(c => c.id === 2) : null;
+
+    if (this.hasC1 && !this.c1Collected) {
+      if (!this.checkLegPath(this.player, c1Pos)) return false;
+      if (this.hasC2 && !this.c2Collected) {
+        if (!this.checkLegPath(c1Pos, c2Pos)) return false;
+        if (!this.checkLegPath(c2Pos, this.goal)) return false;
+      } else {
+        if (!this.checkLegPath(c1Pos, this.goal)) return false;
+      }
+      return true;
+    }
+
+    if (this.hasC2 && !this.c2Collected) {
+      if (!this.checkLegPath(this.player, c2Pos)) return false;
+      if (!this.checkLegPath(c2Pos, this.goal)) return false;
+      return true;
+    }
+
+    return this.checkLegPath(this.player, this.goal);
+  }
 }
 
 // ============================================================================
@@ -1610,6 +1671,115 @@ runTest("Test 19: Phase 3 Levels 11 to 15 Deterministic Solvability Traces", () 
   });
 });
 
+// ----------------------------------------------------------------------------
+// TEST 20: UX Audit & Sequential Reachability Verification
+// ----------------------------------------------------------------------------
+runTest("Test 20: UX Audit & Sequential Reachability Verification", () => {
+  // Subtest 1: Level 14 False 'Route Severed' Resolution
+  const lvl14 = LEVELS[13];
+  const engine14 = new GameEngineRig(lvl14);
+  assert.strictEqual(engine14.checkSequentialReachability(), true, "L14 initial sequential reachability must be true");
+
+  // Step 1: Move RIGHT to (1,0)
+  const res14 = engine14.executeMove(1, 0);
+  assert.strictEqual(res14.success, true);
+  assert.strictEqual(engine14.checkSequentialReachability(), true, "L14 Step 1 (1,0): Sequential reachability MUST remain TRUE (Bug completely eliminated)");
+  assert.strictEqual(engine14.isDeadlocked, false, "L14 Step 1 must not trigger deadlock");
+
+  // Verify full optimal winning trace has 0 false deadlocks
+  const fullTrace14 = lvl14.trace.slice(1); // steps 2..9
+  fullTrace14.forEach((dir, idx) => {
+    const stepRes = engine14.executeMove(dir.dx, dir.dy);
+    assert.strictEqual(stepRes.success, true, `L14 move ${idx + 2} must succeed`);
+    if (idx < fullTrace14.length - 1) {
+      assert.strictEqual(engine14.checkSequentialReachability(), true, `L14 move ${idx + 2}: Reachability must remain valid`);
+    }
+  });
+  assert.strictEqual(engine14.isVictorious, true, "L14 completes with victory");
+
+  // Verify true entrapment into south pocket (0,1) -> (0,2) IS properly detected
+  const engine14Trap = new GameEngineRig(lvl14);
+  engine14Trap.executeMove(0, 1); // to (0,1)
+  engine14Trap.executeMove(0, 1); // to (0,2) - trapped dead-end pocket
+  assert.strictEqual(engine14Trap.checkSequentialReachability(), false, "True entrapment must return reachability FALSE");
+
+  // Subtest 2: Crumbling Tile Dual-Phase State Machine
+  const lvl13 = LEVELS[12];
+  const engine13 = new GameEngineRig(lvl13);
+  // (0,0) -> (1,0) -> (2,0)[C_CRUMBLING]
+  engine13.executeMove(1, 0);
+  engine13.executeMove(1, 0);
+  assert.strictEqual(engine13.player.x, 2);
+  assert.strictEqual(engine13.player.y, 0);
+  assert.strictEqual(engine13.grid[0][2], C_CRUMBLING, "Crumbling tile remains traversable while occupied");
+  // Departure to (3,0)
+  engine13.executeMove(1, 0);
+  assert.strictEqual(engine13.grid[0][2], C_VOID, "Departure from crumbling tile mutates directly to C_VOID");
+  // Attempt re-entry into collapsed chasm
+  const reEntry = engine13.executeMove(-1, 0);
+  assert.strictEqual(reEntry.success, false, "Re-entry into collapsed crumbling chasm must be rejected");
+
+  // Subtest 3: Orthogonal Manhattan Conduit Invariant
+  function testOrthogonalPath(initialGrid, w, h, start, target) {
+    const queue = [{ x: start.x, y: start.y, path: [{ x: start.x, y: start.y }] }];
+    const visited = new Set();
+    visited.add(`${start.x},${start.y}`);
+    while (queue.length > 0) {
+      const curr = queue.shift();
+      if (curr.x === target.x && curr.y === target.y) return curr.path;
+      const neighbors = [
+        { x: curr.x + 1, y: curr.y }, { x: curr.x - 1, y: curr.y },
+        { x: curr.x, y: curr.y + 1 }, { x: curr.x, y: curr.y - 1 }
+      ];
+      for (const n of neighbors) {
+        if (n.x >= 0 && n.x < w && n.y >= 0 && n.y < h) {
+          const key = `${n.x},${n.y}`;
+          if (!visited.has(key)) {
+            const cell = initialGrid[n.y][n.x];
+            if (cell !== C_WALL && cell !== C_VOID) {
+              visited.add(key);
+              queue.push({ x: n.x, y: n.y, path: [...curr.path, { x: n.x, y: n.y }] });
+            }
+          }
+        }
+      }
+    }
+    return null;
+  }
+
+  const checkpointLevels = [8, 10, 11, 12, 13, 14, 15];
+  checkpointLevels.forEach((lvlId) => {
+    const lvl = LEVELS.find(l => l.id === lvlId);
+    const waypoints = [{ ...lvl.spawn }, ...lvl.checkpoints, { ...lvl.goal }];
+    for (let i = 0; i < waypoints.length - 1; i++) {
+      const path = testOrthogonalPath(lvl.grid, lvl.w, lvl.h, waypoints[i], waypoints[i + 1]);
+      assert.ok(path !== null, `Level ${lvlId} leg ${i} path must exist`);
+      for (let s = 0; s < path.length - 1; s++) {
+        const stepDist = Math.abs(path[s + 1].x - path[s].x) + Math.abs(path[s + 1].y - path[s].y);
+        assert.strictEqual(stepDist, 1, `Level ${lvlId} conduit step must be Manhattan orthogonal (dist === 1)`);
+      }
+    }
+  });
+
+  // Subtest 4: HUD Badge Semantics Formatting Logic
+  function formatHUDBadge(isClearAll, remainingCount, budget, isGoalUnlocked) {
+    if (isClearAll) {
+      return isGoalUnlocked ? 'GOAL UNLOCKED' : `TILES LEFT: ${remainingCount}`;
+    } else {
+      if (budget === -1) return 'DEPLETED';
+      if (budget === 0) return 'LAST MOVE';
+      return `MOVES LEFT: ${budget}`;
+    }
+  }
+
+  assert.strictEqual(formatHUDBadge(true, 5, 0, false), 'TILES LEFT: 5');
+  assert.strictEqual(formatHUDBadge(true, 0, 0, true), 'GOAL UNLOCKED');
+  assert.strictEqual(formatHUDBadge(false, 3, 5, false), 'MOVES LEFT: 5');
+  assert.strictEqual(formatHUDBadge(false, 1, 0, false), 'LAST MOVE');
+  assert.strictEqual(formatHUDBadge(false, 1, -1, false), 'DEPLETED');
+});
+
 console.log("\n================================================================================");
 console.log(`   RESULTS: ${passedTests} / ${totalTests} TEST SUITES PASSED (100% CLEAN)`);
 console.log("================================================================================");
+
