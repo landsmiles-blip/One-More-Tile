@@ -1,0 +1,2055 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#0a0b10">
+  <title>ONE MORE TILE</title>
+  <style>
+    :root {
+      --bg-color: #0a0b10;
+      --panel-bg: #131722;
+      --text-main: #f0f4fc;
+      --text-muted: #7e8ba6;
+      --cyan-glow: #00f0ff;
+      --gold-glow: #ffd700;
+      --amber-warn: #ffb700;
+      --crimson-fail: #ff3366;
+      --tile-surface: #1a2236;
+      --tile-border: #2c3954;
+      --ui-radius: 12px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-touch-callout: none;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100vw;
+      height: 100vh;
+      background: #060709;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      touch-action: none;
+      color: var(--text-main);
+    }
+
+    #app-shell, #app {
+      width: 100%;
+      max-width: 440px;
+      height: 100%;
+      max-height: 880px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      position: relative;
+      box-sizing: border-box;
+      padding: 16px 12px;
+      background: #0a0b10;
+      overflow: hidden;
+    }
+
+    /* Desktop Presentation Silhouette */
+    @media screen and (min-width: 481px) {
+      #app-shell, #app {
+        box-shadow: 0 0 50px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.08);
+        border-radius: 24px;
+      }
+    }
+
+    /* Mobile Fluid Layout */
+    @media screen and (max-width: 480px) {
+      #app-shell, #app {
+        max-width: 100vw;
+        max-height: 100vh;
+        border-radius: 0;
+        box-shadow: none;
+        padding: 12px 8px;
+      }
+    }
+
+    /* Top HUD */
+    #hud {
+      width: 100%;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      background: linear-gradient(180deg, rgba(19, 23, 34, 0.95) 0%, rgba(19, 23, 34, 0.6) 100%);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 14px;
+      z-index: 10;
+    }
+
+    .hud-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .level-badge {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .level-title {
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      color: var(--cyan-glow);
+      text-transform: uppercase;
+    }
+
+    .level-name {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .budget-badge {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 8px;
+      border-radius: 20px;
+      background: rgba(0, 240, 255, 0.1);
+      color: var(--cyan-glow);
+      border: 1px solid rgba(0, 240, 255, 0.2);
+      letter-spacing: 0.5px;
+      transition: all 0.2s ease;
+    }
+
+    .budget-badge.warn {
+      background: rgba(255, 183, 0, 0.15);
+      color: var(--amber-warn);
+      border-color: rgba(255, 183, 0, 0.3);
+    }
+
+    .budget-badge.dead {
+      background: rgba(255, 51, 102, 0.15);
+      color: var(--crimson-fail);
+      border-color: rgba(255, 51, 102, 0.3);
+    }
+
+    /* Stars */
+    .stars-container {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+    }
+
+    .star {
+      font-size: 15px;
+      color: #3b4459;
+      transition: color 0.2s, transform 0.2s;
+    }
+
+    .star.active {
+      color: var(--gold-glow);
+      text-shadow: 0 0 8px rgba(255, 215, 0, 0.6);
+    }
+
+    .star.shattered {
+      animation: starShatter 0.4s ease-out forwards;
+    }
+
+    @keyframes starShatter {
+      0% { transform: scale(1.4) rotate(0deg); opacity: 1; color: #ff3366; }
+      50% { transform: scale(0.8) rotate(20deg); opacity: 0.8; }
+      100% { transform: scale(0) rotate(-40deg); opacity: 0; }
+    }
+
+    /* Buttons */
+    .hud-btn {
+      background: var(--panel-bg);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--text-main);
+      padding: 8px 12px;
+      border-radius: var(--ui-radius);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: background 0.15s, transform 0.1s, border-color 0.15s;
+    }
+
+    .hud-btn:active {
+      transform: scale(0.94);
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .hud-btn.undo-btn {
+      color: var(--cyan-glow);
+      border-color: rgba(0, 240, 255, 0.2);
+    }
+
+    /* Main Canvas Wrap */
+    #canvas-wrap {
+      flex: 1 1 0%;
+      min-height: 0;
+      position: relative;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    canvas {
+      display: block;
+      touch-action: none;
+    }
+
+    /* Floating Toast / Deadlock Banner */
+    #toast,
+    #deadlock-banner {
+      position: absolute;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(30px);
+      background: rgba(255, 51, 102, 0.15);
+      border: 1px solid var(--crimson-fail);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      padding: 8px 16px;
+      border-radius: 20px;
+      backdrop-filter: blur(8px);
+      pointer-events: none;
+      opacity: 0;
+      transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      z-index: 20;
+      text-transform: uppercase;
+      box-shadow: 0 4px 16px rgba(255, 51, 102, 0.3);
+    }
+
+    #toast.show,
+    #deadlock-banner.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* Victory Modal */
+    #modal-overlay,
+    #victory-modal {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(10, 11, 16, 0.85);
+      backdrop-filter: blur(12px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      z-index: 100;
+    }
+
+    #modal-overlay.show,
+    #victory-modal.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-card {
+      background: var(--panel-bg);
+      border: 1px solid rgba(0, 240, 255, 0.2);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6), 0 0 30px rgba(0, 240, 255, 0.15);
+      border-radius: 20px;
+      padding: 28px 24px;
+      width: 85%;
+      max-width: 320px;
+      text-align: center;
+      transform: scale(0.9);
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    #modal-overlay.show .modal-card {
+      transform: scale(1);
+    }
+
+    .modal-title {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      color: var(--cyan-glow);
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .modal-subtitle {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 18px;
+    }
+
+    .modal-stars {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .modal-star {
+      font-size: 32px;
+      color: #2b3347;
+      transition: color 0.3s, transform 0.3s;
+    }
+
+    .modal-star.active {
+      color: var(--gold-glow);
+      text-shadow: 0 0 16px rgba(255, 215, 0, 0.8);
+      animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+
+    @keyframes popIn {
+      0% { transform: scale(0); }
+      70% { transform: scale(1.3); }
+      100% { transform: scale(1); }
+    }
+
+    .modal-stats {
+      font-size: 13px;
+      color: var(--text-main);
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+
+    .modal-stats strong {
+      color: var(--cyan-glow);
+    }
+
+    .modal-btn {
+      width: 100%;
+      background: linear-gradient(135deg, #00c6ff 0%, #0072ff 100%);
+      color: #fff;
+      border: none;
+      padding: 12px;
+      border-radius: var(--ui-radius);
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(0, 198, 255, 0.4);
+      transition: opacity 0.15s, transform 0.1s;
+      text-transform: uppercase;
+    }
+
+    .modal-btn:active {
+      transform: scale(0.96);
+      opacity: 0.9;
+    }
+  </style>
+</head>
+<body>
+  <div id="app-shell">
+    <!-- Top HUD -->
+    <header id="hud">
+      <div class="hud-group">
+        <div class="level-badge">
+          <span id="level-num" class="level-title">LEVEL 1</span>
+          <span id="level-name" class="level-name">The Straightaway</span>
+        </div>
+        <span id="budget-tag" class="budget-badge">SPARE: 0</span>
+      </div>
+
+      <div class="hud-group">
+        <div class="stars-container">
+          <span id="star-1" class="star active">★</span>
+          <span id="star-2" class="star active">★</span>
+          <span id="star-3" class="star active">★</span>
+        </div>
+        <button id="undo-btn" class="hud-btn undo-btn" title="Undo Move (U / Z)">↺ UNDO</button>
+        <button id="restart-btn" class="hud-btn" title="Restart Level (R)">↻</button>
+      </div>
+    </header>
+
+    <!-- Canvas Game Viewport -->
+    <main id="canvas-wrap">
+      <canvas id="game-canvas"></canvas>
+      <div id="toast">Route Severed — Tap Undo or R</div>
+      <div id="deadlock-banner">Deadlock — Press R to Restart</div>
+    </main>
+
+    <!-- Level Complete Modal -->
+    <div id="victory-modal" class="modal-overlay">
+      <div class="modal-card">
+        <h2 class="modal-title">LEVEL SOLVED</h2>
+        <div id="modal-sub" class="modal-subtitle">Path Complete</div>
+        <div class="modal-stars">
+          <span id="m-star-1" class="modal-star">★</span>
+          <span id="m-star-2" class="modal-star">★</span>
+          <span id="m-star-3" class="modal-star">★</span>
+        </div>
+        <div id="modal-stats" class="modal-stats">Moves: 2 (Par: 2)</div>
+        <button id="next-btn" class="modal-btn">CONTINUE</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  (function() {
+    'use strict';
+
+    /* ==========================================================================
+       1. PROCEDURAL WEBAUDIO SYNTHESIZER
+       ========================================================================== */
+    class SoundEngine {
+      constructor() {
+        this.ctx = null;
+        this.unlocked = false;
+      }
+
+      init() {
+        if (this.unlocked && this.ctx) return;
+        try {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          this.ctx = new AudioContext();
+          this.unlocked = true;
+        } catch (e) {
+          console.warn("WebAudio unsupported");
+        }
+      }
+
+      ensureContext() {
+        if (!this.unlocked) this.init();
+        if (this.ctx && this.ctx.state === 'suspended') {
+          this.ctx.resume();
+        }
+      }
+
+      playMove(streak = 0) {
+        this.ensureContext();
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+
+        const baseFreq = Math.min(180, 110 + streak * 8);
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(baseFreq, now);
+        osc.frequency.exponentialRampToValueAtTime(45, now + 0.08);
+
+        gain.gain.setValueAtTime(0.35, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+
+        osc.start(now);
+        osc.stop(now + 0.09);
+      }
+
+      playWallBump() {
+        this.ensureContext();
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(80, now);
+        osc.frequency.exponentialRampToValueAtTime(30, now + 0.06);
+
+        gain.gain.setValueAtTime(0.3, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+
+        osc.start(now);
+        osc.stop(now + 0.07);
+      }
+
+      playStarShatter() {
+        this.ensureContext();
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+
+        // Metallic resonance
+        const osc1 = this.ctx.createOscillator();
+        const osc2 = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+
+        osc1.type = 'sine';
+        osc1.frequency.setValueAtTime(2400, now);
+        osc1.frequency.exponentialRampToValueAtTime(1600, now + 0.2);
+
+        osc2.type = 'triangle';
+        osc2.frequency.setValueAtTime(3150, now);
+        osc2.frequency.exponentialRampToValueAtTime(2100, now + 0.18);
+
+        gain.gain.setValueAtTime(0.4, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+
+        osc1.connect(gain);
+        osc2.connect(gain);
+        gain.connect(this.ctx.destination);
+
+        osc1.start(now);
+        osc2.start(now);
+        osc1.stop(now + 0.23);
+        osc2.stop(now + 0.23);
+      }
+
+      playGoalExtinguish() {
+        this.ensureContext();
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(140, now);
+        osc.frequency.exponentialRampToValueAtTime(30, now + 0.22);
+
+        gain.gain.setValueAtTime(0.35, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+
+        osc.start(now);
+        osc.stop(now + 0.26);
+      }
+
+      playGoalRekindle() {
+        this.ensureContext();
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(260, now);
+        osc.frequency.exponentialRampToValueAtTime(580, now + 0.18);
+
+        gain.gain.setValueAtTime(0.3, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+
+        osc.start(now);
+        osc.stop(now + 0.21);
+      }
+
+      playUndo() {
+        this.ensureContext();
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(140, now);
+        osc.frequency.exponentialRampToValueAtTime(320, now + 0.08);
+
+        gain.gain.setValueAtTime(0.25, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+
+        osc.start(now);
+        osc.stop(now + 0.09);
+      }
+
+      playVictory() {
+        this.ensureContext();
+        if (!this.ctx) return;
+        const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+        notes.forEach((freq, i) => {
+          const now = this.ctx.currentTime + i * 0.065;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(freq, now);
+
+          gain.gain.setValueAtTime(0.28, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
+
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+
+          osc.start(now);
+          osc.stop(now + 0.55);
+        });
+      }
+
+      playCheckpointChime(isC2 = false) {
+        this.ensureContext();
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+
+        const freq = isC2 ? 1320 : 880;
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, now);
+        osc.frequency.exponentialRampToValueAtTime(freq * 1.5, now + 0.12);
+
+        gain.gain.setValueAtTime(0.3, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.14);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+
+        osc.start(now);
+        osc.stop(now + 0.15);
+      }
+    }
+
+    const sound = new SoundEngine();
+
+    /* ==========================================================================
+       2. CELL ENUMS & LEVEL DEFINITIONS (PASS C SPECIFICATION)
+       ========================================================================== */
+    const C_VOID = 0;
+    const C_WALL = 1;
+    const C_UNTOUCHED = 2;
+    const C_CONSUMED = 3;
+    const C_GOAL = 4;
+    const C_CHECKPOINT_1 = 5;
+    const C_CHECKPOINT_2 = 6;
+
+    const LEVELS = [
+      // Level 1: The Straightaway (3x1)
+      {
+        id: 1,
+        name: "The Straightaway",
+        w: 3, h: 1,
+        budget: 0,
+        par: 2,
+        grid: [
+          [2, 2, 4]
+        ],
+        spawn: { x: 0, y: 0 },
+        goal: { x: 2, y: 0 },
+        checkpoints: []
+      },
+      // Level 2: The Corner (3x2)
+      {
+        id: 2,
+        name: "The Corner",
+        w: 3, h: 2,
+        budget: 0,
+        par: 3,
+        grid: [
+          [2, 2, 2],
+          [1, 1, 4]
+        ],
+        spawn: { x: 0, y: 0 },
+        goal: { x: 2, y: 1 },
+        checkpoints: []
+      },
+      // Level 3: The Mini-Loop (2x2 Cliff-Breaker)
+      {
+        id: 3,
+        name: "The Mini-Loop",
+        w: 2, h: 2,
+        budget: 0,
+        par: 3,
+        grid: [
+          [2, 2],
+          [4, 2]
+        ],
+        spawn: { x: 0, y: 0 },
+        goal: { x: 0, y: 1 },
+        checkpoints: []
+      },
+      // Level 4: The True Fork (3x3)
+      {
+        id: 4,
+        name: "The True Fork",
+        w: 3, h: 3,
+        budget: 0,
+        par: 5,
+        grid: [
+          [2, 2, 1],
+          [2, 2, 1],
+          [4, 2, 1]
+        ],
+        spawn: { x: 1, y: 0 },
+        goal: { x: 0, y: 2 },
+        checkpoints: []
+      },
+      // Level 5: The Snake (3x2)
+      {
+        id: 5,
+        name: "The Snake",
+        w: 3, h: 2,
+        budget: 0,
+        par: 5,
+        grid: [
+          [2, 2, 2],
+          [4, 2, 2]
+        ],
+        spawn: { x: 0, y: 0 },
+        goal: { x: 0, y: 1 },
+        checkpoints: []
+      },
+      // Level 6: The Return Corridor (4x3, Return Bridge)
+      {
+        id: 6,
+        name: "The Return Corridor",
+        w: 4, h: 3,
+        budget: 0,
+        par: 8,
+        grid: [
+          [2, 2, 2, 2],
+          [1, 1, 1, 2],
+          [4, 2, 2, 2]
+        ],
+        spawn: { x: 0, y: 0 },
+        goal: { x: 0, y: 2 },
+        checkpoints: []
+      },
+      // Level 7: The Spatial Budget (4x2, Budget Bt = 3)
+      {
+        id: 7,
+        name: "The Spatial Budget",
+        w: 4, h: 2,
+        budget: 3,
+        par: 2,
+        grid: [
+          [2, 2, 2, 2],
+          [1, 4, 2, 2]
+        ],
+        spawn: { x: 0, y: 0 },
+        goal: { x: 1, y: 1 },
+        checkpoints: []
+      },
+      // Level 8: Checkpoint Sequence (3x3, C1 at (2,0), C2 at (0,2), G at (2,2))
+      {
+        id: 8,
+        name: "Checkpoint Sequence",
+        w: 3, h: 3,
+        budget: 0,
+        par: 8,
+        grid: [
+          [2, 2, 5],
+          [2, 2, 2],
+          [6, 2, 4]
+        ],
+        spawn: { x: 0, y: 0 },
+        goal: { x: 2, y: 2 },
+        checkpoints: [
+          { id: 1, x: 2, y: 0, cellType: 5 },
+          { id: 2, x: 0, y: 2, cellType: 6 }
+        ]
+      },
+      // Level 9: The True Sacrifice (3x3, Parity Sacrifice, Bt = 6, 1 spare tile)
+      {
+        id: 9,
+        name: "The True Sacrifice",
+        w: 3, h: 3,
+        budget: 6,
+        par: 6,
+        grid: [
+          [2, 2, 2],
+          [1, 2, 2],
+          [4, 2, 2]
+        ],
+        spawn: { x: 0, y: 0 },
+        goal: { x: 0, y: 2 },
+        checkpoints: []
+      },
+      // Level 10: The Graduation Exam (3x3, Center Sink G at (1,1), C1 at (2,0), C2 at (0,2))
+      {
+        id: 10,
+        name: "The Graduation Exam",
+        w: 3, h: 3,
+        budget: 0,
+        par: 8,
+        grid: [
+          [2, 2, 5],
+          [2, 4, 2],
+          [6, 2, 2]
+        ],
+        spawn: { x: 0, y: 0 },
+        goal: { x: 1, y: 1 },
+        checkpoints: [
+          { id: 1, x: 2, y: 0, cellType: 5 },
+          { id: 2, x: 0, y: 2, cellType: 6 }
+        ]
+      }
+    ];
+
+    /* ==========================================================================
+       3. ENGINE CORE & STATE MACHINE (PASS A & B)
+       ========================================================================== */
+    class GameEngine {
+      constructor() {
+        this.currentLevelIndex = 0;
+        this.level = null;
+        this.grid = []; // 2D array of cell states
+        this.metadata = []; // 2D array of persistent trace vectors
+        this.history = []; // LIFO stack of StateFrames for Undo
+        
+        this.player = { x: 0, y: 0 };
+        this.visualPlayer = { x: 0, y: 0 };
+        this.goalPos = { x: 0, y: 0 };
+
+        this.moveCount = 0;
+        this.moveStreak = 0;
+        this.lastMoveTime = 0;
+        this.budget = 0;
+        this.initialBudget = 0;
+        this.hasUndone = false;
+        this.isVictorious = false;
+        this.isDeadlocked = false;
+        this.softDeadlock = false;
+        this.goalUnlocked = false;
+        this.goalExtinguished = false;
+
+        // Transition Animation & Input Buffering
+        this.isTransitioning = false;
+        this.transStart = 0;
+        this.transDuration = 120; // 120ms tween (Pass A standard)
+        this.fromPos = { x: 0, y: 0 };
+        this.toPos = { x: 0, y: 0 };
+        this.activeDir = null;
+        this.inputBuffer = null; // Single-slot FIFO buffer (N=1)
+
+        // Visual Particle Emitter
+        this.particles = [];
+        
+        // Canvas & Rendering
+        this.canvas = document.getElementById('game-canvas');
+        this.ctx = this.canvas.getContext('2d');
+        this.tileSize = 64;
+        this.originX = 0;
+        this.originY = 0;
+        this.offsetX = 0;
+        this.offsetY = 0;
+
+        // Checkpoints state
+        this.c1Collected = false;
+        this.c2Collected = false;
+        this.hasC1 = false;
+        this.hasC2 = false;
+
+        // DOM elements
+        this.domLevelNum = document.getElementById('level-num');
+        this.domLevelName = document.getElementById('level-name');
+        this.domBudgetTag = document.getElementById('budget-tag');
+        this.domStar1 = document.getElementById('star-1');
+        this.domStar2 = document.getElementById('star-2');
+        this.domStar3 = document.getElementById('star-3');
+        this.domToast = document.getElementById('toast');
+        this.domDeadlockBanner = document.getElementById('deadlock-banner') || this.domToast;
+        this.domModal = document.getElementById('victory-modal') || document.getElementById('modal-overlay');
+        this.domVictoryModal = this.domModal;
+        this.domModalSub = document.getElementById('modal-sub');
+        this.domModalStats = document.getElementById('modal-stats');
+        this.domMStar1 = document.getElementById('m-star-1');
+        this.domMStar2 = document.getElementById('m-star-2');
+        this.domMStar3 = document.getElementById('m-star-3');
+        this.domUndoBtn = document.getElementById('undo-btn');
+        this.domRestartBtn = document.getElementById('restart-btn');
+        this.domNextBtn = document.getElementById('next-btn');
+
+        this.initDOMEvents();
+        window.addEventListener('resize', () => this.resize());
+        
+        this.loadLevel(0);
+        requestAnimationFrame((t) => this.loop(t));
+      }
+
+      resetDOMState() {
+        this.isVictorious = false;
+        this.isDeadlocked = false;
+        this.softDeadlock = false;
+        if (this.domDeadlockBanner) {
+          this.domDeadlockBanner.classList.remove('show');
+        }
+        if (this.domToast) {
+          this.domToast.classList.remove('show');
+        }
+        if (this.domVictoryModal) {
+          this.domVictoryModal.classList.remove('show');
+        }
+        if (this.domModal) {
+          this.domModal.classList.remove('show');
+        }
+      }
+
+      loadLevel(index) {
+        if (index < 0 || index >= LEVELS.length) index = 0;
+        this.currentLevelIndex = index;
+        this.level = LEVELS[index];
+
+        // Clone grid and initialize metadata
+        this.grid = [];
+        this.metadata = [];
+        for (let y = 0; y < this.level.h; y++) {
+          this.grid[y] = [];
+          this.metadata[y] = [];
+          for (let x = 0; x < this.level.w; x++) {
+            this.grid[y][x] = this.level.grid[y][x];
+            this.metadata[y][x] = { entry: null, exit: null, step: 0 };
+          }
+        }
+
+        this.player = { ...this.level.spawn };
+        this.visualPlayer = { ...this.level.spawn };
+        this.goalPos = { ...this.level.goal };
+
+        this.hasC1 = (this.level.checkpoints && this.level.checkpoints.some(c => c.id === 1)) || false;
+        this.hasC2 = (this.level.checkpoints && this.level.checkpoints.some(c => c.id === 2)) || false;
+        this.c1Collected = false;
+        this.c2Collected = false;
+
+        this.moveCount = 0;
+        this.moveStreak = 0;
+        this.lastMoveTime = 0;
+        this.budget = this.level.budget;
+        this.initialBudget = this.level.budget;
+        this.hasUndone = false;
+        this.goalUnlocked = false;
+        this.goalExtinguished = false;
+
+        this.isTransitioning = false;
+        this.activeDir = null;
+        this.inputBuffer = null;
+        this.history = [];
+        this.particles = [];
+
+        this.resetDOMState();
+        this.resize();
+        this.evaluateBoardState();
+        this.updateHUD();
+      }
+
+      restart() {
+        sound.playMove(0);
+        this.resetDOMState();
+        this.loadLevel(this.currentLevelIndex);
+      }
+
+      /* ==========================================================================
+         4. MOVEMENT & INPUT RESOLUTION (PASS A STANDARDS)
+         ========================================================================== */
+      handleDirectionInput(dir) {
+        sound.ensureContext();
+        if (this.isVictorious || this.isDeadlocked) return;
+
+        // If mid-transition, buffer input or filter reversal
+        if (this.isTransitioning) {
+          // Opposite vector rejection filter (vecA . vecB == -1)
+          if (this.activeDir && (dir.x * this.activeDir.x + dir.y * this.activeDir.y === -1)) {
+            sound.playWallBump();
+            return; // Discard reversal
+          }
+          // Single-slot FIFO buffer (N=1 overwrite policy)
+          this.inputBuffer = dir;
+          return;
+        }
+
+        this.attemptMove(dir);
+      }
+
+      attemptMove(dir) {
+        if (this.isVictorious || this.isDeadlocked) return;
+
+        const targetX = this.player.x + dir.x;
+        const targetY = this.player.y + dir.y;
+
+        // Boundary assertion
+        if (targetX < 0 || targetX >= this.level.w || targetY < 0 || targetY >= this.level.h) {
+          sound.playWallBump();
+          return;
+        }
+
+        const targetCell = this.grid[targetY][targetX];
+
+        // Wall / Consumed / Void collision
+        if (targetCell === C_WALL || targetCell === C_CONSUMED || targetCell === C_VOID) {
+          sound.playWallBump();
+          return;
+        }
+
+        // Locked Goal is an impassable wall (Pass B Ruling 3)
+        if (targetCell === C_GOAL && !this.goalUnlocked) {
+          sound.playWallBump();
+          return;
+        }
+
+        // Checkpoint Gating: C2 is strictly impassable while C1 is active!
+        if (targetCell === C_CHECKPOINT_2 && !this.c1Collected) {
+          sound.playWallBump();
+          return;
+        }
+
+        // Execute Move: Push StateFrame for Undo
+        this.history.push({
+          player: { ...this.player },
+          target: { x: targetX, y: targetY },
+          dir: { ...dir },
+          prevCellState: this.grid[this.player.y][this.player.x],
+          targetCellPrevState: targetCell,
+          c1Collected: this.c1Collected,
+          c2Collected: this.c2Collected,
+          prevGoalUnlocked: this.goalUnlocked,
+          prevGoalExtinguished: this.goalExtinguished,
+          budget: this.budget,
+          moveCount: this.moveCount,
+          hasUndone: this.hasUndone,
+          isDeadlocked: this.isDeadlocked
+        });
+
+        // Departure cell consumption
+        this.grid[this.player.y][this.player.x] = C_CONSUMED;
+        this.metadata[this.player.y][this.player.x].exit = { ...dir };
+
+        // Streak calculation
+        const now = performance.now();
+        if (now - this.lastMoveTime < 1000) {
+          this.moveStreak++;
+        } else {
+          this.moveStreak = 0;
+        }
+        this.lastMoveTime = now;
+        this.moveCount++;
+
+        // Decrement budget if budget level
+        if (this.initialBudget > 0) {
+          this.budget--;
+        }
+
+        // Checkpoint collection on target entry
+        if (targetCell === C_CHECKPOINT_1) {
+          this.c1Collected = true;
+          sound.playCheckpointChime(false);
+          this.spawnTileParticles(targetX, targetY, '#00f0ff', 14);
+        } else if (targetCell === C_CHECKPOINT_2) {
+          this.c2Collected = true;
+          sound.playCheckpointChime(true);
+          this.spawnTileParticles(targetX, targetY, '#ffd700', 16);
+        } else {
+          sound.playMove(this.moveStreak);
+        }
+
+        // Particle puff on departure
+        this.spawnTileParticles(this.player.x, this.player.y, '#00f0ff', 6);
+
+        // Begin Phase 4: Atomic logical snap + visual tween
+        this.fromPos = { ...this.player };
+        this.toPos = { x: targetX, y: targetY };
+        this.player = { x: targetX, y: targetY };
+        this.metadata[targetY][targetX].entry = { ...dir };
+        this.metadata[targetY][targetX].step = this.moveCount;
+
+        this.isTransitioning = true;
+        this.transStart = performance.now();
+        this.activeDir = dir;
+
+        // Terminal Entry Check: If player reached Goal and it is unlocked -> Trigger Victory!
+        if (this.player.x === this.goalPos.x && this.player.y === this.goalPos.y && this.goalUnlocked) {
+          this.triggerVictory();
+        }
+
+        // Post-Move Board Evaluation (Phase 6)
+        this.evaluateBoardState();
+        this.updateHUD();
+      }
+
+      finishTransition() {
+        this.isTransitioning = false;
+        this.visualPlayer = { ...this.player };
+        this.activeDir = null;
+
+        // Terminal Goal check
+        if (this.player.x === this.goalPos.x && this.player.y === this.goalPos.y && this.goalUnlocked) {
+          if (!this.isVictorious) {
+            this.triggerVictory();
+          }
+          return;
+        }
+
+        // Evaluate Local Entrapment (Hard Deadlock - Phase 7) ONLY if not victorious
+        if (!this.isVictorious && this.isEntrapped(this.player.x, this.player.y)) {
+          this.triggerHardDeadlock();
+          return;
+        }
+
+        // Process buffered move if present
+        if (this.inputBuffer && !this.isVictorious && !this.isDeadlocked) {
+          const nextDir = this.inputBuffer;
+          this.inputBuffer = null;
+          this.attemptMove(nextDir);
+        }
+      }
+
+      /* ==========================================================================
+         5. OBJECTIVES, REACHABILITY & SPATIAL BUDGET (PASS B)
+         ========================================================================== */
+      evaluateBoardState() {
+        if (this.isVictorious) return; // Halt all deadlock logic if already won
+
+        // Count remaining untouched path tiles and uncollected checkpoints
+        let untouchedCount = 0;
+        for (let y = 0; y < this.level.h; y++) {
+          for (let x = 0; x < this.level.w; x++) {
+            const cell = this.grid[y][x];
+            if ((cell === C_UNTOUCHED || cell === C_CHECKPOINT_1 || cell === C_CHECKPOINT_2) && !(x === this.player.x && y === this.player.y)) {
+              untouchedCount++;
+            }
+          }
+        }
+
+        // Checkpoint completion
+        const checkpointsMet = (!this.hasC1 || this.c1Collected) && (!this.hasC2 || this.c2Collected);
+
+        // Real-Time Spatial Budget & Goal unlock calculation
+        if (this.initialBudget === 0) {
+          if (untouchedCount === 0 && checkpointsMet) {
+            this.unlockGoal();
+          } else {
+            this.lockGoal();
+          }
+        } else {
+          // Budget levels: Bt < 0 triggers immediate deadlock
+          if (this.budget < 0) {
+            this.extinguishGoal();
+            this.triggerHardDeadlock();
+          } else if (checkpointsMet) {
+            this.unlockGoal();
+          }
+        }
+
+        // Reachability Dominance (Pass B Ruling 2): Check if Goal is in player component
+        const pathExists = this.checkPathExists(this.player, this.goalPos);
+        if (!pathExists && !this.isVictorious) {
+          this.softDeadlock = true;
+          this.showToast("Route Severed — Tap Undo or R");
+          if (!this.goalExtinguished && !this.goalUnlocked) {
+            this.extinguishGoal();
+          }
+        } else if (!this.isDeadlocked) {
+          this.softDeadlock = false;
+          this.hideToast();
+        }
+      }
+
+      unlockGoal() {
+        if (!this.goalUnlocked) {
+          this.goalUnlocked = true;
+          this.goalExtinguished = false;
+          sound.playGoalRekindle();
+          this.spawnTileParticles(this.goalPos.x, this.goalPos.y, '#ffd700', 16);
+        }
+      }
+
+      lockGoal() {
+        this.goalUnlocked = false;
+      }
+
+      extinguishGoal() {
+        if (!this.goalExtinguished) {
+          this.goalExtinguished = true;
+          this.goalUnlocked = false;
+          sound.playGoalExtinguish();
+          this.spawnTileParticles(this.goalPos.x, this.goalPos.y, '#ff3366', 14);
+        }
+      }
+
+      checkPathExists(start, target) {
+        // BFS flood fill on traversable manifold
+        const queue = [{ x: start.x, y: start.y }];
+        const visited = new Set();
+        visited.add(`${start.x},${start.y}`);
+
+        while (queue.length > 0) {
+          const curr = queue.shift();
+          if (curr.x === target.x && curr.y === target.y) return true;
+
+          const neighbors = [
+            { x: curr.x + 1, y: curr.y },
+            { x: curr.x - 1, y: curr.y },
+            { x: curr.x, y: curr.y + 1 },
+            { x: curr.x, y: curr.y - 1 }
+          ];
+
+          for (const n of neighbors) {
+            if (n.x >= 0 && n.x < this.level.w && n.y >= 0 && n.y < this.level.h) {
+              const key = `${n.x},${n.y}`;
+              if (!visited.has(key)) {
+                const cell = this.grid[n.y][n.x];
+                // Can traverse through untouched, active C1, unblocked C2, or target goal
+                const isTraversable = cell === C_UNTOUCHED || cell === C_CHECKPOINT_1 || (cell === C_CHECKPOINT_2 && this.c1Collected) || (n.x === target.x && n.y === target.y);
+                if (isTraversable) {
+                  visited.add(key);
+                  queue.push(n);
+                }
+              }
+            }
+          }
+        }
+        return false;
+      }
+
+      isEntrapped(x, y) {
+        const neighbors = [
+          { x: x + 1, y },
+          { x: x - 1, y },
+          { x, y: y + 1 },
+          { x, y: y - 1 }
+        ];
+
+        for (const n of neighbors) {
+          if (n.x >= 0 && n.x < this.level.w && n.y >= 0 && n.y < this.level.h) {
+            const cell = this.grid[n.y][n.x];
+            if (cell === C_UNTOUCHED || cell === C_CHECKPOINT_1 || (cell === C_CHECKPOINT_2 && this.c1Collected)) return false;
+            if (cell === C_GOAL && this.goalUnlocked) return false;
+          }
+        }
+        return true;
+      }
+
+      triggerHardDeadlock() {
+        if (this.isVictorious) return; // Strict race condition block
+        this.isDeadlocked = true;
+        sound.playGoalExtinguish();
+        this.showDeadlockBanner("Deadlock — Press R to Restart");
+      }
+
+      triggerVictory() {
+        this.isVictorious = true;
+        this.isDeadlocked = false;
+        this.softDeadlock = false;
+        this.hideDeadlockBanner();
+        sound.playVictory();
+        this.spawnTileParticles(this.player.x, this.player.y, '#ffd700', 30);
+        this.showModal();
+      }
+
+      /* ==========================================================================
+         6. THE "FAT-FINGER GRACE" HUD UNDO (PASS B AMENDMENT)
+         ========================================================================== */
+      undo() {
+        if (this.history.length === 0 || this.isVictorious) return;
+
+        sound.ensureContext();
+        sound.playUndo();
+
+        // Rapid multi-tap invariant: cancel active interpolation and snap
+        this.isTransitioning = false;
+        this.inputBuffer = null;
+        this.activeDir = null;
+
+        const frame = this.history.pop();
+        
+        // Restore departure tile state
+        this.grid[frame.player.y][frame.player.x] = frame.prevCellState;
+        this.metadata[frame.player.y][frame.player.x].exit = null;
+
+        // Restore target tile metadata
+        this.grid[frame.target.y][frame.target.x] = frame.targetCellPrevState;
+        this.metadata[frame.target.y][frame.target.x].entry = null;
+
+        // Snap player back
+        this.player = { ...frame.player };
+        this.visualPlayer = { ...frame.player };
+        this.moveCount = frame.moveCount;
+        this.budget = frame.budget;
+        this.c1Collected = frame.c1Collected;
+        this.c2Collected = frame.c2Collected;
+
+        // If goal was extinguished due to budget < 0 and restored budget >= 0, rekindle!
+        if (frame.budget >= 0 && this.goalExtinguished) {
+          this.goalExtinguished = false;
+          sound.playGoalRekindle();
+        } else {
+          this.goalExtinguished = frame.prevGoalExtinguished;
+        }
+        this.goalUnlocked = frame.prevGoalUnlocked;
+
+        if (this.isDeadlocked && !frame.isDeadlocked) {
+          this.isDeadlocked = false;
+          this.hideDeadlockBanner();
+        }
+
+        // THE PRESTIGE PENALTY: Star 3 Shatters on first undo
+        if (!this.hasUndone) {
+          this.hasUndone = true;
+          sound.playStarShatter();
+          this.shatterStar3();
+        }
+
+        this.evaluateBoardState();
+        this.updateHUD();
+      }
+
+      shatterStar3() {
+        this.domStar3.classList.add('shattered');
+        setTimeout(() => {
+          this.domStar3.classList.remove('active');
+          this.domStar3.classList.remove('shattered');
+        }, 400);
+
+        // Spawn shatter particles on canvas header
+        this.spawnScreenParticles(this.canvas.width * 0.8, 30, '#ff3366', 15);
+      }
+
+      /* ==========================================================================
+         7. DOM & HUD SYNCHRONIZATION
+         ========================================================================== */
+      updateHUD() {
+        this.domLevelNum.textContent = `LEVEL ${this.level.id}`;
+        this.domLevelName.textContent = this.level.name;
+
+        // Budget badge
+        if (this.initialBudget === 0) {
+          let left = 0;
+          for (let y = 0; y < this.level.h; y++) {
+            for (let x = 0; x < this.level.w; x++) {
+              const c = this.grid[y][x];
+              if ((c === C_UNTOUCHED || c === C_CHECKPOINT_1 || c === C_CHECKPOINT_2) && !(x === this.player.x && y === this.player.y)) {
+                left++;
+              }
+            }
+          }
+          this.domBudgetTag.textContent = left === 0 ? "GOAL READY" : `REMAINING: ${left}`;
+          this.domBudgetTag.className = "budget-badge" + (left === 0 ? "" : (this.softDeadlock ? " dead" : ""));
+        } else {
+          this.domBudgetTag.textContent = `SPARE: ${this.budget}`;
+          this.domBudgetTag.className = "budget-badge" + (this.budget < 0 ? " dead" : (this.budget === 0 ? " warn" : ""));
+        }
+
+        // Stars display
+        this.domStar1.classList.add('active');
+        this.domStar2.classList.toggle('active', this.moveCount <= this.level.par + 2);
+        this.domStar3.classList.toggle('active', !this.hasUndone && this.moveCount <= this.level.par);
+      }
+
+      showToast(msg) {
+        if (this.isVictorious) return;
+        if (this.domToast) {
+          this.domToast.textContent = msg;
+          this.domToast.classList.add('show');
+        }
+      }
+
+      hideToast() {
+        if (this.domToast) {
+          this.domToast.classList.remove('show');
+        }
+      }
+
+      showDeadlockBanner(msg) {
+        if (this.isVictorious) return;
+        this.hideModal();
+        if (this.domDeadlockBanner) {
+          this.domDeadlockBanner.textContent = msg;
+          this.domDeadlockBanner.classList.add('show');
+        }
+      }
+
+      hideDeadlockBanner() {
+        if (this.domDeadlockBanner) {
+          this.domDeadlockBanner.classList.remove('show');
+        }
+        this.hideToast();
+      }
+
+      showModal() {
+        this.hideDeadlockBanner();
+        const delta = this.moveCount - this.level.par;
+        this.domModalSub.textContent = `Level ${this.level.id} Cleared`;
+        this.domModalStats.innerHTML = `Moves: <strong>${this.moveCount}</strong> (Par: ${this.level.par})<br>` +
+          (this.hasUndone ? `<span style="color:var(--text-muted);font-size:11px;">(Undo used - Star 3 forfeited)</span>` : `<span style="color:var(--gold-glow);font-size:11px;">Flawless Lookahead!</span>`);
+
+        this.domMStar1.classList.add('active');
+        this.domMStar2.classList.toggle('active', delta <= 2);
+        this.domMStar3.classList.toggle('active', !this.hasUndone && delta === 0);
+
+        if (this.domVictoryModal) {
+          this.domVictoryModal.classList.add('show');
+        } else if (this.domModal) {
+          this.domModal.classList.add('show');
+        }
+      }
+
+      hideModal() {
+        if (this.domVictoryModal) {
+          this.domVictoryModal.classList.remove('show');
+        }
+        if (this.domModal) {
+          this.domModal.classList.remove('show');
+        }
+      }
+
+      nextLevel() {
+        if (this.currentLevelIndex < LEVELS.length - 1) {
+          this.loadLevel(this.currentLevelIndex + 1);
+        } else {
+          // Wrap around or restart
+          this.loadLevel(0);
+        }
+      }
+
+      /* ==========================================================================
+         8. INPUT LISTENERS (KEYBOARD & TOUCH WITH DEADZONE)
+         ========================================================================== */
+      initDOMEvents() {
+        // Keyboard controls
+        window.addEventListener('keydown', (e) => {
+          if (e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W') {
+            e.preventDefault();
+            this.handleDirectionInput({ x: 0, y: -1 });
+          } else if (e.key === 'ArrowDown' || e.key === 's' || e.key === 'S') {
+            e.preventDefault();
+            this.handleDirectionInput({ x: 0, y: 1 });
+          } else if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') {
+            e.preventDefault();
+            this.handleDirectionInput({ x: -1, y: 0 });
+          } else if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') {
+            e.preventDefault();
+            this.handleDirectionInput({ x: 1, y: 0 });
+          } else if (e.key === 'u' || e.key === 'U' || e.key === 'z' || e.key === 'Z') {
+            e.preventDefault();
+            this.undo();
+          } else if (e.key === 'r' || e.key === 'R') {
+            e.preventDefault();
+            this.restart();
+          } else if (e.key === 'Enter' || e.key === ' ') {
+            if (this.isVictorious) {
+              e.preventDefault();
+              this.nextLevel();
+            }
+          }
+        });
+
+        // Touch gesture controls with relative canvas coordinate mapping
+        let touchStartX = 0;
+        let touchStartY = 0;
+        let touchStartTime = 0;
+
+        const getCanvasRelativePointer = (e) => {
+          const rect = this.canvas.getBoundingClientRect();
+          return {
+            x: e.clientX - rect.left,
+            y: e.clientY - rect.top
+          };
+        };
+
+        const onTouchStart = (x, y) => {
+          sound.ensureContext();
+          touchStartX = x;
+          touchStartY = y;
+          touchStartTime = performance.now();
+        };
+
+        const onTouchEnd = (x, y) => {
+          const deltaX = x - touchStartX;
+          const deltaY = y - touchStartY;
+          const absX = Math.abs(deltaX);
+          const absY = Math.abs(deltaY);
+
+          // Minimum swipe threshold: 30px (Pass A standard)
+          if (absX <= 30 && absY <= 30) return;
+
+          // Cardinal dominance (Horizontal vs Vertical)
+          if (absX >= absY) {
+            // deltaX > 0 -> RIGHT (+1, 0), deltaX < 0 -> LEFT (-1, 0)
+            if (deltaX > 0) {
+              this.handleDirectionInput({ x: 1, y: 0 });
+            } else {
+              this.handleDirectionInput({ x: -1, y: 0 });
+            }
+          } else {
+            // deltaY > 0 -> DOWN (0, +1), deltaY < 0 -> UP (0, -1)
+            if (deltaY > 0) {
+              this.handleDirectionInput({ x: 0, y: 1 });
+            } else {
+              this.handleDirectionInput({ x: 0, y: -1 });
+            }
+          }
+        };
+
+        this.canvas.addEventListener('pointerdown', (e) => {
+          if (this.canvas.setPointerCapture) {
+            try { this.canvas.setPointerCapture(e.pointerId); } catch (_) {}
+          }
+          const pt = getCanvasRelativePointer(e);
+          onTouchStart(pt.x, pt.y);
+        });
+        this.canvas.addEventListener('pointerup', (e) => {
+          const pt = getCanvasRelativePointer(e);
+          onTouchEnd(pt.x, pt.y);
+        });
+        this.canvas.addEventListener('pointercancel', (e) => {
+          const pt = getCanvasRelativePointer(e);
+          onTouchEnd(pt.x, pt.y);
+        });
+
+        // Buttons
+        this.domUndoBtn.addEventListener('click', () => this.undo());
+        this.domRestartBtn.addEventListener('click', () => this.restart());
+        this.domNextBtn.addEventListener('click', () => this.nextLevel());
+      }
+
+      /* ==========================================================================
+         9. VISUAL PARTICLES & EFFECTS
+         ========================================================================== */
+      spawnTileParticles(gx, gy, color, count = 10) {
+        const cx = this.offsetX + (gx + 0.5) * this.tileSize;
+        const cy = this.offsetY + (gy + 0.5) * this.tileSize;
+        for (let i = 0; i < count; i++) {
+          const angle = Math.random() * Math.PI * 2;
+          const speed = 1 + Math.random() * 3.5;
+          this.particles.push({
+            x: cx,
+            y: cy,
+            vx: Math.cos(angle) * speed,
+            vy: Math.sin(angle) * speed,
+            radius: 2 + Math.random() * 3,
+            color: color,
+            alpha: 1.0,
+            decay: 0.025 + Math.random() * 0.03
+          });
+        }
+      }
+
+      spawnScreenParticles(x, y, color, count = 12) {
+        for (let i = 0; i < count; i++) {
+          const angle = Math.random() * Math.PI * 2;
+          const speed = 1.5 + Math.random() * 4;
+          this.particles.push({
+            x: x,
+            y: y,
+            vx: Math.cos(angle) * speed,
+            vy: Math.sin(angle) * speed,
+            radius: 2 + Math.random() * 2.5,
+            color: color,
+            alpha: 1.0,
+            decay: 0.03 + Math.random() * 0.03
+          });
+        }
+      }
+
+      /* ==========================================================================
+         10. CANVAS RENDERING PIPELINE
+         ========================================================================== */
+      resize() {
+        const wrap = document.getElementById('canvas-wrap');
+        if (!wrap) return;
+        const rect = wrap.getBoundingClientRect();
+        const dpr = window.devicePixelRatio || 1;
+
+        this.canvas.width = Math.floor(rect.width * dpr);
+        this.canvas.height = Math.floor(rect.height * dpr);
+        this.canvas.style.width = `${rect.width}px`;
+        this.canvas.style.height = `${rect.height}px`;
+
+        this.ctx.resetTransform();
+        this.ctx.scale(dpr, dpr);
+
+        if (this.level) {
+          const cols = this.level.w;
+          const rows = this.level.h;
+          // Dynamic Grid Centering & Clamping [48, 110]
+          const proposedSize = Math.floor(Math.min((rect.width * 0.85) / cols, (rect.height * 0.65) / rows));
+          this.tileSize = Math.max(48, Math.min(110, proposedSize));
+          this.originX = Math.floor((rect.width - (cols * this.tileSize)) / 2);
+          this.originY = Math.floor((rect.height - (rows * this.tileSize)) / 2);
+          this.offsetX = this.originX;
+          this.offsetY = this.originY;
+        }
+      }
+
+      loop(now) {
+        this.update(now);
+        this.render(now);
+        requestAnimationFrame((t) => this.loop(t));
+      }
+
+      update(now) {
+        // Piecewise Manhattan Lerp
+        if (this.isTransitioning) {
+          const elapsed = now - this.transStart;
+          const progress = Math.min(1.0, elapsed / this.transDuration);
+          // Ease-out cubic
+          const tEase = 1.0 - Math.pow(1.0 - progress, 3);
+
+          this.visualPlayer.x = this.fromPos.x + (this.toPos.x - this.fromPos.x) * tEase;
+          this.visualPlayer.y = this.fromPos.y + (this.toPos.y - this.fromPos.y) * tEase;
+
+          if (progress >= 1.0) {
+            this.finishTransition();
+          }
+        }
+
+        // Particle updates
+        for (let i = this.particles.length - 1; i >= 0; i--) {
+          const p = this.particles[i];
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vx *= 0.94;
+          p.vy *= 0.94;
+          p.alpha -= p.decay;
+          if (p.alpha <= 0) {
+            this.particles.splice(i, 1);
+          }
+        }
+      }
+
+      render(now) {
+        const wrap = document.getElementById('canvas-wrap');
+        const w = wrap.clientWidth;
+        const h = wrap.clientHeight;
+
+        this.ctx.clearRect(0, 0, w, h);
+
+        if (!this.level) return;
+
+        // Draw grid manifold background substrate
+        this.renderGridSubstrate();
+
+        // Draw active runic conduits between waypoints
+        this.renderRunicConduits(now);
+
+        // Draw active grid cells
+        for (let y = 0; y < this.level.h; y++) {
+          for (let x = 0; x < this.level.w; x++) {
+            this.renderCell(x, y, now);
+          }
+        }
+
+        // Draw player avatar
+        this.renderPlayer(now);
+
+        // Draw active particles
+        this.renderParticles();
+      }
+
+      renderGridSubstrate() {
+        const pad = 4;
+        for (let y = 0; y < this.level.h; y++) {
+          for (let x = 0; x < this.level.w; x++) {
+            const px = this.offsetX + x * this.tileSize;
+            const py = this.offsetY + y * this.tileSize;
+            const size = this.tileSize - pad * 2;
+
+            // Background slot plate
+            this.ctx.fillStyle = '#0f131d';
+            this.roundRect(this.ctx, px + pad, py + pad, size, size, 8);
+            this.ctx.fill();
+          }
+        }
+      }
+
+      renderCell(x, y, now) {
+        const cell = this.grid[y][x];
+        if (cell === C_VOID) return;
+
+        const pad = 4;
+        const px = this.offsetX + x * this.tileSize + pad;
+        const py = this.offsetY + y * this.tileSize + pad;
+        const size = this.tileSize - pad * 2;
+        const r = 8;
+
+        if (cell === C_WALL) {
+          // Impassable monolith
+          this.ctx.fillStyle = '#202534';
+          this.roundRect(this.ctx, px, py, size, size, r);
+          this.ctx.fill();
+          this.ctx.strokeStyle = '#2b3347';
+          this.ctx.lineWidth = 1;
+          this.ctx.stroke();
+
+          // Inner diagonal hash
+          this.ctx.strokeStyle = 'rgba(0,0,0,0.25)';
+          this.ctx.beginPath();
+          this.ctx.moveTo(px + 6, py + 6);
+          this.ctx.lineTo(px + size - 6, py + size - 6);
+          this.ctx.stroke();
+        } else if (cell === C_UNTOUCHED) {
+          // Pristine walkable surface
+          this.ctx.fillStyle = '#1a2236';
+          this.roundRect(this.ctx, px, py, size, size, r);
+          this.ctx.fill();
+
+          // Chamfered top highlight
+          this.ctx.strokeStyle = '#2d3b59';
+          this.ctx.lineWidth = 1.5;
+          this.ctx.stroke();
+
+          // Subtle center glyph
+          this.ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
+          this.ctx.beginPath();
+          this.ctx.arc(px + size / 2, py + size / 2, size * 0.12, 0, Math.PI * 2);
+          this.ctx.fill();
+        } else if (cell === C_CONSUMED) {
+          // Sunken crater with trace vector spline
+          this.ctx.fillStyle = '#0c0f17';
+          this.roundRect(this.ctx, px, py, size, size, r);
+          this.ctx.fill();
+
+          this.ctx.strokeStyle = '#141a26';
+          this.ctx.lineWidth = 1;
+          this.ctx.stroke();
+
+          // Render conduit spline trace
+          this.renderConduitSpline(x, y, px + size / 2, py + size / 2);
+        } else if (cell === C_CHECKPOINT_1) {
+          this.renderCheckpointTile(px, py, size, 1, this.c1Collected, true, now);
+        } else if (cell === C_CHECKPOINT_2) {
+          this.renderCheckpointTile(px, py, size, 2, this.c2Collected, this.c1Collected, now);
+        } else if (cell === C_GOAL) {
+          this.renderGoalTile(px, py, size, now);
+        }
+      }
+
+      renderConduitSpline(gx, gy, cx, cy) {
+        const meta = this.metadata[gy][gx];
+        const half = this.tileSize / 2;
+
+        this.ctx.strokeStyle = 'rgba(0, 240, 255, 0.25)';
+        this.ctx.lineWidth = 3;
+        this.ctx.lineCap = 'round';
+        this.ctx.beginPath();
+
+        let drew = false;
+        if (meta.entry) {
+          this.ctx.moveTo(cx - meta.entry.x * half, cy - meta.entry.y * half);
+          this.ctx.lineTo(cx, cy);
+          drew = true;
+        }
+        if (meta.exit) {
+          if (!drew) this.ctx.moveTo(cx, cy);
+          this.ctx.lineTo(cx + meta.exit.x * half, cy + meta.exit.y * half);
+          drew = true;
+        }
+
+        if (drew) {
+          this.ctx.stroke();
+        } else {
+          // Spawn origin dot
+          this.ctx.fillStyle = 'rgba(0, 240, 255, 0.4)';
+          this.ctx.beginPath();
+          this.ctx.arc(cx, cy, 3, 0, Math.PI * 2);
+          this.ctx.fill();
+        }
+      }
+
+      renderGoalTile(px, py, size, now) {
+        const cx = px + size / 2;
+        const cy = py + size / 2;
+        const r = 8;
+
+        if (this.goalUnlocked) {
+          // Radiant Unlocked Portal
+          const pulse = (Math.sin(now * 0.005) + 1) * 0.5; // 0..1
+          this.ctx.fillStyle = '#1c1b12';
+          this.roundRect(this.ctx, px, py, size, size, r);
+          this.ctx.fill();
+
+          // Radiant aura
+          const grad = this.ctx.createRadialGradient(cx, cy, 2, cx, cy, size * 0.6);
+          grad.addColorStop(0, 'rgba(255, 215, 0, 0.8)');
+          grad.addColorStop(0.6, 'rgba(255, 180, 0, 0.3)');
+          grad.addColorStop(1, 'rgba(255, 215, 0, 0)');
+          this.ctx.fillStyle = grad;
+          this.ctx.beginPath();
+          this.ctx.arc(cx, cy, size * 0.6, 0, Math.PI * 2);
+          this.ctx.fill();
+
+          // Gold border
+          this.ctx.strokeStyle = '#ffd700';
+          this.ctx.lineWidth = 2 + pulse;
+          this.roundRect(this.ctx, px, py, size, size, r);
+          this.ctx.stroke();
+
+          // Core flame icon
+          this.ctx.fillStyle = '#fff';
+          this.ctx.beginPath();
+          this.ctx.arc(cx, cy, size * 0.16 + pulse * 2, 0, Math.PI * 2);
+          this.ctx.fill();
+        } else if (this.goalExtinguished) {
+          // Fractured / Shattered Obsidian
+          this.ctx.fillStyle = '#160d10';
+          this.roundRect(this.ctx, px, py, size, size, r);
+          this.ctx.fill();
+
+          this.ctx.strokeStyle = '#ff3366';
+          this.ctx.lineWidth = 1.5;
+          this.roundRect(this.ctx, px, py, size, size, r);
+          this.ctx.stroke();
+
+          // Jagged red fracture lines
+          this.ctx.strokeStyle = 'rgba(255, 51, 102, 0.8)';
+          this.ctx.lineWidth = 1.5;
+          this.ctx.beginPath();
+          this.ctx.moveTo(px + 4, py + size / 2);
+          this.ctx.lineTo(cx - 2, cy);
+          this.ctx.lineTo(cx + 4, cy - 6);
+          this.ctx.lineTo(px + size - 4, py + size - 4);
+          this.ctx.stroke();
+        } else {
+          // Locked Goal Monolith (Impassable Wall)
+          this.ctx.fillStyle = '#1a1820';
+          this.roundRect(this.ctx, px, py, size, size, r);
+          this.ctx.fill();
+
+          this.ctx.strokeStyle = '#4a4059';
+          this.ctx.lineWidth = 1.5;
+          this.roundRect(this.ctx, px, py, size, size, r);
+          this.ctx.stroke();
+
+          // Subtle lock glyph
+          this.ctx.fillStyle = '#ffb700';
+          this.ctx.beginPath();
+          this.ctx.arc(cx, cy - 2, size * 0.12, Math.PI, 0);
+          this.ctx.lineTo(cx + size * 0.12, cy + 4);
+          this.ctx.lineTo(cx - size * 0.12, cy + 4);
+          this.ctx.fill();
+        }
+      }
+
+      renderRunicConduits(now) {
+        if (!this.level || !this.level.checkpoints || this.level.checkpoints.length === 0) return;
+
+        const points = [
+          { ...this.level.spawn },
+          ...this.level.checkpoints,
+          { ...this.level.goal }
+        ];
+
+        for (let i = 0; i < points.length - 1; i++) {
+          const p1 = points[i];
+          const p2 = points[i + 1];
+
+          const x1 = this.offsetX + (p1.x + 0.5) * this.tileSize;
+          const y1 = this.offsetY + (p1.y + 0.5) * this.tileSize;
+          const x2 = this.offsetX + (p2.x + 0.5) * this.tileSize;
+          const y2 = this.offsetY + (p2.y + 0.5) * this.tileSize;
+
+          // Segment state determination
+          let isCompleted = false;
+          let isActive = false;
+
+          if (i === 0) {
+            // Spawn -> C1
+            isCompleted = this.c1Collected;
+            isActive = !this.c1Collected;
+          } else if (i === 1) {
+            // C1 -> C2
+            isCompleted = this.c2Collected;
+            isActive = this.c1Collected && !this.c2Collected;
+          } else if (i === 2) {
+            // C2 -> Goal
+            isCompleted = this.goalUnlocked;
+            isActive = this.c2Collected && !this.goalUnlocked;
+          }
+
+          this.ctx.save();
+          this.ctx.beginPath();
+          this.ctx.moveTo(x1, y1);
+          this.ctx.lineTo(x2, y2);
+          this.ctx.lineWidth = 4;
+          this.ctx.lineCap = 'round';
+
+          if (isCompleted) {
+            // Completed segment: radiant gold path
+            this.ctx.strokeStyle = 'rgba(255, 215, 0, 0.75)';
+            this.ctx.shadowColor = 'rgba(255, 215, 0, 0.5)';
+            this.ctx.shadowBlur = 10;
+            this.ctx.setLineDash([]);
+          } else if (isActive) {
+            // Active segment: pulsing cyan energy
+            const pulse = (Math.sin(now * 0.006) + 1) * 0.5;
+            this.ctx.strokeStyle = `rgba(0, 240, 255, ${0.4 + pulse * 0.4})`;
+            this.ctx.shadowColor = 'rgba(0, 240, 255, 0.4)';
+            this.ctx.shadowBlur = 8;
+            this.ctx.setLineDash([]);
+          } else {
+            // Inactive segment: faint dashed blueprint trace
+            this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
+            this.ctx.setLineDash([4, 6]);
+          }
+
+          this.ctx.stroke();
+          this.ctx.restore();
+        }
+      }
+
+      renderCheckpointTile(px, py, size, id, isCollected, isUnlocked, now) {
+        const cx = px + size / 2;
+        const cy = py + size / 2;
+        const r = 8;
+        const pulse = (Math.sin(now * 0.006 + id) + 1) * 0.5;
+
+        if (isCollected) {
+          // Collected Checkpoint: warm gold runic plate
+          this.ctx.fillStyle = '#141812';
+          this.roundRect(this.ctx, px, py, size, size, r);
+          this.ctx.fill();
+
+          this.ctx.strokeStyle = '#ffd700';
+          this.ctx.lineWidth = 1.5;
+          this.roundRect(this.ctx, px, py, size, size, r);
+          this.ctx.stroke();
+
+          // Completed Checkmark glyph
+          this.ctx.fillStyle = '#ffd700';
+          this.ctx.font = `bold ${Math.floor(size * 0.34)}px sans-serif`;
+          this.ctx.textAlign = 'center';
+          this.ctx.textBaseline = 'middle';
+          this.ctx.fillText('✓', cx, cy);
+        } else if (isUnlocked) {
+          // Active Waypoint: Radiant cyan diamond rune
+          this.ctx.fillStyle = '#0e1d28';
+          this.roundRect(this.ctx, px, py, size, size, r);
+          this.ctx.fill();
+
+          // Radiant aura
+          const grad = this.ctx.createRadialGradient(cx, cy, 2, cx, cy, size * 0.5);
+          grad.addColorStop(0, 'rgba(0, 240, 255, 0.45)');
+          grad.addColorStop(1, 'rgba(0, 240, 255, 0)');
+          this.ctx.fillStyle = grad;
+          this.ctx.beginPath();
+          this.ctx.arc(cx, cy, size * 0.5, 0, Math.PI * 2);
+          this.ctx.fill();
+
+          this.ctx.strokeStyle = '#00f0ff';
+          this.ctx.lineWidth = 2 + pulse;
+          this.roundRect(this.ctx, px, py, size, size, r);
+          this.ctx.stroke();
+
+          // Diamond rune outline
+          this.ctx.save();
+          this.ctx.translate(cx, cy);
+          this.ctx.rotate(Math.PI / 4);
+          this.ctx.strokeStyle = 'rgba(0, 240, 255, 0.85)';
+          this.ctx.lineWidth = 1.5;
+          const dSize = size * 0.3;
+          this.ctx.strokeRect(-dSize / 2, -dSize / 2, dSize, dSize);
+          this.ctx.restore();
+
+          this.ctx.fillStyle = '#fff';
+          this.ctx.font = `bold ${Math.floor(size * 0.28)}px sans-serif`;
+          this.ctx.textAlign = 'center';
+          this.ctx.textBaseline = 'middle';
+          this.ctx.fillText(`C${id}`, cx, cy);
+        } else {
+          // Locked Waypoint: Solid dark barrier with lock glyph
+          this.ctx.fillStyle = '#151822';
+          this.roundRect(this.ctx, px, py, size, size, r);
+          this.ctx.fill();
+
+          this.ctx.strokeStyle = '#323b4f';
+          this.ctx.lineWidth = 1.5;
+          this.roundRect(this.ctx, px, py, size, size, r);
+          this.ctx.stroke();
+
+          // Dimmed lock icon
+          this.ctx.fillStyle = '#5a6885';
+          this.ctx.font = `bold ${Math.floor(size * 0.26)}px sans-serif`;
+          this.ctx.textAlign = 'center';
+          this.ctx.textBaseline = 'middle';
+          this.ctx.fillText(`🔒 C${id}`, cx, cy);
+        }
+      }
+
+      renderPlayer(now) {
+        const pad = 4;
+        const px = this.offsetX + this.visualPlayer.x * this.tileSize + pad;
+        const py = this.offsetY + this.visualPlayer.y * this.tileSize + pad;
+        const size = this.tileSize - pad * 2;
+        const cx = px + size / 2;
+        const cy = py + size / 2;
+
+        // Radial hero halo
+        const pulse = (Math.sin(now * 0.008) + 1) * 0.5;
+        const grad = this.ctx.createRadialGradient(cx, cy, size * 0.2, cx, cy, size * 0.7);
+        grad.addColorStop(0, 'rgba(0, 240, 255, 0.45)');
+        grad.addColorStop(1, 'rgba(0, 240, 255, 0)');
+        this.ctx.fillStyle = grad;
+        this.ctx.beginPath();
+        this.ctx.arc(cx, cy, size * 0.7, 0, Math.PI * 2);
+        this.ctx.fill();
+
+        // Main Player Avatar (Vibrant Chamfered Cube)
+        const heroSize = size * 0.72;
+        const hx = cx - heroSize / 2;
+        const hy = cy - heroSize / 2;
+
+        this.ctx.fillStyle = '#00f0ff';
+        this.roundRect(this.ctx, hx, hy, heroSize, heroSize, 8);
+        this.ctx.fill();
+
+        // Inner glowing core
+        this.ctx.fillStyle = '#ffffff';
+        this.roundRect(this.ctx, hx + 3, hy + 3, heroSize - 6, heroSize - 6, 6);
+        this.ctx.fill();
+
+        // Stylized pupil / direction indicator
+        this.ctx.fillStyle = '#0066cc';
+        const eyeSize = heroSize * 0.28;
+        let eyeDx = 0;
+        let eyeDy = 0;
+        if (this.activeDir) {
+          eyeDx = this.activeDir.x * 3;
+          eyeDy = this.activeDir.y * 3;
+        }
+        this.ctx.beginPath();
+        this.ctx.arc(cx + eyeDx, cy + eyeDy, eyeSize / 2, 0, Math.PI * 2);
+        this.ctx.fill();
+      }
+
+      renderParticles() {
+        for (const p of this.particles) {
+          this.ctx.save();
+          this.ctx.globalAlpha = p.alpha;
+          this.ctx.fillStyle = p.color;
+          this.ctx.beginPath();
+          this.ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+          this.ctx.fill();
+          this.ctx.restore();
+        }
+      }
+
+      roundRect(ctx, x, y, width, height, radius) {
+        ctx.beginPath();
+        ctx.moveTo(x + radius, y);
+        ctx.lineTo(x + width - radius, y);
+        ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+        ctx.lineTo(x + width, y + height - radius);
+        ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+        ctx.lineTo(x + radius, y + height);
+        ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+        ctx.lineTo(x, y + radius);
+        ctx.quadraticCurveTo(x, y, x + radius, y);
+        ctx.closePath();
+      }
+    }
+
+    // Launch Engine
+    window.addEventListener('DOMContentLoaded', () => {
+      window.game = new GameEngine();
+    });
+  })();
+  </script>
+</body>
+</html>

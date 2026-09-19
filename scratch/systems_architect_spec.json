@@ -1,0 +1,373 @@
+{
+  "project": "ONE MORE TILE",
+  "version": "2.0.0-PROD",
+  "phase": "Phase 2 Architecture Specification",
+  "target_platform": "YouTube Playables (HTML5 Canvas / WebAudio)",
+  "budget_bytes": 307200,
+  "system_axioms": {
+    "discrete_state_sovereignty": "The logical board state is an immutable integer lattice updated instantaneously on discrete ticks.",
+    "permanent_space_consumption": "Every traversable tile exited by the player is permanently consumed and removed from the walkable manifold.",
+    "strict_orthogonality": "All movement, adjacency, pathing, and connectivity checks are bound to Manhattan L1 metric. Diagonals prohibited.",
+    "deterministic_reproducibility": "Given identical initial board B0 and vector sequence d1..dn, resulting board state Bn is identical across all platforms.",
+    "reachability_dominance": "Topological reachability strictly dominates objective satisfaction. g in C_player takes precedence."
+  },
+  "stage_centering": {
+    "root_layout": {
+      "app_shell_selector": "#app-shell",
+      "app_shell_styles": {
+        "display": "flex",
+        "flexDirection": "column",
+        "justifyContent": "flex-start",
+        "alignItems": "center",
+        "width": "100%",
+        "maxWidth": "440px",
+        "height": "100%",
+        "maxHeight": "880px",
+        "paddingDesktop": "16px 12px",
+        "paddingMobile": "12px 8px",
+        "overflow": "hidden",
+        "position": "relative"
+      },
+      "hud_selector": "#hud",
+      "hud_styles": {
+        "width": "100%",
+        "flexShrink": 0,
+        "height": "auto",
+        "minHeight": "52px",
+        "boxSizing": "border-box"
+      },
+      "canvas_wrap_selector": "#canvas-wrap",
+      "canvas_wrap_styles": {
+        "flex": "1 1 0%",
+        "minHeight": 0,
+        "width": "100%",
+        "position": "relative",
+        "display": "flex",
+        "alignItems": "center",
+        "justifyContent": "center",
+        "overflow": "hidden"
+      }
+    },
+    "root_cause_analysis_top_edge_hugging": [
+      "In constructor, this.resize() was executed prior to this.loadLevel(0). Because this.level was null during that initial call, the grid dimension calculation was skipped entirely, leaving this.offsetX = 0 and this.offsetY = 0.",
+      "this.loadLevel(0) did not invoke this.resize(), resulting in the grid being rendered at top-left origin (0,0) until a manual browser window resize event occurred.",
+      "In CSS, #canvas-wrap was styled with both 'flex: 1' and 'height: 100%'. In flex column layout, 'height: 100%' resolves to the parent container height (848px), causing #hud + #canvas-wrap (56px + 848px = 904px) to overflow #app-shell, clipping the bottom 56px outside the viewport and corrupting the vertical center anchor.",
+      "#app-shell used 'justify-content: space-between' with only two flex children (#hud and #canvas-wrap), which prevented proportional margin balancing."
+    ],
+    "scaling_and_offset_math": {
+      "canvas_dimensions": {
+        "formula_width": "canvas.width = Math.floor(rect.width * dpr)",
+        "formula_height": "canvas.height = Math.floor(rect.height * dpr)",
+        "formula_css_width": "canvas.style.width = `${rect.width}px`",
+        "formula_css_height": "canvas.style.height = `${rect.height}px`",
+        "context_transform": "ctx.resetTransform(); ctx.scale(dpr, dpr);"
+      },
+      "tile_size_formula": {
+        "max_tile_w": "maxTileW = (rect.width * 0.85) / cols",
+        "max_tile_h": "maxTileH = (rect.height * 0.65) / rows",
+        "raw_tile_size": "rawTileSize = Math.floor(Math.min(maxTileW, maxTileH))",
+        "clamped_tile_size": "tileSize = Math.max(48, Math.min(110, rawTileSize))"
+      },
+      "origin_offset_formulas": {
+        "origin_x": "originX = Math.floor((rect.width - (cols * tileSize)) / 2)",
+        "origin_y": "originY = Math.floor((rect.height - (rows * tileSize)) / 2)"
+      },
+      "vertical_centering_proof": {
+        "assertion": "originY > 0 across all valid viewports",
+        "derivation": "Since tileSize <= (rect.height * 0.65) / rows, rows * tileSize <= 0.65 * rect.height. Therefore rect.height - (rows * tileSize) >= 0.35 * rect.height. originY = floor((rect.height - gridHeight) / 2) >= floor(0.175 * rect.height). For all rect.height >= 200px, originY >= 35px > 0."
+      }
+    },
+    "viewport_verification_matrix": [
+      {
+        "viewport": "Mobile Portrait (390 x 844)",
+        "shell_dimensions": { "width": 390, "height": 844 },
+        "canvas_rect": { "width": 374, "height": 764 },
+        "max_grid_size": { "cols": 4, "rows": 3 },
+        "calculated_tile_size": 79,
+        "calculated_grid_height": 237,
+        "calculated_origin_y": 263,
+        "origin_y_strictly_positive": true
+      },
+      {
+        "viewport": "Desktop Fullscreen (1920 x 1080)",
+        "shell_dimensions": { "width": 440, "height": 880 },
+        "canvas_rect": { "width": 416, "height": 792 },
+        "max_grid_size": { "cols": 4, "rows": 3 },
+        "calculated_tile_size": 88,
+        "calculated_grid_height": 264,
+        "calculated_origin_y": 264,
+        "origin_y_strictly_positive": true
+      },
+      {
+        "viewport": "Foldable Square (600 x 600)",
+        "shell_dimensions": { "width": 440, "height": 600 },
+        "canvas_rect": { "width": 416, "height": 512 },
+        "max_grid_size": { "cols": 4, "rows": 3 },
+        "calculated_tile_size": 88,
+        "calculated_grid_height": 264,
+        "calculated_origin_y": 124,
+        "origin_y_strictly_positive": true
+      }
+    ]
+  },
+  "cell_state_enums": {
+    "C_VOID": { "id": 0, "name": "VOID", "traversable": false, "color": "transparent" },
+    "C_WALL": { "id": 1, "name": "WALL", "traversable": false, "color": "#202534" },
+    "C_UNTOUCHED": { "id": 2, "name": "UNTOUCHED_TERRAIN", "traversable": true, "color": "#1a2236" },
+    "C_CONSUMED": { "id": 3, "name": "CONSUMED_HISTORY", "traversable": false, "color": "#0c0f17" },
+    "C_GOAL": { "id": 4, "name": "GOAL", "traversable": "conditional", "color_locked": "#1a1820", "color_unlocked": "#ffd700", "color_extinguished": "#160d10" },
+    "C_CHECKPOINT_1": { "id": 5, "name": "CHECKPOINT_1", "traversable": true, "color_active": "#00f0ff", "color_collected": "#ffd700" },
+    "C_CHECKPOINT_2": { "id": 6, "name": "CHECKPOINT_2", "traversable": "conditional_gated", "color_locked": "#2b3347", "color_active": "#00f0ff", "color_collected": "#ffd700" }
+  },
+  "ordered_checkpoints_system": {
+    "sequence_order": ["Spawn (p0)", "C1 (Checkpoint 1)", "C2 (Checkpoint 2)", "Goal (g)"],
+    "discrete_transition_rules": {
+      "c2_passability_gating": {
+        "rule": "While C1 is active (uncollected), C2 is strictly impassable and treated as an impassable barrier.",
+        "predicate": "canEnter(C2) <=> (c1Collected === true)",
+        "deflection_on_violation": "If player attempts to move onto C2 while C1 is active, playWallBump(), discard input, and retain player at current position. Zero state mutation."
+      },
+      "c1_consumption": {
+        "rule": "Stepping onto C1 consumes C1, mutates c1Collected to true, advances sequence pointer pi to 1, unblocks C2 into a traversable state, and lights the conduit spline to C2.",
+        "audio_cue": "playMove(streak) + harmonic crystal chime (880Hz)",
+        "particle_emitter": "spawnTileParticles(x, y, '#00f0ff', 12)"
+      },
+      "c2_consumption": {
+        "rule": "Stepping onto C2 consumes C2, mutates c2Collected to true, advances sequence pointer pi to 2, and renders the Goal eligible to unlock once all other level requirements are met.",
+        "audio_cue": "playMove(streak) + high harmonic crystal chime (1320Hz)",
+        "particle_emitter": "spawnTileParticles(x, y, '#ffd700', 16)"
+      },
+      "goal_unlock_eligibility": {
+        "all_clear_mode": "Goal unlocks <=> (all_checkpoints_collected && remaining_untouched_count === 0)",
+        "spatial_budget_mode": "Goal unlocks <=> (all_checkpoints_collected && budget >= 0)"
+      }
+    },
+    "runic_conduits": {
+      "visual_specification": {
+        "spline_width_px": 4,
+        "line_cap": "round",
+        "line_join": "round",
+        "inactive_conduit": {
+          "stroke_style": "rgba(255, 255, 255, 0.08)",
+          "line_dash": [4, 6]
+        },
+        "active_conduit": {
+          "stroke_style": "rgba(0, 240, 255, 0.6)",
+          "glow_color": "rgba(0, 240, 255, 0.4)",
+          "glow_blur": 8,
+          "pulse_frequency_hz": 1.2
+        },
+        "completed_conduit": {
+          "stroke_style": "rgba(255, 215, 0, 0.75)",
+          "glow_color": "rgba(255, 215, 0, 0.5)",
+          "glow_blur": 10
+        }
+      },
+      "spline_geometry": "Lines drawn between cell center coordinates: cx = originX + (gx + 0.5) * tileSize, cy = originY + (gy + 0.5) * tileSize along the sequence path p0 -> C1 -> C2 -> g."
+    }
+  },
+  "spatial_budget_system": {
+    "hud_ledger": {
+      "hamiltonian_mode": {
+        "condition": "initialBudget === 0",
+        "display_format": "REMAINING: ${untouchedCount}",
+        "zero_state_display": "GOAL READY",
+        "badge_class": "budget-badge"
+      },
+      "budget_mode": {
+        "condition": "initialBudget > 0",
+        "display_format": "SPARE: ${Bt}",
+        "live_countdown_step": "Bt = Bt - 1 on each forward move",
+        "states": {
+          "normal": { "condition": "Bt > 0", "badge_class": "budget-badge", "goal_flame": "radiant_cyan" },
+          "warning": { "condition": "Bt === 0", "badge_class": "budget-badge warn", "goal_flame": "flickering_amber_microfractures" },
+          "deadlock": { "condition": "Bt === -1", "badge_class": "budget-badge dead", "goal_flame": "extinguished_obsidian" }
+        }
+      }
+    },
+    "deadlock_trigger_protocol": {
+      "trigger_condition": "Bt reaches -1 prior to entering UNLOCKED_GOAL",
+      "immediate_actions": [
+        "Set isDeadlocked = true",
+        "Mutate goal state to EXTINGUISHED (goalExtinguished = true, goalUnlocked = false)",
+        "Trigger audio: playGoalExtinguish() (heavy sawtooth down-ramp with resonant bass clunk)",
+        "Trigger haptic / visual screen shake: 2px displacement impulse lasting 180ms",
+        "Spawn red fracture particles at Goal tile: spawnTileParticles(gx, gy, '#ff3366', 14)",
+        "Show modal banner: showDeadlockBanner('Deadlock — Press R to Restart or Tap Undo')"
+      ],
+      "final_move_semantics": "When Bt = 0, the player has exactly one final move remaining. If that move enters the unlocked Goal, LEVEL_VICTORY triggers. If that move enters any other tile, Bt decrements to -1, immediately executing the deadlock protocol."
+    }
+  },
+  "levels_6_to_10_blueprints": [
+    {
+      "id": 6,
+      "name": "The Return Corridor",
+      "archetype": "The Return Bridge",
+      "dimensions": { "w": 4, "h": 3 },
+      "initial_budget": 0,
+      "par": 8,
+      "spawn": { "x": 0, "y": 0 },
+      "goal": { "x": 0, "y": 2 },
+      "checkpoints": [],
+      "grid": [
+        [2, 2, 2, 2],
+        [1, 1, 1, 2],
+        [4, 2, 2, 2]
+      ],
+      "pedagogical_lesson": "Cul-de-sac routing. Traversing an enclosed pocket requires preserving an adjacent unconsumed return lane.",
+      "verified_trace": [
+        { "step": 1, "dir": { "dx": 1, "dy": 0, "name": "RIGHT" }, "target": { "x": 1, "y": 0 } },
+        { "step": 2, "dir": { "dx": 1, "dy": 0, "name": "RIGHT" }, "target": { "x": 2, "y": 0 } },
+        { "step": 3, "dir": { "dx": 1, "dy": 0, "name": "RIGHT" }, "target": { "x": 3, "y": 0 } },
+        { "step": 4, "dir": { "dx": 0, "dy": 1, "name": "DOWN" }, "target": { "x": 3, "y": 1 } },
+        { "step": 5, "dir": { "dx": 0, "dy": 1, "name": "DOWN" }, "target": { "x": 3, "y": 2 } },
+        { "step": 6, "dir": { "dx": -1, "dy": 0, "name": "LEFT" }, "target": { "x": 2, "y": 2 } },
+        { "step": 7, "dir": { "dx": -1, "dy": 0, "name": "LEFT" }, "target": { "x": 1, "y": 2 } },
+        { "step": 8, "dir": { "dx": -1, "dy": 0, "name": "LEFT" }, "target": { "x": 0, "y": 2 }, "terminal": true }
+      ]
+    },
+    {
+      "id": 7,
+      "name": "The Spatial Budget",
+      "archetype": "The Spatial Budget",
+      "dimensions": { "w": 4, "h": 2 },
+      "initial_budget": 3,
+      "par": 2,
+      "spawn": { "x": 0, "y": 0 },
+      "goal": { "x": 1, "y": 1 },
+      "checkpoints": [],
+      "grid": [
+        [2, 2, 2, 2],
+        [1, 4, 2, 2]
+      ],
+      "pedagogical_lesson": "Introduction to the live move countdown. Overspending spare tiles extinguishes the Goal at Bt = -1.",
+      "verified_trace": [
+        { "step": 1, "dir": { "dx": 1, "dy": 0, "name": "RIGHT" }, "target": { "x": 1, "y": 0 }, "remaining_budget": 2 },
+        { "step": 2, "dir": { "dx": 0, "dy": 1, "name": "DOWN" }, "target": { "x": 1, "y": 1 }, "remaining_budget": 1, "terminal": true }
+      ]
+    },
+    {
+      "id": 8,
+      "name": "Checkpoint Sequence",
+      "archetype": "Sequence Waypoints & Conduits",
+      "dimensions": { "w": 3, "h": 3 },
+      "initial_budget": 0,
+      "par": 8,
+      "spawn": { "x": 0, "y": 0 },
+      "goal": { "x": 2, "y": 2 },
+      "checkpoints": [
+        { "id": 1, "x": 2, "y": 0, "cellType": 5 },
+        { "id": 2, "x": 0, "y": 2, "cellType": 6 }
+      ],
+      "grid": [
+        [2, 2, 5],
+        [2, 2, 2],
+        [6, 2, 4]
+      ],
+      "pedagogical_lesson": "Waypoints must be visited in strict numerical order. C2 is impassable while C1 is active.",
+      "verified_trace": [
+        { "step": 1, "dir": { "dx": 1, "dy": 0, "name": "RIGHT" }, "target": { "x": 1, "y": 0 } },
+        { "step": 2, "dir": { "dx": 1, "dy": 0, "name": "RIGHT" }, "target": { "x": 2, "y": 0 }, "event": "CONSUME_C1_UNBLOCK_C2" },
+        { "step": 3, "dir": { "dx": 0, "dy": 1, "name": "DOWN" }, "target": { "x": 2, "y": 1 } },
+        { "step": 4, "dir": { "dx": -1, "dy": 0, "name": "LEFT" }, "target": { "x": 1, "y": 1 } },
+        { "step": 5, "dir": { "dx": -1, "dy": 0, "name": "LEFT" }, "target": { "x": 0, "y": 1 } },
+        { "step": 6, "dir": { "dx": 0, "dy": 1, "name": "DOWN" }, "target": { "x": 0, "y": 2 }, "event": "CONSUME_C2_ALL_CHECKPOINTS_CLEAR" },
+        { "step": 7, "dir": { "dx": 1, "dy": 0, "name": "RIGHT" }, "target": { "x": 1, "y": 2 }, "event": "ALL_TILES_CLEAR_GOAL_UNLOCKS" },
+        { "step": 8, "dir": { "dx": 1, "dy": 0, "name": "RIGHT" }, "target": { "x": 2, "y": 2 }, "terminal": true }
+      ]
+    },
+    {
+      "id": 9,
+      "name": "The True Sacrifice",
+      "archetype": "Parity Sacrifice & Intentional Abandonment",
+      "dimensions": { "w": 3, "h": 3 },
+      "initial_budget": 6,
+      "par": 6,
+      "spawn": { "x": 0, "y": 0 },
+      "goal": { "x": 0, "y": 2 },
+      "checkpoints": [],
+      "grid": [
+        [2, 2, 2],
+        [1, 2, 2],
+        [4, 2, 2]
+      ],
+      "pedagogical_lesson": "Breaking the Hamiltonian instinct. Player must intentionally abandon center tile (1,1) to avoid cul-de-sac entrapment and finish within 6 moves.",
+      "verified_trace": [
+        { "step": 1, "dir": { "dx": 1, "dy": 0, "name": "RIGHT" }, "target": { "x": 1, "y": 0 }, "remaining_budget": 5 },
+        { "step": 2, "dir": { "dx": 1, "dy": 0, "name": "RIGHT" }, "target": { "x": 2, "y": 0 }, "remaining_budget": 4 },
+        { "step": 3, "dir": { "dx": 0, "dy": 1, "name": "DOWN" }, "target": { "x": 2, "y": 1 }, "remaining_budget": 3 },
+        { "step": 4, "dir": { "dx": 0, "dy": 1, "name": "DOWN" }, "target": { "x": 2, "y": 2 }, "remaining_budget": 2 },
+        { "step": 5, "dir": { "dx": -1, "dy": 0, "name": "LEFT" }, "target": { "x": 1, "y": 2 }, "remaining_budget": 1 },
+        { "step": 6, "dir": { "dx": -1, "dy": 0, "name": "LEFT" }, "target": { "x": 0, "y": 2 }, "remaining_budget": 0, "terminal": true }
+      ]
+    },
+    {
+      "id": 10,
+      "name": "The Graduation Exam",
+      "archetype": "Master Synthesis (Perimeter Sweep + Center Sink)",
+      "dimensions": { "w": 3, "h": 3 },
+      "initial_budget": 0,
+      "par": 8,
+      "spawn": { "x": 0, "y": 0 },
+      "goal": { "x": 1, "y": 1 },
+      "checkpoints": [
+        { "id": 1, "x": 2, "y": 0, "cellType": 5 },
+        { "id": 2, "x": 0, "y": 2, "cellType": 6 }
+      ],
+      "grid": [
+        [2, 2, 5],
+        [2, 4, 2],
+        [6, 2, 2]
+      ],
+      "pedagogical_lesson": "Synthesizes Checkpoint Sequencing, Perimeter Preservation, and Center Sink. Flawless 8-move clockwise perimeter sweep terminating into the center goal.",
+      "verified_trace": [
+        { "step": 1, "dir": { "dx": 1, "dy": 0, "name": "RIGHT" }, "target": { "x": 1, "y": 0 } },
+        { "step": 2, "dir": { "dx": 1, "dy": 0, "name": "RIGHT" }, "target": { "x": 2, "y": 0 }, "event": "CONSUME_C1_UNBLOCK_C2" },
+        { "step": 3, "dir": { "dx": 0, "dy": 1, "name": "DOWN" }, "target": { "x": 2, "y": 1 } },
+        { "step": 4, "dir": { "dx": 0, "dy": 1, "name": "DOWN" }, "target": { "x": 2, "y": 2 } },
+        { "step": 5, "dir": { "dx": -1, "dy": 0, "name": "LEFT" }, "target": { "x": 1, "y": 2 } },
+        { "step": 6, "dir": { "dx": -1, "dy": 0, "name": "LEFT" }, "target": { "x": 0, "y": 2 }, "event": "CONSUME_C2" },
+        { "step": 7, "dir": { "dx": 0, "dy": -1, "name": "UP" }, "target": { "x": 0, "y": 1 }, "event": "ALL_8_PERIMETER_TILES_CONSUMED_CENTER_GOAL_UNLOCKS" },
+        { "step": 8, "dir": { "dx": 1, "dy": 0, "name": "RIGHT" }, "target": { "x": 1, "y": 1 }, "terminal": true }
+      ]
+    }
+  ],
+  "bi_directional_undo_architecture": {
+    "stack_interface": {
+      "frame_schema": {
+        "player": "{ x: number, y: number }",
+        "target": "{ x: number, y: number }",
+        "dir": "{ dx: number, dy: number }",
+        "prevCellState": "CellStateEnum (e.g. C_UNTOUCHED, C_CHECKPOINT_1)",
+        "targetCellPrevState": "CellStateEnum",
+        "c1Collected": "boolean",
+        "c2Collected": "boolean",
+        "goalUnlocked": "boolean",
+        "goalExtinguished": "boolean",
+        "budget": "number",
+        "moveCount": "number",
+        "hasUndone": "boolean",
+        "isDeadlocked": "boolean"
+      }
+    },
+    "rollback_execution_pipeline": [
+      "Step 1: Check history stack non-empty and not victorious. Return if invalid.",
+      "Step 2: Cancel active animation tweens immediately (snap visualPlayer to logical target).",
+      "Step 3: Pop frame from history stack.",
+      "Step 4: Restore grid[player.y][player.x] = frame.prevCellState (un-consumes departure tile).",
+      "Step 5: Restore grid[target.y][target.x] = frame.targetCellPrevState (restores target cell state).",
+      "Step 6: Restore player = { ...frame.player } and visualPlayer = { ...frame.player }.",
+      "Step 7: Restore c1Collected = frame.c1Collected and c2Collected = frame.c2Collected. If C1 was uncollected, C2 immediately re-locks as impassable.",
+      "Step 8: Restore budget = frame.budget and moveCount = frame.moveCount.",
+      "Step 9: Bi-directional Goal Rekindling: If frame.budget >= 0 and previous state was extinguished, goal immediately heals, rekindles flame, clears deadlock, and plays playGoalRekindle().",
+      "Step 10: Clear deadlock banner and hide route severed toast.",
+      "Step 11: Prestige Penalty: If hasUndone was false, set hasUndone = true, trigger playStarShatter(), play starShatter CSS animation on Star 3, and spawn shatter particles."
+    ],
+    "star_3_prestige_penalty": {
+      "trigger": "First tap on Undo button during the active attempt",
+      "acoustic_feedback": "High-frequency resonant crystal break (osc1 2400->1600Hz, osc2 3150->2100Hz)",
+      "visual_feedback": "Star 3 fractures with rotation and scale pop, dissolves to opacity 0, and permanently forfeits Tier 3 'Perfect' mastery for that attempt.",
+      "player_agency": "Run remains active; player can earn Stars 1 and 2 and advance to the next level."
+    }
+  }
+}
