@@ -1,0 +1,1069 @@
+[
+  {
+    "id": 11,
+    "world": 3,
+    "name": "The Bifurcated Nexus",
+    "w": 5,
+    "h": 5,
+    "budget": 0,
+    "par": 22,
+    "spawn": {
+      "x": 0,
+      "y": 0
+    },
+    "goal": {
+      "x": 0,
+      "y": 4
+    },
+    "checkpoints": [
+      {
+        "id": 1,
+        "x": 4,
+        "y": 0,
+        "cellType": 5
+      }
+    ],
+    "grid": [
+      [
+        2,
+        2,
+        2,
+        2,
+        5
+      ],
+      [
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      [
+        7,
+        2,
+        2,
+        2,
+        1
+      ],
+      [
+        2,
+        2,
+        2,
+        11,
+        2
+      ],
+      [
+        4,
+        1,
+        1,
+        2,
+        2
+      ]
+    ],
+    "trace": [
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "DOWN",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "RIGHT",
+      "DOWN",
+      "LEFT",
+      "UP",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "DOWN"
+    ],
+    "branching_factor": 2.9,
+    "archetype": "Return Bridge & Lobe Isolation",
+    "initialPhase": "RED"
+  },
+  {
+    "id": 12,
+    "world": 3,
+    "name": "The Obsidian Cloverleaf",
+    "w": 5,
+    "h": 5,
+    "budget": 0,
+    "par": 24,
+    "spawn": {
+      "x": 0,
+      "y": 0
+    },
+    "goal": {
+      "x": 2,
+      "y": 4
+    },
+    "checkpoints": [
+      {
+        "id": 1,
+        "x": 4,
+        "y": 0,
+        "cellType": 5
+      }
+    ],
+    "grid": [
+      [
+        2,
+        2,
+        2,
+        2,
+        5
+      ],
+      [
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      [
+        7,
+        2,
+        2,
+        2,
+        2
+      ],
+      [
+        2,
+        11,
+        11,
+        2,
+        2
+      ],
+      [
+        2,
+        2,
+        4,
+        1,
+        1
+      ]
+    ],
+    "trace": [
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "DOWN",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "DOWN",
+      "RIGHT",
+      "UP",
+      "RIGHT",
+      "DOWN"
+    ],
+    "branching_factor": 3.1,
+    "archetype": "Dual-Hub Cloverleaf",
+    "initialPhase": "RED"
+  },
+  {
+    "id": 13,
+    "world": 3,
+    "name": "The Trefoil Chasm",
+    "w": 6,
+    "h": 5,
+    "budget": 0,
+    "par": 26,
+    "spawn": {
+      "x": 0,
+      "y": 0
+    },
+    "goal": {
+      "x": 0,
+      "y": 4
+    },
+    "checkpoints": [
+      {
+        "id": 1,
+        "x": 5,
+        "y": 0,
+        "cellType": 5
+      },
+      {
+        "id": 2,
+        "x": 5,
+        "y": 3,
+        "cellType": 6
+      }
+    ],
+    "grid": [
+      [
+        2,
+        2,
+        2,
+        2,
+        2,
+        5
+      ],
+      [
+        2,
+        2,
+        2,
+        7,
+        2,
+        2
+      ],
+      [
+        2,
+        2,
+        2,
+        2,
+        7,
+        1
+      ],
+      [
+        2,
+        2,
+        2,
+        2,
+        11,
+        6
+      ],
+      [
+        4,
+        1,
+        1,
+        1,
+        2,
+        2
+      ]
+    ],
+    "trace": [
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "DOWN",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "RIGHT",
+      "DOWN",
+      "LEFT",
+      "UP",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "DOWN"
+    ],
+    "branching_factor": 3,
+    "archetype": "Triple Lobe Isolation & Sacrifice",
+    "initialPhase": "RED"
+  },
+  {
+    "id": 14,
+    "world": 3,
+    "name": "The Runic Quad-Hub",
+    "w": 6,
+    "h": 5,
+    "budget": 0,
+    "par": 28,
+    "spawn": {
+      "x": 0,
+      "y": 0
+    },
+    "goal": {
+      "x": 2,
+      "y": 4
+    },
+    "checkpoints": [
+      {
+        "id": 1,
+        "x": 5,
+        "y": 0,
+        "cellType": 5
+      },
+      {
+        "id": 2,
+        "x": 5,
+        "y": 2,
+        "cellType": 6
+      }
+    ],
+    "grid": [
+      [
+        2,
+        2,
+        2,
+        2,
+        2,
+        5
+      ],
+      [
+        2,
+        2,
+        2,
+        7,
+        2,
+        2
+      ],
+      [
+        2,
+        2,
+        2,
+        2,
+        7,
+        6
+      ],
+      [
+        2,
+        11,
+        11,
+        2,
+        2,
+        2
+      ],
+      [
+        2,
+        2,
+        4,
+        1,
+        1,
+        1
+      ]
+    ],
+    "trace": [
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "DOWN",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "DOWN",
+      "RIGHT",
+      "UP",
+      "RIGHT",
+      "DOWN"
+    ],
+    "branching_factor": 3.2,
+    "archetype": "Quad-Hub Nexus & Lobe Partition",
+    "initialPhase": "RED"
+  },
+  {
+    "id": 15,
+    "world": 3,
+    "name": "The Shattered Singularity",
+    "w": 6,
+    "h": 6,
+    "budget": 0,
+    "par": 30,
+    "spawn": {
+      "x": 0,
+      "y": 0
+    },
+    "goal": {
+      "x": 4,
+      "y": 4
+    },
+    "checkpoints": [
+      {
+        "id": 1,
+        "x": 5,
+        "y": 1,
+        "cellType": 5
+      },
+      {
+        "id": 2,
+        "x": 5,
+        "y": 3,
+        "cellType": 6
+      }
+    ],
+    "grid": [
+      [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      [
+        2,
+        2,
+        2,
+        2,
+        7,
+        5
+      ],
+      [
+        2,
+        7,
+        2,
+        2,
+        2,
+        2
+      ],
+      [
+        2,
+        2,
+        7,
+        11,
+        11,
+        6
+      ],
+      [
+        2,
+        2,
+        2,
+        2,
+        4,
+        1
+      ],
+      [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    ],
+    "trace": [
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "DOWN",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "DOWN",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "UP",
+      "RIGHT",
+      "DOWN"
+    ],
+    "branching_factor": 3.2,
+    "archetype": "Master Lobe & Return Bridge Synthesis",
+    "initialPhase": "RED"
+  },
+  {
+    "id": 16,
+    "world": 4,
+    "name": "The Polarity Threshold",
+    "w": 6,
+    "h": 5,
+    "budget": 0,
+    "par": 26,
+    "spawn": {
+      "x": 0,
+      "y": 0
+    },
+    "goal": {
+      "x": 0,
+      "y": 4
+    },
+    "checkpoints": [
+      {
+        "id": 1,
+        "x": 0,
+        "y": 2,
+        "cellType": 5
+      }
+    ],
+    "grid": [
+      [
+        2,
+        2,
+        2,
+        2,
+        2,
+        9
+      ],
+      [
+        2,
+        8,
+        2,
+        2,
+        2,
+        2
+      ],
+      [
+        5,
+        2,
+        2,
+        10,
+        2,
+        1
+      ],
+      [
+        2,
+        2,
+        2,
+        2,
+        11,
+        2
+      ],
+      [
+        4,
+        1,
+        1,
+        1,
+        2,
+        2
+      ]
+    ],
+    "trace": [
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "DOWN",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "RIGHT",
+      "DOWN",
+      "LEFT",
+      "UP",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "DOWN"
+    ],
+    "branching_factor": 3,
+    "archetype": "Binary Phase Aperture",
+    "initialPhase": "RED"
+  },
+  {
+    "id": 17,
+    "world": 4,
+    "name": "The Alternating Crucible",
+    "w": 6,
+    "h": 5,
+    "budget": 0,
+    "par": 28,
+    "spawn": {
+      "x": 0,
+      "y": 0
+    },
+    "goal": {
+      "x": 2,
+      "y": 4
+    },
+    "checkpoints": [
+      {
+        "id": 1,
+        "x": 4,
+        "y": 1,
+        "cellType": 5
+      }
+    ],
+    "grid": [
+      [
+        2,
+        2,
+        2,
+        2,
+        9,
+        2
+      ],
+      [
+        2,
+        2,
+        8,
+        2,
+        5,
+        2
+      ],
+      [
+        2,
+        10,
+        2,
+        2,
+        2,
+        1
+      ],
+      [
+        2,
+        2,
+        7,
+        2,
+        11,
+        8
+      ],
+      [
+        2,
+        2,
+        4,
+        1,
+        2,
+        2
+      ]
+    ],
+    "trace": [
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "DOWN",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "RIGHT",
+      "DOWN",
+      "LEFT",
+      "UP",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "DOWN",
+      "RIGHT",
+      "RIGHT"
+    ],
+    "branching_factor": 3.1,
+    "archetype": "Dual-Switch Permutation",
+    "initialPhase": "RED"
+  },
+  {
+    "id": 18,
+    "world": 4,
+    "name": "The Entangled Quadrants",
+    "w": 6,
+    "h": 6,
+    "budget": 0,
+    "par": 30,
+    "spawn": {
+      "x": 0,
+      "y": 0
+    },
+    "goal": {
+      "x": 0,
+      "y": 4
+    },
+    "checkpoints": [
+      {
+        "id": 1,
+        "x": 4,
+        "y": 1,
+        "cellType": 5
+      },
+      {
+        "id": 2,
+        "x": 3,
+        "y": 3,
+        "cellType": 6
+      }
+    ],
+    "grid": [
+      [
+        2,
+        2,
+        2,
+        2,
+        2,
+        9
+      ],
+      [
+        2,
+        2,
+        8,
+        2,
+        5,
+        2
+      ],
+      [
+        2,
+        10,
+        2,
+        2,
+        2,
+        2
+      ],
+      [
+        1,
+        2,
+        2,
+        6,
+        2,
+        8
+      ],
+      [
+        4,
+        11,
+        2,
+        2,
+        1,
+        1
+      ],
+      [
+        1,
+        2,
+        2,
+        2,
+        1,
+        1
+      ]
+    ],
+    "trace": [
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "DOWN",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "DOWN",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "LEFT",
+      "LEFT",
+      "UP",
+      "LEFT"
+    ],
+    "branching_factor": 3.1,
+    "archetype": "Four-Chamber Phase Interlock",
+    "initialPhase": "RED"
+  },
+  {
+    "id": 19,
+    "world": 4,
+    "name": "The Crucible of Duality",
+    "w": 6,
+    "h": 6,
+    "budget": 0,
+    "par": 33,
+    "spawn": {
+      "x": 0,
+      "y": 0
+    },
+    "goal": {
+      "x": 0,
+      "y": 5
+    },
+    "checkpoints": [
+      {
+        "id": 1,
+        "x": 3,
+        "y": 1,
+        "cellType": 5
+      },
+      {
+        "id": 2,
+        "x": 1,
+        "y": 3,
+        "cellType": 6
+      }
+    ],
+    "grid": [
+      [
+        2,
+        2,
+        2,
+        2,
+        2,
+        9
+      ],
+      [
+        2,
+        8,
+        2,
+        5,
+        2,
+        2
+      ],
+      [
+        2,
+        2,
+        2,
+        10,
+        2,
+        2
+      ],
+      [
+        1,
+        6,
+        2,
+        8,
+        2,
+        2
+      ],
+      [
+        2,
+        11,
+        2,
+        9,
+        7,
+        1
+      ],
+      [
+        4,
+        2,
+        2,
+        2,
+        2,
+        1
+      ]
+    ],
+    "trace": [
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "DOWN",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "DOWN",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "UP",
+      "LEFT",
+      "DOWN"
+    ],
+    "branching_factor": 3.2,
+    "archetype": "Triple Switch Polarity Weave",
+    "initialPhase": "RED"
+  },
+  {
+    "id": 20,
+    "world": 4,
+    "name": "The Grandmaster Singularity",
+    "w": 7,
+    "h": 6,
+    "budget": 0,
+    "par": 36,
+    "spawn": {
+      "x": 0,
+      "y": 0
+    },
+    "goal": {
+      "x": 6,
+      "y": 4
+    },
+    "checkpoints": [
+      {
+        "id": 1,
+        "x": 5,
+        "y": 1,
+        "cellType": 5
+      },
+      {
+        "id": 2,
+        "x": 2,
+        "y": 3,
+        "cellType": 6
+      }
+    ],
+    "grid": [
+      [
+        2,
+        2,
+        2,
+        2,
+        2,
+        9,
+        2
+      ],
+      [
+        2,
+        2,
+        2,
+        8,
+        2,
+        5,
+        2
+      ],
+      [
+        2,
+        10,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      [
+        2,
+        2,
+        6,
+        2,
+        8,
+        11,
+        11
+      ],
+      [
+        7,
+        2,
+        7,
+        2,
+        2,
+        2,
+        4
+      ],
+      [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    ],
+    "trace": [
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "DOWN",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "DOWN",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "UP",
+      "RIGHT",
+      "DOWN"
+    ],
+    "branching_factor": 3.3,
+    "archetype": "The Grandmaster Synthesis",
+    "initialPhase": "RED"
+  }
+]
