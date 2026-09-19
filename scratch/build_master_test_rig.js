@@ -1,7 +1,7 @@
 const fs = require('fs');
 
 const spec1_10 = JSON.parse(fs.readFileSync('scratch/redesign_architect_spec.json', 'utf8')).levels.slice(0, 10);
-const spec11_20 = JSON.parse(fs.readFileSync('scratch/levels11_20_spec.json', 'utf8'));
+const spec11_20 = JSON.parse(fs.readFileSync('scratch/levels11_20_psych_spec.json', 'utf8'));
 
 const allLevels = [...spec1_10, ...spec11_20];
 
@@ -197,8 +197,8 @@ class GameEngineRig {
     const cell = this.grid[y][x];
     if (cell === C_WALL || cell === C_CONSUMED || cell === C_VOID) return false;
     if (cell === C_CHECKPOINT_2 && !this.c1Collected) return false;
-    if (cell === C_GATE_RED && !this.phaseState) return false;
-    if (cell === C_GATE_BLUE && this.phaseState) return false;
+    if (cell === C_GATE_RED && this.phaseState) return false;
+    if (cell === C_GATE_BLUE && !this.phaseState) return false;
     if (cell === C_GOAL) return this.isGoalUnlocked;
     if (cell === C_CROSSROAD) {
       const visits = this.crossroads ? (this.crossroads.get(\`\${x},\${y}\`) || 0) : 0;
@@ -768,32 +768,35 @@ runTest("Test 6: World 2 Knot Theory & Crossroad 2-Pass Degradation Invariant", 
 // TEST 7: World 3 The Shattered Nexus (Crumbling Bridges & Multi-Crossroads)
 // ----------------------------------------------------------------------------
 runTest("Test 7: World 3 The Shattered Nexus (Crumbling Bridges & Multi-Crossroads)", () => {
-  // Test Level 11 Crumbling Basalt Bridge and Crossroad
+  // Test Level 11 Crumbling Basalt Bridge
   const lvl11 = LEVELS.find(l => l.id === 11);
   assert(lvl11, "Level 11 must exist");
   const engine11 = new GameEngineRig(lvl11);
 
-  // Assert crumbling bridge at (0,2)
-  assert.strictEqual(engine11.grid[2][0], C_CRUMBLING);
-  // Assert crossroad at (3,3)
-  assert.strictEqual(engine11.grid[3][3], C_CROSSROAD);
-  assert.strictEqual(engine11.crossroads.get('3,3'), 2);
+  // Assert crumbling bridge at (1,0)
+  assert.strictEqual(engine11.grid[0][1], C_CRUMBLING);
 
-  // Traverse down to (0,2) [Crumbling tile]
-  engine11.executeMove(0, 1); // (0,1)
-  let rCrumble = engine11.executeMove(0, 1); // onto (0,2)
+  // Move onto (1,0) [Crumbling tile]
+  let rCrumble = engine11.executeMove(1, 0);
   assert.strictEqual(rCrumble.success, true);
-  assert.strictEqual(engine11.player.x, 0);
-  assert.strictEqual(engine11.player.y, 2);
+  assert.strictEqual(engine11.player.x, 1);
+  assert.strictEqual(engine11.player.y, 0);
 
-  // Depart from crumbling tile to (1,2)
-  let rDepart = engine11.executeMove(1, 0); // onto (1,2)
+  // Depart from crumbling tile to (2,0)
+  let rDepart = engine11.executeMove(1, 0);
   assert.strictEqual(rDepart.success, true);
-  assert.strictEqual(engine11.grid[2][0], C_VOID, "Departed crumbling tile must collapse to C_VOID (0)");
+  assert.strictEqual(engine11.grid[0][1], C_VOID, "Departed crumbling tile must collapse to C_VOID (0)");
 
   // Reverse step back into the void must be strictly rejected
   let rVoid = engine11.executeMove(-1, 0);
   assert.strictEqual(rVoid.success, false, "Attempting to enter collapsed C_VOID must be rejected");
+
+  // Test Level 12 Central Crossroad
+  const lvl12 = LEVELS.find(l => l.id === 12);
+  assert(lvl12, "Level 12 must exist");
+  const engine12 = new GameEngineRig(lvl12);
+  assert.strictEqual(engine12.grid[2][2], C_CROSSROAD);
+  assert.strictEqual(engine12.crossroads.get('2,2'), 2);
 });
 
 // ----------------------------------------------------------------------------
@@ -806,30 +809,32 @@ runTest("Test 8: World 4 The Polarity Crucible (Phase Switches & Dynamic Gates)"
 
   // Level 16 initial phase is RED (true)
   assert.strictEqual(engine16.phaseState, true);
-  // Red Gate is at (5,0), Blue Gate is at (3,2), Switch is at (1,1)
-  assert.strictEqual(engine16.isTilePassable(5, 0), true, "Red Gate must be passable while phase is RED");
-  assert.strictEqual(engine16.isTilePassable(3, 2), false, "Blue Gate must be impassable while phase is RED");
+  // Red Gate is at (0,3), Blue Gate is at (4,0), Switch is at (3,4)
+  assert.strictEqual(engine16.isTilePassable(0, 3), false, "Red Gate must be impassable while phase is RED");
+  assert.strictEqual(engine16.isTilePassable(4, 0), true, "Blue Gate must be passable while phase is RED");
 
   // Follow trace steps 1 to 10:
-  // (0,0) -> R(1,0) -> R(2,0) -> R(3,0) -> R(4,0) -> R(5,0)[Red Gate] -> D(5,1) -> L(4,1) -> L(3,1) -> L(2,1) -> L(1,1)[C_SWITCH]
+  // (0,0) -> R(1,0) -> R(2,0) -> R(3,0) -> R(4,0)[Blue Gate] -> R(5,0) -> D(5,1) -> D(5,2) -> D(5,3) -> D(5,4)
   engine16.executeMove(1, 0); // (1,0)
   engine16.executeMove(1, 0); // (2,0)
   engine16.executeMove(1, 0); // (3,0)
-  engine16.executeMove(1, 0); // (4,0)
-  let rRedGate = engine16.executeMove(1, 0); // (5,0) [C_GATE_RED]
-  assert.strictEqual(rRedGate.success, true, "Entering open Red Gate must succeed while phase is RED");
+  let rBlueGate = engine16.executeMove(1, 0); // (4,0) [C_GATE_BLUE]
+  assert.strictEqual(rBlueGate.success, true, "Entering open Blue Gate must succeed while phase is RED");
+  engine16.executeMove(1, 0); // (5,0)
   engine16.executeMove(0, 1); // (5,1)
-  engine16.executeMove(-1, 0); // (4,1)
-  engine16.executeMove(-1, 0); // (3,1)
-  engine16.executeMove(-1, 0); // (2,1)
-  let rSwitch = engine16.executeMove(-1, 0); // (1,1) [C_SWITCH]
+  engine16.executeMove(0, 1); // (5,2)
+  engine16.executeMove(0, 1); // (5,3)
+  engine16.executeMove(0, 1); // (5,4)
+  engine16.executeMove(-1, 0); // (4,4)
+  let rSwitch = engine16.executeMove(-1, 0); // (3,4) [C_SWITCH]
   assert.strictEqual(rSwitch.success, true);
-  assert.strictEqual(engine16.player.x, 1);
-  assert.strictEqual(engine16.player.y, 1);
+  assert.strictEqual(engine16.player.x, 3);
+  assert.strictEqual(engine16.player.y, 4);
   assert.strictEqual(engine16.phaseState, false, "Entering switch must invert phase to BLUE (false)");
 
-  // Now Blue Gate at (3,2) is passable!
-  assert.strictEqual(engine16.isTilePassable(3, 2), true, "Blue Gate must be passable while phase is BLUE");
+  // Now Red Gate at (0,3) is passable!
+  assert.strictEqual(engine16.isTilePassable(0, 3), true, "Red Gate must be passable while phase is BLUE");
+  assert.strictEqual(engine16.isTilePassable(4, 0), false, "Blue Gate must be impassable while phase is BLUE");
 });
 
 // ----------------------------------------------------------------------------

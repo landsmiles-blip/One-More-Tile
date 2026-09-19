@@ -1,0 +1,1066 @@
+[
+  {
+    "id": 11,
+    "world": 3,
+    "name": "The Siren's Call",
+    "archetype": "The Immediate Temptation",
+    "psychological_concept": "Deceptive Affordance & System 1 Impulsivity (Kahneman Dual-Process)",
+    "cognitive_bias_exploited": "Proximity Heuristic (Greedy Manhattan Distance Minimization)",
+    "target_par": 14,
+    "par": 14,
+    "budget": 0,
+    "w": 5,
+    "h": 4,
+    "spawn": {
+      "x": 0,
+      "y": 0
+    },
+    "goal": {
+      "x": 0,
+      "y": 2
+    },
+    "checkpoints": [
+      {
+        "id": 1,
+        "x": 4,
+        "y": 3,
+        "cellType": 5
+      }
+    ],
+    "grid": [
+      [
+        2,
+        7,
+        2,
+        2,
+        2
+      ],
+      [
+        2,
+        2,
+        1,
+        1,
+        2
+      ],
+      [
+        4,
+        2,
+        1,
+        1,
+        2
+      ],
+      [
+        1,
+        2,
+        2,
+        2,
+        5
+      ]
+    ],
+    "trace": [
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "UP",
+      "UP",
+      "LEFT",
+      "DOWN"
+    ],
+    "branching_factor": 2.3,
+    "initialPhase": "RED",
+    "siren_path_description": "The Goal is visibly situated only 3 tiles away from the spawn point across a direct open corridor. Over 95% of first-time players instinctively swipe straight towards the Goal or immediately charge forward to harvest the nearest cluster.",
+    "impasse_mechanism": "Charging toward the Goal or early tiles burns the single Crumbling Basalt Bridge (C_CRUMBLING -> C_VOID) prematurely. The player is permanently cut off from Checkpoint 1, or reaches the Goal with uncollected tiles and an locked exit: GOAL LOCKED.",
+    "eureka_insight_description": "The Voluntary Turnaround (Conscious Anti-Greed). To reach the Goal, the player must immediately turn their back on the Goal on Move 1. Stepping away from safety, they cross the crumbling bridge as an irreversible entrance, sweep the outer perimeter to collect Checkpoint 1, and loop back onto the Goal altar.",
+    "visual_hook_3sec": "A deceptively simple 5x4 board where Spawn and Goal sit in plain view on the left, separated by a single fragile cracked bridge leading to a solitary glowing gold star on the right. Viewers immediately think: 'This takes 5 seconds, why is he struggling?'",
+    "backseat_gamer_trigger": "'Why are you going away from the star?! Just swipe down to the exit! No wait, don't break the bridge you idiot!'",
+    "emotional_arc": "Greedy Impulse (0-2s) -> Shock/Deadlock (3-5s) -> Instant Rage-Restart (6s) -> Epiphany & Turnaround (8-10s) -> Triumphant Victory (14s)",
+    "retention_mechanics": "Sub-15 second solve loop with an immediate jarring fail state. Because failure occurs on move 3-4, rage-replay friction is zero, triggering compulsive 'one more try' restarts."
+  },
+  {
+    "id": 12,
+    "world": 3,
+    "name": "The Parity Illusion",
+    "archetype": "The Broken Mirror",
+    "psychological_concept": "Gestalt Symmetry Bias & The Einstellung Effect (Wertheimer, Luchins)",
+    "cognitive_bias_exploited": "Bilateral Symmetry Preference & Checkerboard Parity Blind Spot",
+    "target_par": 16,
+    "par": 16,
+    "budget": 0,
+    "w": 5,
+    "h": 5,
+    "spawn": {
+      "x": 2,
+      "y": 1
+    },
+    "goal": {
+      "x": 4,
+      "y": 1
+    },
+    "checkpoints": [],
+    "grid": [
+      [
+        1,
+        2,
+        2,
+        2,
+        2
+      ],
+      [
+        2,
+        2,
+        2,
+        1,
+        4
+      ],
+      [
+        2,
+        2,
+        11,
+        2,
+        2
+      ],
+      [
+        1,
+        1,
+        2,
+        2,
+        2
+      ],
+      [
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    ],
+    "trace": [
+      "DOWN",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "LEFT",
+      "LEFT",
+      "UP",
+      "LEFT",
+      "LEFT",
+      "UP",
+      "RIGHT",
+      "UP",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "DOWN"
+    ],
+    "branching_factor": 2.6,
+    "initialPhase": "RED",
+    "siren_path_description": "The arena is constructed with near-perfect geometric symmetry: a central Crossroad tile (C_CROSSROAD) flanked by two identical side wings. The player reflexively executes a symmetric figure-8 loop (clear the entire left wing, cross the center, clear the entire right wing).",
+    "impasse_mechanism": "Because of bipartite checkerboard parity, an aesthetically symmetric path through the wings mathematically leaves exactly 1 isolated orphan tile unconsumed in the corner. The player reaches the Goal with 1 remaining tile, failing the Clear-All requirement.",
+    "eureka_insight_description": "The Asymmetric Hitch. The player must consciously violate their aesthetic instinct for symmetry. On step 4, they must make a sharp, counter-intuitive zigzag hitch through the central crossroad early—borrowing a single tile from the opposite wing before returning to complete the loop. Breaking visual symmetry resolves the mathematical parity constraint.",
+    "visual_hook_3sec": "A gorgeous, hypnotic hourglass/butterfly arena with a glowing gold crossroad in the exact center. Looks like a classic IQ test graphic that should be solved with a single continuous stroke.",
+    "backseat_gamer_trigger": "'Just do a figure-8! Clear left, clear right! Wait, why did you leave that one tile in the corner?! Bro can't even draw an 8!'",
+    "emotional_arc": "Symmetric Harmony (0-3s) -> Confusion/Orphan Tile (4-7s) -> Cognitive Dissonance (8-10s) -> The Asymmetric Breakthrough (12s) -> Clean Parity Resolution (16s)",
+    "retention_mechanics": "The infuriating '1 tile remaining' screen provokes immediate indignation. The player knows they are 99% of the way there, driving immediate instant-replay to fix that single orphan tile."
+  },
+  {
+    "id": 13,
+    "world": 3,
+    "name": "The Sacrificial Chamber",
+    "archetype": "The Delayed Harvest",
+    "psychological_concept": "Loss Aversion & The Sunk Cost Fallacy (Kahneman & Tversky)",
+    "cognitive_bias_exploited": "Completionism & Resistance to Resource Abandonment",
+    "target_par": 18,
+    "par": 18,
+    "budget": 0,
+    "w": 6,
+    "h": 5,
+    "spawn": {
+      "x": 0,
+      "y": 0
+    },
+    "goal": {
+      "x": 3,
+      "y": 3
+    },
+    "checkpoints": [
+      {
+        "id": 1,
+        "x": 4,
+        "y": 4,
+        "cellType": 5
+      },
+      {
+        "id": 2,
+        "x": 0,
+        "y": 4,
+        "cellType": 6
+      }
+    ],
+    "grid": [
+      [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      [
+        1,
+        1,
+        1,
+        1,
+        1,
+        7
+      ],
+      [
+        1,
+        1,
+        1,
+        1,
+        1,
+        2
+      ],
+      [
+        2,
+        2,
+        2,
+        4,
+        1,
+        2
+      ],
+      [
+        6,
+        2,
+        2,
+        2,
+        5,
+        2
+      ]
+    ],
+    "trace": [
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "UP",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT"
+    ],
+    "branching_factor": 2.2,
+    "initialPhase": "RED",
+    "siren_path_description": "Spawn is situated in Chamber A, which contains 6 pristine untouched tiles. Across a single Crumbling Bridge lies Chamber B, packed with Checkpoint 1 and Checkpoint 2. Driven by loss aversion, players attempt to vacuum up all 6 tiles in Chamber A before crossing the bridge into Chamber B.",
+    "impasse_mechanism": "The crumbling bridge collapses into void behind the player. Chamber B has an exit chute leading back into Chamber A. If Chamber A was completely cleared earlier, the player exits into a sea of burned tiles and immediately suffocates in deadlock with nowhere to step.",
+    "eureka_insight_description": "The Intentional Residue (Deferred Gratification). The player must deliberately leave exactly 2 strategic tiles untouched in Chamber A as future stepping stones. They cross the crumbling bridge into Chamber B, harvest both checkpoints, exit through the chute, and land squarely on the two preserved stepping stones to reach the Goal.",
+    "visual_hook_3sec": "Two distinct stone vaults linked by a narrow cracked basalt span. Chamber A looks like an easy feast; Chamber B looks like a treasure chamber guarded by a one-way bridge.",
+    "backseat_gamer_trigger": "'Why are you leaving tiles behind?! You missed two easy ones! Wait, now he's trapped in the second room... wait, those two tiles were his exit bridge?!'",
+    "emotional_arc": "Gluttonous Clean-Up (0-3s) -> The Suffocating Dead-End (4-6s) -> Spatial Realization (7-9s) -> Disciplined Sacrifice (10-14s) -> Dopamine Flood as the stepping stones connect (18s)",
+    "retention_mechanics": "Deeply satisfying 'Aha!' moment when the player realizes that 'leaving tiles behind' isn't sloppy play—it's 5000 IQ grandmaster foresight."
+  },
+  {
+    "id": 14,
+    "world": 3,
+    "name": "The Cloverleaf Knot",
+    "archetype": "Twin Hub Topological Weave",
+    "psychological_concept": "Working Memory Chunking & Topological Inversion (Miller's Law)",
+    "cognitive_bias_exploited": "Modular Sub-Goal Partitioning (Sequential vs Interleaved Execution)",
+    "target_par": 20,
+    "par": 20,
+    "budget": 0,
+    "w": 6,
+    "h": 5,
+    "spawn": {
+      "x": 0,
+      "y": 0
+    },
+    "goal": {
+      "x": 3,
+      "y": 3
+    },
+    "checkpoints": [
+      {
+        "id": 1,
+        "x": 5,
+        "y": 3,
+        "cellType": 5
+      }
+    ],
+    "grid": [
+      [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      [
+        1,
+        1,
+        1,
+        1,
+        1,
+        2
+      ],
+      [
+        1,
+        1,
+        1,
+        1,
+        1,
+        2
+      ],
+      [
+        2,
+        2,
+        2,
+        4,
+        1,
+        5
+      ],
+      [
+        2,
+        2,
+        11,
+        11,
+        2,
+        2
+      ]
+    ],
+    "trace": [
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "UP",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "RIGHT",
+      "UP"
+    ],
+    "branching_factor": 2.2,
+    "initialPhase": "RED",
+    "siren_path_description": "The level features two interconnected crossroad hubs (Hub A and Hub B) forming a dual-ring cloverleaf. Working memory chunks the problem into sequential sub-tasks: 'First I will clear Lobe 1 around Hub A completely, then I will transition to Lobe 2 around Hub B.'",
+    "impasse_mechanism": "Each crossroad only allows exactly 2 passes. If the player spends both charges of Hub A clearing Lobe 1 in isolation, they sever the transition bridge between lobes. When they enter Lobe 2, they cannot return to tie off the remaining perimeter tiles or reach the Goal.",
+    "eureka_insight_description": "Interlaced Weaving (Braiding the Knot). The two hubs must be treated as an entangled quantum pair. The player must interleave visits: Hub A (Visit 1) -> Lobe 1 arc -> Hub B (Visit 1) -> Lobe 2 arc -> Hub A (Visit 2) -> Hub B (Visit 2) -> Goal. Braiding the path across both hubs prevents premature edge exhaustion.",
+    "visual_hook_3sec": "An interlocking twin-ring figure-8 infinity loop featuring two glowing amber crossroad gems. Instantly legible, highly dynamic silhouette.",
+    "backseat_gamer_trigger": "'Finish the top loop first! Why are you swiping down? You're wasting the crossroad! Oh wait, now both crossroads are dead!'",
+    "emotional_arc": "Modular Confidence (0-4s) -> Severed Hub Panic (5-8s) -> Braiding Discovery (9-13s) -> Masterful Interwoven Flow (15-20s)",
+    "retention_mechanics": "Kinetic, fluid swipe rhythm. When the player discovers the interwoven braid, the 20-move execution feels like tying a master knot at lightning speed."
+  },
+  {
+    "id": 15,
+    "world": 3,
+    "name": "The Gordian Fracture",
+    "archetype": "Dual Bridges, Dual Hubs, Dual Stars (World 3 Capstone)",
+    "psychological_concept": "Irreversible Commitment & The Point of No Return (Hernán Cortés 'Burn the Ships')",
+    "cognitive_bias_exploited": "Symmetric Redundancy Assumption & Premature Action Bias",
+    "target_par": 24,
+    "par": 24,
+    "budget": 0,
+    "w": 6,
+    "h": 6,
+    "spawn": {
+      "x": 0,
+      "y": 0
+    },
+    "goal": {
+      "x": 3,
+      "y": 3
+    },
+    "checkpoints": [
+      {
+        "id": 1,
+        "x": 5,
+        "y": 2,
+        "cellType": 5
+      },
+      {
+        "id": 2,
+        "x": 0,
+        "y": 4,
+        "cellType": 6
+      }
+    ],
+    "grid": [
+      [
+        2,
+        2,
+        7,
+        2,
+        2,
+        2
+      ],
+      [
+        1,
+        1,
+        1,
+        1,
+        1,
+        2
+      ],
+      [
+        1,
+        1,
+        1,
+        1,
+        1,
+        5
+      ],
+      [
+        1,
+        1,
+        1,
+        4,
+        7,
+        11
+      ],
+      [
+        6,
+        2,
+        2,
+        2,
+        2,
+        11
+      ],
+      [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ]
+    ],
+    "trace": [
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "UP",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "UP",
+      "LEFT",
+      "LEFT"
+    ],
+    "branching_factor": 2.5,
+    "initialPhase": "RED",
+    "siren_path_description": "The arena presents two cracked basalt bridges: Bridge Alpha leading into the Northern Sector (Checkpoint 1), and Bridge Beta leading into the Southern Sector (Checkpoint 2). Players assume the two bridges are symmetric entry routes and rush across Bridge Alpha, grab C1, and immediately sprint across Bridge Beta to grab C2.",
+    "impasse_mechanism": "Burning Bridge Beta early destroys the ONLY escape route from the outer perimeter back to the Goal. The player collects both checkpoints but stands stranded on a lonely basalt cliff staring across a 2-tile void abyss at the Goal.",
+    "eureka_insight_description": "The Asymmetric Valve Function. The two crumbling bridges are NOT redundant entrances. Bridge Alpha is a strict one-way ENTRANCE into the labyrinth; Bridge Beta is a strict one-way EVACUATION EXIT. The player must enter via Bridge Alpha, weave through Crossroad 1 and 2 to capture both checkpoints along the perimeter, and use Bridge Beta as their very last move to plunge directly onto the Goal altar.",
+    "visual_hook_3sec": "A cracked citadel floating above the void: a central shrine flanked by two crumbling basalt causeways leading to outer orbital rings with glowing stars.",
+    "backseat_gamer_trigger": "'Cross the bottom bridge to get the second star! WAIT, THE BRIDGE IS GONE! HOW DO YOU GET BACK?! YOU'RE STUCK IN SPACE!'",
+    "emotional_arc": "Dual-Bridge Ambition (0-5s) -> The Abyss Abyss Stare (6-10s) -> Functional Re-evaluation (11-16s) -> Surgical Perimeter Sweep (18-22s) -> The Final Leap of Faith onto the Goal (24s)",
+    "retention_mechanics": "World 3 Graduation moment. Combines crumbling bridges, multi-pass crossroads, and ordered checkpoints into an unforgettable 24-move masterclass."
+  },
+  {
+    "id": 16,
+    "world": 4,
+    "name": "The Trojan Gate",
+    "archetype": "The Inverted Gate",
+    "psychological_concept": "Expectation Inversion & Deceptive Barriers (The Trojan Horse Paradigm)",
+    "cognitive_bias_exploited": "External Obstacle Removal Heuristic ('Doors must be unlocked before entering')",
+    "target_par": 18,
+    "par": 18,
+    "budget": 0,
+    "w": 6,
+    "h": 5,
+    "spawn": {
+      "x": 0,
+      "y": 0
+    },
+    "goal": {
+      "x": 3,
+      "y": 3
+    },
+    "checkpoints": [
+      {
+        "id": 1,
+        "x": 5,
+        "y": 3,
+        "cellType": 5
+      }
+    ],
+    "grid": [
+      [
+        2,
+        2,
+        2,
+        2,
+        10,
+        2
+      ],
+      [
+        1,
+        1,
+        1,
+        1,
+        1,
+        2
+      ],
+      [
+        1,
+        1,
+        1,
+        1,
+        1,
+        2
+      ],
+      [
+        9,
+        2,
+        2,
+        4,
+        1,
+        5
+      ],
+      [
+        2,
+        2,
+        2,
+        8,
+        2,
+        2
+      ]
+    ],
+    "trace": [
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "UP",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT"
+    ],
+    "branching_factor": 2.2,
+    "initialPhase": "RED",
+    "siren_path_description": "The Goal is locked behind a closed Red Gate (C_GATE_RED = CLOSED). Right beside the spawn point sits a glowing Phase Switch (C_SWITCH). 98% of players immediately step onto the switch to open the Red Gate.",
+    "impasse_mechanism": "Flipping the switch opens the Red Gate, but simultaneously slams the Blue Gate (C_GATE_BLUE) shut! Now the player cannot enter the sanctuary to collect Checkpoint 1. If they walk around, they find themselves locked out of the objective.",
+    "eureka_insight_description": "The Inside-Out Inversion (The Trojan Infiltration). The player must NOT open the Red Gate first! They must walk right past the initial switch, leaving the Red Gate closed. They enter the inner chamber through the open Blue Gate, collect Checkpoint 1, and THEN trigger the secondary switch from INSIDE the room. The Blue Gate slams shut behind them (trapping them in), but the Red Gate flies open ahead, providing an escape directly onto the Goal!",
+    "visual_hook_3sec": "A sleek, high-tech neon security grid: glowing red laser barriers, translucent blue forcefields, and a pulsing polarity switch. Looks like a Hollywood heist movie laser vault.",
+    "backseat_gamer_trigger": "'HIT THE SWITCH! Why did you walk past the switch?! Oh wait, the blue gate closed... wait, now he trapped himself inside the room! WAIT, HE ESCAPED THROUGH RED?!'",
+    "emotional_arc": "Impulsive Switch Hit (0-2s) -> Gate Lockout Stun (3-5s) -> Inversion Epiphany (6-9s) -> Trojan Infiltration (11-14s) -> The Hollywood Heist Escape (18s)",
+    "retention_mechanics": "First level of World 4 introducing Phase Switches and Dynamic Gates. The shock of having to walk PAST an obvious switch without touching it breaks mental conditioning instantly."
+  },
+  {
+    "id": 17,
+    "world": 4,
+    "name": "The Razor's Edge",
+    "archetype": "Zero Margin for Error",
+    "psychological_concept": "Visceral Arousal & Cognitive Narrowing (Easterbrook Cue-Utilization)",
+    "cognitive_bias_exploited": "Tunnel Vision under Constraint & Spatial Detour Panic",
+    "target_par": 18,
+    "par": 18,
+    "budget": 0,
+    "w": 6,
+    "h": 5,
+    "spawn": {
+      "x": 0,
+      "y": 0
+    },
+    "goal": {
+      "x": 3,
+      "y": 3
+    },
+    "checkpoints": [
+      {
+        "id": 1,
+        "x": 2,
+        "y": 4,
+        "cellType": 5
+      }
+    ],
+    "grid": [
+      [
+        2,
+        2,
+        10,
+        2,
+        8,
+        2
+      ],
+      [
+        1,
+        1,
+        1,
+        1,
+        1,
+        2
+      ],
+      [
+        1,
+        1,
+        1,
+        1,
+        1,
+        7
+      ],
+      [
+        8,
+        2,
+        2,
+        4,
+        1,
+        2
+      ],
+      [
+        2,
+        2,
+        5,
+        2,
+        9,
+        2
+      ]
+    ],
+    "trace": [
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "UP",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT"
+    ],
+    "branching_factor": 2.2,
+    "initialPhase": "RED",
+    "siren_path_description": "A razor-tight arena where every single tile must be consumed with zero detour moves. Players feel intense spatial pressure from the tight borders, panic, and take a quick detour to consume a side tile before hitting the Phase Switch.",
+    "impasse_mechanism": "Every move has coupled causality: consuming a tile advances position while setting gate polarity and bridge erosion. A single wasted step causes the gate polarity to be 180 degrees out of phase when the player arrives at the exit gate: RED IS CLOSED, BLUE IS CLOSED.",
+    "eureka_insight_description": "The Synchronized Dual Harmonic. Movement is rhythm. The player must calibrate every move so that spatial clearance and binary phase state align in lockstep: Step 4 hits Switch 1 -> Step 7 crosses Crumbling Bridge -> Step 12 collects Checkpoint 1 -> Step 15 hits Switch 2 to invert polarity -> Step 18 lands on Goal with exactly 0 tiles remaining.",
+    "visual_hook_3sec": "A high-tension geometric corridor lined with alternating red and blue laser gates and a cracked crumbling center bridge. The tight spatial layout screams precision.",
+    "backseat_gamer_trigger": "'Don't take that detour! The gate is gonna flip! Look at the counter, you're one step off! NOOO, the gate shut in your face!'",
+    "emotional_arc": "Visceral Tension (0-3s) -> Polarity Misalignment Rage (4-7s) -> Zen-like Rhythm Calibration (8-12s) -> Clockwork Execution (14-18s)",
+    "retention_mechanics": "Rhythm-puzzle gratification. When executed properly, the player swipes 18 times in rapid succession without stopping, watching gates open and bridges shatter seamlessly."
+  },
+  {
+    "id": 18,
+    "world": 4,
+    "name": "The Shadow Quadrants",
+    "archetype": "Dual Switches, Alternating Chambers",
+    "psychological_concept": "Petersonian Order vs Chaos: Voluntary Confrontation of the Unknown",
+    "cognitive_bias_exploited": "Comfort Zone Clinging & Procrastination of Perilous Transitions",
+    "target_par": 22,
+    "par": 22,
+    "budget": 0,
+    "w": 6,
+    "h": 6,
+    "spawn": {
+      "x": 0,
+      "y": 0
+    },
+    "goal": {
+      "x": 0,
+      "y": 4
+    },
+    "checkpoints": [
+      {
+        "id": 1,
+        "x": 5,
+        "y": 1,
+        "cellType": 5
+      }
+    ],
+    "grid": [
+      [
+        2,
+        10,
+        2,
+        7,
+        2,
+        2
+      ],
+      [
+        1,
+        1,
+        1,
+        1,
+        1,
+        5
+      ],
+      [
+        1,
+        1,
+        1,
+        1,
+        1,
+        2
+      ],
+      [
+        1,
+        2,
+        2,
+        2,
+        1,
+        2
+      ],
+      [
+        4,
+        11,
+        2,
+        2,
+        1,
+        8
+      ],
+      [
+        1,
+        2,
+        2,
+        9,
+        2,
+        2
+      ]
+    ],
+    "trace": [
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "UP",
+      "RIGHT",
+      "RIGHT",
+      "UP",
+      "LEFT",
+      "LEFT",
+      "DOWN",
+      "LEFT"
+    ],
+    "branching_factor": 2.3,
+    "initialPhase": "RED",
+    "siren_path_description": "The board is split into the 'Sanctuary of Order' (a safe open chamber with a reusable crossroad) and the 'Chasm of Chaos' (a narrow crumbling basalt causeway suspended over void). Players linger in the Sanctuary of Order, circling the crossroad and consuming safe tiles first.",
+    "impasse_mechanism": "Lingering in the safe chamber exhausts the Crossroad charges and misaligns the Phase Switch. When the player finally enters the crumbling corridor, the exit gate on the far side has snapped shut, leaving them on collapsing tiles with nowhere to stand.",
+    "eureka_insight_description": "The Voluntary Plunge into Chaos (The Hero's Archetype). The player must voluntarily leave the safe chamber on Move 3! They plunge directly into the crumbling chasm first, riding the collapsing tiles over the void, claiming Checkpoint 1, flipping the remote underworld switch, and returning to the Sanctuary of Order as master of both domains to claim the Goal.",
+    "visual_hook_3sec": "A stark visual dichotomy: the top half is pristine glowing cyan tiles and a gold crossroad (Order); the bottom half is cracked red-hot volcanic basalt dangling over pitch-black void (Chaos).",
+    "backseat_gamer_trigger": "'Don't jump into the pit yet! Clear the safe room first! WAIT, HE'S JUMPING INTO THE VOID?! WHAT IS HE COOKING?!'",
+    "emotional_arc": "Fear of the Pit (0-4s) -> Death by Procrastination (5-8s) -> The Courageous Plunge (9-12s) -> Surfing the Crumbling Void (14-18s) -> Triumphant Return to Order (22s)",
+    "retention_mechanics": "High-stakes drama. The visual and psychological contrast between safe Order and collapsing Chaos makes this level feel like an epic mini-narrative."
+  },
+  {
+    "id": 19,
+    "world": 4,
+    "name": "The Quantum Entanglement",
+    "archetype": "Coupled Polarity & Multi-Pass Knot",
+    "psychological_concept": "Decoupling Multi-Variable State (Cognitive Invariant Buffering)",
+    "cognitive_bias_exploited": "Trial-and-Error Polarity Oscillation & Linear Causality Fallacy",
+    "target_par": 26,
+    "par": 26,
+    "budget": 0,
+    "w": 6,
+    "h": 6,
+    "spawn": {
+      "x": 0,
+      "y": 0
+    },
+    "goal": {
+      "x": 1,
+      "y": 3
+    },
+    "checkpoints": [
+      {
+        "id": 1,
+        "x": 5,
+        "y": 0,
+        "cellType": 5
+      },
+      {
+        "id": 2,
+        "x": 0,
+        "y": 5,
+        "cellType": 6
+      }
+    ],
+    "grid": [
+      [
+        2,
+        2,
+        10,
+        2,
+        2,
+        5
+      ],
+      [
+        1,
+        1,
+        1,
+        1,
+        1,
+        2
+      ],
+      [
+        1,
+        1,
+        1,
+        2,
+        2,
+        2
+      ],
+      [
+        1,
+        4,
+        2,
+        11,
+        2,
+        8
+      ],
+      [
+        2,
+        2,
+        8,
+        2,
+        1,
+        2
+      ],
+      [
+        6,
+        2,
+        2,
+        9,
+        2,
+        2
+      ]
+    ],
+    "trace": [
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "UP",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "UP",
+      "RIGHT",
+      "UP",
+      "LEFT",
+      "DOWN",
+      "LEFT",
+      "LEFT"
+    ],
+    "branching_factor": 2.5,
+    "initialPhase": "RED",
+    "siren_path_description": "The arena features two Phase Switches and a maze of Red and Blue gates locking Checkpoint 1 and Checkpoint 2. Players fall into 'Switch Oscillation'—running between the two switches and repeatedly toggling them in hopes that a path will reveal itself.",
+    "impasse_mechanism": "Every switch toggle consumes the switch tile or adjacent floor. Blind oscillation burns through spatial budget, stranding the player in a deadlocked labyrinth where both gates are locked and no moves remain.",
+    "eureka_insight_description": "The Crossroad Polarity Buffer (State Decoupling). The player realizes that the central Crossroad tile functions as an invariant state buffer. By routing through the Crossroad without touching either switch, the player can translate across the board without altering gate polarity! Decoupling spatial translation from binary polarity inversion unlocks the solution.",
+    "visual_hook_3sec": "An intricate quantum logic circuit: interlocking red laser grids, blue energy gates, twin amber crossroads, and dual glowing switches. Looks like an unsolved computer motherboard.",
+    "backseat_gamer_trigger": "'Flip the switch! Now the other switch! Bro is just turning the room into a disco party! Wait... he didn't hit the switch, he used the crossroad to bypass the trigger?!'",
+    "emotional_arc": "Cognitive Overload (0-5s) -> The Disco Switch Trap (6-10s) -> The Polarity Buffer Insight (11-16s) -> High-IQ Circuit Routing (18-24s) -> Mastermind Exhilaration (26s)",
+    "retention_mechanics": "The pinnacle of intellectual satisfaction. Players feel like a quantum physicist solving a complex logic puzzle, resulting in high comment section engagement ('5000 IQ play')."
+  },
+  {
+    "id": 20,
+    "world": 4,
+    "name": "The Grandmaster Singularity",
+    "archetype": "The Supreme Masterpiece (Transcendence & Synthesis)",
+    "psychological_concept": "Peak Flow, Cognitive Synthesis & The Hero's Transcendence (Csikszentmihalyi, Maslow)",
+    "cognitive_bias_exploited": "Cognitive Vertigo & Overwhelming Modular Despair ('This is impossible')",
+    "target_par": 30,
+    "par": 30,
+    "budget": 0,
+    "w": 7,
+    "h": 6,
+    "spawn": {
+      "x": 0,
+      "y": 0
+    },
+    "goal": {
+      "x": 1,
+      "y": 3
+    },
+    "checkpoints": [
+      {
+        "id": 1,
+        "x": 6,
+        "y": 1,
+        "cellType": 5
+      },
+      {
+        "id": 2,
+        "x": 0,
+        "y": 4,
+        "cellType": 6
+      }
+    ],
+    "grid": [
+      [
+        2,
+        2,
+        10,
+        2,
+        7,
+        2,
+        2
+      ],
+      [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        5
+      ],
+      [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        2
+      ],
+      [
+        1,
+        4,
+        7,
+        2,
+        2,
+        2,
+        11
+      ],
+      [
+        6,
+        2,
+        2,
+        8,
+        2,
+        2,
+        11
+      ],
+      [
+        2,
+        2,
+        9,
+        2,
+        2,
+        8,
+        2
+      ]
+    ],
+    "trace": [
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "UP",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "UP",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT"
+    ],
+    "branching_factor": 2.7,
+    "initialPhase": "RED",
+    "siren_path_description": "The player stares at a majestic 42-cell grand cathedral uniting Dual Crossroads, Dual Crumbling Bridges, Dual Phase Switches, Red/Blue Gates, and Checkpoints C1 and C2. The Siren Path is attempting to clear the entire Western quadrant before interacting with the East, or charging across the central crumbling bridge on Move 2.",
+    "impasse_mechanism": "Burning the central bridge early permanently fractures the cathedral, cutting off the path between East and West. Alternatively, clearing the West without priming the Eastern Phase Switch leaves Checkpoint 2 permanently locked behind an impenetrable Red Gate.",
+    "eureka_insight_description": "The Three-Movement Symphonic Sonata. The grandmaster puzzle is not a maze; it is a 3-movement musical piece: Movement I (The Western Prelude): The Asymmetric Hitch through Crossroad 1, priming polarity without consuming the bridge. Movement II (The Chasm Passage): Sacrificing Crumbling Bridge 1, infiltrating the Eastern Sanctuary via the open Blue Gate, capturing Checkpoint 1, and flipping the internal switch. Movement III (The Grand Evacuation): Using Crossroad 2 as a polarity buffer, claiming Checkpoint 2, collapsing Crumbling Bridge 2, and stepping onto the Goal Altar with all 30 tiles perfectly cleared!",
+    "visual_hook_3sec": "A jaw-dropping, cathedral-like monument. Towering red and blue laser pillars flank twin cracked basalt bridges over a bottomless void, leading to a solitary golden Goal Altar at the apex. Stuns viewers into immediate silence.",
+    "backseat_gamer_trigger": "'There is NO WAY this is beatable! You can't reach both stars and the exit! Look at all those red gates! Wait... he's actually doing it... 4 moves left... 3... 2... 1... HE BEAT THE GAME?!'",
+    "emotional_arc": "Awe & Cognitive Vertigo (0-5s) -> Fragmented Failure (6-12s) -> Symphonic Awakening (14-20s) -> Breathless Clockwork Execution (22-28s) -> Grandmaster Transcendence & Viral Climax (30s)",
+    "retention_mechanics": "The definitive viral climax of ONE MORE TILE. Designed to produce viral TikTok and YouTube shorts with creator freakouts, slow-mo final moves, and massive shareability."
+  }
+]
