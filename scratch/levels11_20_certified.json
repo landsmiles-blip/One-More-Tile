@@ -1,0 +1,1144 @@
+[
+  {
+    "id": 11,
+    "world": 3,
+    "name": "The Obsidian Weave",
+    "w": 6,
+    "h": 4,
+    "budget": 0,
+    "par": 25,
+    "spawn": {
+      "x": 0,
+      "y": 0
+    },
+    "goal": {
+      "x": 0,
+      "y": 1
+    },
+    "checkpoints": [
+      {
+        "id": 1,
+        "x": 5,
+        "y": 0,
+        "cellType": 5
+      }
+    ],
+    "grid": [
+      [
+        2,
+        2,
+        2,
+        2,
+        2,
+        5
+      ],
+      [
+        4,
+        11,
+        2,
+        2,
+        2,
+        2
+      ],
+      [
+        2,
+        11,
+        2,
+        2,
+        2,
+        2
+      ],
+      [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ]
+    ],
+    "trace": [
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "LEFT",
+      "UP",
+      "UP",
+      "LEFT",
+      "DOWN",
+      "DOWN",
+      "LEFT",
+      "UP",
+      "UP",
+      "LEFT",
+      "DOWN",
+      "DOWN",
+      "LEFT",
+      "UP",
+      "RIGHT",
+      "UP",
+      "LEFT"
+    ]
+  },
+  {
+    "id": 12,
+    "world": 3,
+    "name": "The Double Helix",
+    "w": 6,
+    "h": 5,
+    "budget": 0,
+    "par": 27,
+    "spawn": {
+      "x": 1,
+      "y": 0
+    },
+    "goal": {
+      "x": 4,
+      "y": 4
+    },
+    "checkpoints": [
+      {
+        "id": 1,
+        "x": 4,
+        "y": 0,
+        "cellType": 5
+      },
+      {
+        "id": 2,
+        "x": 1,
+        "y": 4,
+        "cellType": 6
+      }
+    ],
+    "grid": [
+      [
+        0,
+        2,
+        2,
+        2,
+        5,
+        0
+      ],
+      [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      [
+        2,
+        2,
+        11,
+        11,
+        2,
+        2
+      ],
+      [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      [
+        0,
+        6,
+        2,
+        2,
+        4,
+        0
+      ]
+    ],
+    "trace": [
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "RIGHT",
+      "DOWN",
+      "DOWN",
+      "LEFT",
+      "UP",
+      "LEFT",
+      "UP",
+      "LEFT",
+      "DOWN",
+      "RIGHT",
+      "DOWN",
+      "LEFT",
+      "UP",
+      "LEFT",
+      "UP",
+      "LEFT",
+      "DOWN",
+      "DOWN",
+      "RIGHT",
+      "DOWN",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT"
+    ]
+  },
+  {
+    "id": 13,
+    "world": 3,
+    "name": "The Labyrinthine Cross",
+    "w": 6,
+    "h": 5,
+    "budget": 0,
+    "par": 29,
+    "spawn": {
+      "x": 1,
+      "y": 0
+    },
+    "goal": {
+      "x": 4,
+      "y": 4
+    },
+    "checkpoints": [
+      {
+        "id": 1,
+        "x": 5,
+        "y": 0,
+        "cellType": 5
+      },
+      {
+        "id": 2,
+        "x": 0,
+        "y": 4,
+        "cellType": 6
+      }
+    ],
+    "grid": [
+      [
+        0,
+        2,
+        2,
+        2,
+        2,
+        5
+      ],
+      [
+        2,
+        11,
+        2,
+        2,
+        2,
+        2
+      ],
+      [
+        2,
+        11,
+        2,
+        2,
+        2,
+        2
+      ],
+      [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      [
+        6,
+        2,
+        2,
+        2,
+        4,
+        0
+      ]
+    ],
+    "trace": [
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "LEFT",
+      "UP",
+      "UP",
+      "LEFT",
+      "DOWN",
+      "DOWN",
+      "LEFT",
+      "UP",
+      "UP",
+      "LEFT",
+      "DOWN",
+      "LEFT",
+      "UP",
+      "RIGHT",
+      "DOWN",
+      "DOWN",
+      "LEFT",
+      "DOWN",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT"
+    ]
+  },
+  {
+    "id": 14,
+    "world": 3,
+    "name": "The Tri-Chamber Nexus",
+    "w": 6,
+    "h": 5,
+    "budget": 0,
+    "par": 31,
+    "spawn": {
+      "x": 0,
+      "y": 0
+    },
+    "goal": {
+      "x": 0,
+      "y": 1
+    },
+    "checkpoints": [
+      {
+        "id": 1,
+        "x": 5,
+        "y": 0,
+        "cellType": 5
+      },
+      {
+        "id": 2,
+        "x": 0,
+        "y": 4,
+        "cellType": 6
+      }
+    ],
+    "grid": [
+      [
+        2,
+        2,
+        2,
+        2,
+        2,
+        5
+      ],
+      [
+        4,
+        11,
+        2,
+        2,
+        2,
+        2
+      ],
+      [
+        2,
+        11,
+        2,
+        2,
+        2,
+        2
+      ],
+      [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      [
+        6,
+        2,
+        2,
+        2,
+        2,
+        2
+      ]
+    ],
+    "trace": [
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "LEFT",
+      "UP",
+      "UP",
+      "UP",
+      "LEFT",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "LEFT",
+      "UP",
+      "UP",
+      "UP",
+      "LEFT",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "LEFT",
+      "UP",
+      "UP",
+      "RIGHT",
+      "UP",
+      "LEFT"
+    ]
+  },
+  {
+    "id": 15,
+    "world": 3,
+    "name": "The Colosseum of Knots",
+    "w": 6,
+    "h": 6,
+    "budget": 0,
+    "par": 33,
+    "spawn": {
+      "x": 1,
+      "y": 0
+    },
+    "goal": {
+      "x": 3,
+      "y": 1
+    },
+    "checkpoints": [
+      {
+        "id": 1,
+        "x": 4,
+        "y": 0,
+        "cellType": 5
+      },
+      {
+        "id": 2,
+        "x": 1,
+        "y": 5,
+        "cellType": 6
+      }
+    ],
+    "grid": [
+      [
+        0,
+        2,
+        2,
+        2,
+        5,
+        0
+      ],
+      [
+        2,
+        11,
+        2,
+        4,
+        2,
+        2
+      ],
+      [
+        2,
+        11,
+        2,
+        2,
+        2,
+        2
+      ],
+      [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      [
+        0,
+        6,
+        2,
+        2,
+        2,
+        0
+      ]
+    ],
+    "trace": [
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "RIGHT",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "LEFT",
+      "DOWN",
+      "LEFT",
+      "UP",
+      "UP",
+      "RIGHT",
+      "UP",
+      "LEFT",
+      "LEFT",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "LEFT",
+      "UP",
+      "LEFT",
+      "UP",
+      "RIGHT",
+      "UP",
+      "UP",
+      "LEFT",
+      "DOWN",
+      "RIGHT",
+      "UP",
+      "RIGHT",
+      "RIGHT"
+    ]
+  },
+  {
+    "id": 16,
+    "world": 4,
+    "name": "The Polarity Nexus",
+    "w": 6,
+    "h": 6,
+    "budget": 0,
+    "par": 35,
+    "spawn": {
+      "x": 0,
+      "y": 0
+    },
+    "goal": {
+      "x": 4,
+      "y": 1
+    },
+    "checkpoints": [
+      {
+        "id": 1,
+        "x": 5,
+        "y": 0,
+        "cellType": 5
+      },
+      {
+        "id": 2,
+        "x": 0,
+        "y": 5,
+        "cellType": 6
+      }
+    ],
+    "grid": [
+      [
+        2,
+        2,
+        2,
+        2,
+        2,
+        5
+      ],
+      [
+        2,
+        11,
+        2,
+        2,
+        4,
+        2
+      ],
+      [
+        2,
+        2,
+        1,
+        2,
+        2,
+        2
+      ],
+      [
+        2,
+        11,
+        2,
+        1,
+        2,
+        2
+      ],
+      [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      [
+        6,
+        2,
+        2,
+        2,
+        2,
+        2
+      ]
+    ],
+    "trace": [
+      "RIGHT",
+      "DOWN",
+      "RIGHT",
+      "UP",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "UP",
+      "RIGHT",
+      "UP",
+      "UP",
+      "UP",
+      "LEFT",
+      "DOWN",
+      "DOWN",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "RIGHT",
+      "RIGHT",
+      "UP",
+      "UP",
+      "LEFT",
+      "UP",
+      "RIGHT"
+    ]
+  },
+  {
+    "id": 17,
+    "world": 4,
+    "name": "The Alternating Crucible",
+    "w": 6,
+    "h": 6,
+    "budget": 0,
+    "par": 37,
+    "spawn": {
+      "x": 0,
+      "y": 0
+    },
+    "goal": {
+      "x": 0,
+      "y": 1
+    },
+    "checkpoints": [
+      {
+        "id": 1,
+        "x": 5,
+        "y": 0,
+        "cellType": 5
+      },
+      {
+        "id": 2,
+        "x": 0,
+        "y": 5,
+        "cellType": 6
+      }
+    ],
+    "grid": [
+      [
+        2,
+        2,
+        2,
+        2,
+        2,
+        5
+      ],
+      [
+        4,
+        11,
+        2,
+        2,
+        2,
+        2
+      ],
+      [
+        2,
+        11,
+        2,
+        2,
+        2,
+        2
+      ],
+      [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      [
+        6,
+        2,
+        2,
+        2,
+        2,
+        2
+      ]
+    ],
+    "trace": [
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "LEFT",
+      "UP",
+      "UP",
+      "UP",
+      "UP",
+      "LEFT",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "LEFT",
+      "UP",
+      "UP",
+      "UP",
+      "UP",
+      "LEFT",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "LEFT",
+      "UP",
+      "UP",
+      "UP",
+      "RIGHT",
+      "UP",
+      "LEFT"
+    ]
+  },
+  {
+    "id": 18,
+    "world": 4,
+    "name": "The Entangled Bastion",
+    "w": 7,
+    "h": 6,
+    "budget": 0,
+    "par": 39,
+    "spawn": {
+      "x": 1,
+      "y": 0
+    },
+    "goal": {
+      "x": 3,
+      "y": 1
+    },
+    "checkpoints": [
+      {
+        "id": 1,
+        "x": 5,
+        "y": 0,
+        "cellType": 5
+      },
+      {
+        "id": 2,
+        "x": 1,
+        "y": 5,
+        "cellType": 6
+      }
+    ],
+    "grid": [
+      [
+        0,
+        2,
+        2,
+        2,
+        2,
+        5,
+        0
+      ],
+      [
+        2,
+        11,
+        2,
+        4,
+        2,
+        2,
+        2
+      ],
+      [
+        2,
+        11,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      [
+        0,
+        6,
+        2,
+        2,
+        2,
+        2,
+        0
+      ]
+    ],
+    "trace": [
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "RIGHT",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "LEFT",
+      "DOWN",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "UP",
+      "LEFT",
+      "UP",
+      "RIGHT",
+      "UP",
+      "UP",
+      "LEFT",
+      "DOWN",
+      "RIGHT",
+      "UP",
+      "RIGHT",
+      "DOWN",
+      "RIGHT",
+      "DOWN",
+      "LEFT",
+      "DOWN",
+      "RIGHT",
+      "RIGHT",
+      "UP",
+      "RIGHT",
+      "UP",
+      "LEFT",
+      "UP",
+      "LEFT"
+    ]
+  },
+  {
+    "id": 19,
+    "world": 4,
+    "name": "The Crucible of Duality",
+    "w": 7,
+    "h": 6,
+    "budget": 0,
+    "par": 41,
+    "spawn": {
+      "x": 1,
+      "y": 0
+    },
+    "goal": {
+      "x": 3,
+      "y": 1
+    },
+    "checkpoints": [
+      {
+        "id": 1,
+        "x": 6,
+        "y": 0,
+        "cellType": 5
+      },
+      {
+        "id": 2,
+        "x": 0,
+        "y": 5,
+        "cellType": 6
+      }
+    ],
+    "grid": [
+      [
+        0,
+        2,
+        2,
+        2,
+        2,
+        2,
+        5
+      ],
+      [
+        2,
+        11,
+        2,
+        4,
+        2,
+        2,
+        2
+      ],
+      [
+        2,
+        11,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      [
+        6,
+        2,
+        2,
+        2,
+        2,
+        2,
+        0
+      ]
+    ],
+    "trace": [
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "LEFT",
+      "DOWN",
+      "LEFT",
+      "UP",
+      "UP",
+      "RIGHT",
+      "UP",
+      "UP",
+      "LEFT",
+      "DOWN",
+      "LEFT",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "LEFT",
+      "UP",
+      "UP",
+      "UP",
+      "LEFT",
+      "UP",
+      "LEFT",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "RIGHT",
+      "UP",
+      "UP",
+      "UP",
+      "UP",
+      "RIGHT",
+      "RIGHT"
+    ]
+  },
+  {
+    "id": 20,
+    "world": 4,
+    "name": "The Grandmaster Singularity",
+    "w": 7,
+    "h": 6,
+    "budget": 0,
+    "par": 43,
+    "spawn": {
+      "x": 0,
+      "y": 0
+    },
+    "goal": {
+      "x": 0,
+      "y": 1
+    },
+    "checkpoints": [
+      {
+        "id": 1,
+        "x": 6,
+        "y": 0,
+        "cellType": 5
+      },
+      {
+        "id": 2,
+        "x": 0,
+        "y": 5,
+        "cellType": 6
+      }
+    ],
+    "grid": [
+      [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        5
+      ],
+      [
+        4,
+        11,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      [
+        2,
+        11,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      [
+        6,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ]
+    ],
+    "trace": [
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "LEFT",
+      "UP",
+      "UP",
+      "UP",
+      "UP",
+      "LEFT",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "LEFT",
+      "UP",
+      "UP",
+      "UP",
+      "UP",
+      "LEFT",
+      "LEFT",
+      "DOWN",
+      "RIGHT",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "LEFT",
+      "LEFT",
+      "UP",
+      "RIGHT",
+      "UP",
+      "LEFT",
+      "UP",
+      "RIGHT",
+      "UP",
+      "LEFT"
+    ]
+  }
+]

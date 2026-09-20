@@ -848,107 +848,11 @@ const LEVELS = [
   {
     "id": 11,
     "world": 3,
-    "name": "The Basalt Crossing",
+    "name": "The Obsidian Weave",
     "w": 6,
-    "h": 5,
+    "h": 4,
     "budget": 0,
     "par": 25,
-    "spawn": {
-      "x": 0,
-      "y": 0
-    },
-    "goal": {
-      "x": 1,
-      "y": 2
-    },
-    "checkpoints": [
-      {
-        "id": 1,
-        "x": 4,
-        "y": 1,
-        "cellType": 5
-      }
-    ],
-    "grid": [
-      [
-        2,
-        2,
-        2,
-        2,
-        7,
-        2
-      ],
-      [
-        1,
-        1,
-        1,
-        2,
-        5,
-        2
-      ],
-      [
-        1,
-        4,
-        2,
-        11,
-        2,
-        2
-      ],
-      [
-        2,
-        2,
-        2,
-        2,
-        1,
-        2
-      ],
-      [
-        2,
-        2,
-        2,
-        2,
-        2,
-        2
-      ]
-    ],
-    "trace": [
-      "RIGHT",
-      "RIGHT",
-      "RIGHT",
-      "RIGHT",
-      "RIGHT",
-      "DOWN",
-      "DOWN",
-      "DOWN",
-      "DOWN",
-      "LEFT",
-      "LEFT",
-      "LEFT",
-      "LEFT",
-      "LEFT",
-      "UP",
-      "RIGHT",
-      "RIGHT",
-      "RIGHT",
-      "UP",
-      "RIGHT",
-      "UP",
-      "LEFT",
-      "DOWN",
-      "LEFT",
-      "LEFT"
-    ],
-    "branching_factor": 2.7,
-    "initialPhase": "RED"
-  },
-  {
-    "id": 12,
-    "world": 3,
-    "name": "The Dual Chasm",
-    "w": 6,
-    "h": 5,
-    "budget": 0,
-    "par": 27,
     "spawn": {
       "x": 0,
       "y": 0
@@ -960,8 +864,8 @@ const LEVELS = [
     "checkpoints": [
       {
         "id": 1,
-        "x": 1,
-        "y": 4,
+        "x": 5,
+        "y": 0,
         "cellType": 5
       }
     ],
@@ -970,37 +874,29 @@ const LEVELS = [
         2,
         2,
         2,
-        7,
         2,
-        2
+        2,
+        5
       ],
       [
         4,
-        1,
-        1,
+        11,
+        2,
         2,
         2,
         2
       ],
       [
-        2,
-        7,
         2,
         11,
         2,
+        2,
+        2,
         2
       ],
       [
         2,
         2,
-        2,
-        2,
-        1,
-        2
-      ],
-      [
-        2,
-        5,
         2,
         2,
         2,
@@ -1016,44 +912,142 @@ const LEVELS = [
       "DOWN",
       "DOWN",
       "DOWN",
-      "DOWN",
-      "LEFT",
-      "LEFT",
-      "LEFT",
-      "LEFT",
       "LEFT",
       "UP",
-      "RIGHT",
-      "RIGHT",
-      "RIGHT",
-      "UP",
-      "RIGHT",
       "UP",
       "LEFT",
       "DOWN",
+      "DOWN",
       "LEFT",
+      "UP",
+      "UP",
       "LEFT",
+      "DOWN",
+      "DOWN",
       "LEFT",
-      "UP"
+      "UP",
+      "RIGHT",
+      "UP",
+      "LEFT"
+    ]
+  },
+  {
+    "id": 12,
+    "world": 3,
+    "name": "The Double Helix",
+    "w": 6,
+    "h": 5,
+    "budget": 0,
+    "par": 27,
+    "spawn": {
+      "x": 1,
+      "y": 0
+    },
+    "goal": {
+      "x": 4,
+      "y": 4
+    },
+    "checkpoints": [
+      {
+        "id": 1,
+        "x": 4,
+        "y": 0,
+        "cellType": 5
+      },
+      {
+        "id": 2,
+        "x": 1,
+        "y": 4,
+        "cellType": 6
+      }
     ],
-    "branching_factor": 2.8,
-    "initialPhase": "RED"
+    "grid": [
+      [
+        0,
+        2,
+        2,
+        2,
+        5,
+        0
+      ],
+      [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      [
+        2,
+        2,
+        11,
+        11,
+        2,
+        2
+      ],
+      [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      [
+        0,
+        6,
+        2,
+        2,
+        4,
+        0
+      ]
+    ],
+    "trace": [
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "RIGHT",
+      "DOWN",
+      "DOWN",
+      "LEFT",
+      "UP",
+      "LEFT",
+      "UP",
+      "LEFT",
+      "DOWN",
+      "RIGHT",
+      "DOWN",
+      "LEFT",
+      "UP",
+      "LEFT",
+      "UP",
+      "LEFT",
+      "DOWN",
+      "DOWN",
+      "RIGHT",
+      "DOWN",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT"
+    ]
   },
   {
     "id": 13,
     "world": 3,
-    "name": "The Cloverleaf Fracture",
+    "name": "The Labyrinthine Cross",
     "w": 6,
-    "h": 6,
+    "h": 5,
     "budget": 0,
     "par": 29,
     "spawn": {
-      "x": 0,
+      "x": 1,
       "y": 0
     },
     "goal": {
-      "x": 1,
-      "y": 2
+      "x": 4,
+      "y": 4
     },
     "checkpoints": [
       {
@@ -1064,14 +1058,14 @@ const LEVELS = [
       },
       {
         "id": 2,
-        "x": 4,
-        "y": 3,
+        "x": 0,
+        "y": 4,
         "cellType": 6
       }
     ],
     "grid": [
       [
-        2,
+        0,
         2,
         2,
         2,
@@ -1079,44 +1073,36 @@ const LEVELS = [
         5
       ],
       [
-        1,
-        1,
-        1,
-        1,
-        1,
+        2,
+        11,
+        2,
+        2,
+        2,
         2
       ],
       [
+        2,
+        11,
+        2,
+        2,
+        2,
+        2
+      ],
+      [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      [
+        6,
+        2,
+        2,
         2,
         4,
-        1,
-        1,
-        1,
-        2
-      ],
-      [
-        2,
-        2,
-        2,
-        2,
-        6,
-        11
-      ],
-      [
-        2,
-        2,
-        2,
-        2,
-        2,
-        11
-      ],
-      [
-        2,
-        2,
-        7,
-        2,
-        2,
-        2
+        0
       ]
     ],
     "trace": [
@@ -1124,41 +1110,39 @@ const LEVELS = [
       "RIGHT",
       "RIGHT",
       "RIGHT",
-      "RIGHT",
-      "DOWN",
-      "DOWN",
       "DOWN",
       "DOWN",
       "DOWN",
       "LEFT",
+      "UP",
+      "UP",
       "LEFT",
+      "DOWN",
+      "DOWN",
       "LEFT",
+      "UP",
+      "UP",
       "LEFT",
+      "DOWN",
       "LEFT",
       "UP",
       "RIGHT",
+      "DOWN",
+      "DOWN",
+      "LEFT",
+      "DOWN",
       "RIGHT",
       "RIGHT",
       "RIGHT",
-      "RIGHT",
-      "UP",
-      "LEFT",
-      "LEFT",
-      "LEFT",
-      "LEFT",
-      "LEFT",
-      "UP",
       "RIGHT"
-    ],
-    "branching_factor": 2.7,
-    "initialPhase": "RED"
+    ]
   },
   {
     "id": 14,
     "world": 3,
-    "name": "The Tri-Chamber Citadel",
+    "name": "The Tri-Chamber Nexus",
     "w": 6,
-    "h": 6,
+    "h": 5,
     "budget": 0,
     "par": 31,
     "spawn": {
@@ -1166,20 +1150,20 @@ const LEVELS = [
       "y": 0
     },
     "goal": {
-      "x": 3,
-      "y": 2
+      "x": 0,
+      "y": 1
     },
     "checkpoints": [
       {
         "id": 1,
         "x": 5,
-        "y": 5,
+        "y": 0,
         "cellType": 5
       },
       {
         "id": 2,
-        "x": 4,
-        "y": 3,
+        "x": 0,
+        "y": 4,
         "cellType": 6
       }
     ],
@@ -1188,49 +1172,41 @@ const LEVELS = [
         2,
         2,
         2,
-        7,
-        2,
-        2
-      ],
-      [
-        1,
-        1,
-        1,
-        1,
-        1,
-        2
-      ],
-      [
-        2,
-        7,
-        2,
-        4,
-        1,
-        2
-      ],
-      [
-        2,
-        2,
-        2,
-        2,
-        6,
-        11
-      ],
-      [
-        2,
-        2,
-        2,
-        2,
-        2,
-        11
-      ],
-      [
-        2,
-        2,
-        2,
         2,
         2,
         5
+      ],
+      [
+        4,
+        11,
+        2,
+        2,
+        2,
+        2
+      ],
+      [
+        2,
+        11,
+        2,
+        2,
+        2,
+        2
+      ],
+      [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      [
+        6,
+        2,
+        2,
+        2,
+        2,
+        2
       ]
     ],
     "trace": [
@@ -1243,366 +1219,154 @@ const LEVELS = [
       "DOWN",
       "DOWN",
       "DOWN",
+      "LEFT",
+      "UP",
+      "UP",
+      "UP",
+      "LEFT",
+      "DOWN",
+      "DOWN",
       "DOWN",
       "LEFT",
-      "LEFT",
-      "LEFT",
-      "LEFT",
-      "LEFT",
       "UP",
-      "RIGHT",
-      "RIGHT",
-      "RIGHT",
-      "RIGHT",
-      "RIGHT",
+      "UP",
       "UP",
       "LEFT",
-      "LEFT",
-      "LEFT",
-      "LEFT",
+      "DOWN",
+      "DOWN",
+      "DOWN",
       "LEFT",
       "UP",
+      "UP",
       "RIGHT",
-      "RIGHT",
-      "RIGHT"
-    ],
-    "branching_factor": 2.8,
-    "initialPhase": "RED"
+      "UP",
+      "LEFT"
+    ]
   },
   {
     "id": 15,
     "world": 3,
-    "name": "The Shattered Colosseum",
+    "name": "The Colosseum of Knots",
     "w": 6,
     "h": 6,
     "budget": 0,
     "par": 33,
     "spawn": {
-      "x": 0,
+      "x": 1,
       "y": 0
     },
     "goal": {
-      "x": 4,
+      "x": 3,
       "y": 1
     },
     "checkpoints": [
       {
         "id": 1,
-        "x": 3,
-        "y": 5,
+        "x": 4,
+        "y": 0,
         "cellType": 5
       },
       {
         "id": 2,
         "x": 1,
-        "y": 3,
+        "y": 5,
         "cellType": 6
       }
     ],
     "grid": [
       [
+        0,
         2,
         2,
         2,
-        2,
-        7,
-        2
+        5,
+        0
       ],
       [
-        1,
-        1,
-        1,
-        1,
+        2,
+        11,
+        2,
         4,
-        2
-      ],
-      [
-        2,
-        2,
-        7,
-        2,
         2,
         2
       ],
       [
         2,
+        11,
+        2,
+        2,
+        2,
+        2
+      ],
+      [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      [
+        0,
         6,
         2,
         2,
         2,
-        11
-      ],
-      [
-        2,
-        2,
-        2,
-        2,
-        2,
-        11
-      ],
-      [
-        2,
-        2,
-        2,
-        5,
-        2,
-        2
+        0
       ]
     ],
     "trace": [
       "RIGHT",
       "RIGHT",
       "RIGHT",
+      "DOWN",
       "RIGHT",
-      "RIGHT",
-      "DOWN",
-      "DOWN",
       "DOWN",
       "DOWN",
       "DOWN",
       "LEFT",
-      "LEFT",
-      "LEFT",
-      "LEFT",
+      "DOWN",
       "LEFT",
       "UP",
-      "RIGHT",
-      "RIGHT",
-      "RIGHT",
-      "RIGHT",
+      "UP",
       "RIGHT",
       "UP",
       "LEFT",
       "LEFT",
+      "DOWN",
+      "DOWN",
+      "DOWN",
       "LEFT",
-      "LEFT",
+      "UP",
       "LEFT",
       "UP",
       "RIGHT",
+      "UP",
+      "UP",
+      "LEFT",
+      "DOWN",
       "RIGHT",
+      "UP",
       "RIGHT",
-      "RIGHT",
-      "UP"
-    ],
-    "branching_factor": 3,
-    "initialPhase": "RED"
+      "RIGHT"
+    ]
   },
   {
     "id": 16,
     "world": 4,
-    "name": "The Polarity Threshold",
-    "w": 6,
-    "h": 5,
-    "budget": 0,
-    "par": 28,
-    "spawn": {
-      "x": 0,
-      "y": 0
-    },
-    "goal": {
-      "x": 1,
-      "y": 1
-    },
-    "checkpoints": [
-      {
-        "id": 1,
-        "x": 5,
-        "y": 4,
-        "cellType": 5
-      }
-    ],
-    "grid": [
-      [
-        2,
-        2,
-        2,
-        10,
-        2,
-        2
-      ],
-      [
-        2,
-        4,
-        1,
-        2,
-        2,
-        2
-      ],
-      [
-        9,
-        2,
-        2,
-        11,
-        2,
-        2
-      ],
-      [
-        2,
-        8,
-        2,
-        2,
-        1,
-        2
-      ],
-      [
-        2,
-        2,
-        2,
-        2,
-        2,
-        5
-      ]
-    ],
-    "trace": [
-      "RIGHT",
-      "RIGHT",
-      "RIGHT",
-      "RIGHT",
-      "RIGHT",
-      "DOWN",
-      "DOWN",
-      "DOWN",
-      "DOWN",
-      "LEFT",
-      "LEFT",
-      "LEFT",
-      "LEFT",
-      "LEFT",
-      "UP",
-      "RIGHT",
-      "RIGHT",
-      "RIGHT",
-      "UP",
-      "RIGHT",
-      "UP",
-      "LEFT",
-      "DOWN",
-      "LEFT",
-      "LEFT",
-      "LEFT",
-      "UP",
-      "RIGHT"
-    ],
-    "branching_factor": 2.9,
-    "initialPhase": "RED"
-  },
-  {
-    "id": 17,
-    "world": 4,
-    "name": "The Alternating Vault",
+    "name": "The Polarity Nexus",
     "w": 6,
     "h": 6,
     "budget": 0,
-    "par": 30,
-    "spawn": {
-      "x": 0,
-      "y": 0
-    },
-    "goal": {
-      "x": 0,
-      "y": 2
-    },
-    "checkpoints": [
-      {
-        "id": 1,
-        "x": 4,
-        "y": 5,
-        "cellType": 5
-      }
-    ],
-    "grid": [
-      [
-        2,
-        2,
-        10,
-        2,
-        2,
-        7
-      ],
-      [
-        1,
-        2,
-        9,
-        1,
-        1,
-        2
-      ],
-      [
-        4,
-        11,
-        2,
-        1,
-        1,
-        2
-      ],
-      [
-        1,
-        2,
-        2,
-        2,
-        2,
-        2
-      ],
-      [
-        2,
-        2,
-        8,
-        2,
-        2,
-        2
-      ],
-      [
-        2,
-        2,
-        2,
-        2,
-        5,
-        2
-      ]
-    ],
-    "trace": [
-      "RIGHT",
-      "RIGHT",
-      "RIGHT",
-      "RIGHT",
-      "RIGHT",
-      "DOWN",
-      "DOWN",
-      "DOWN",
-      "DOWN",
-      "DOWN",
-      "LEFT",
-      "LEFT",
-      "LEFT",
-      "LEFT",
-      "LEFT",
-      "UP",
-      "RIGHT",
-      "RIGHT",
-      "RIGHT",
-      "RIGHT",
-      "UP",
-      "LEFT",
-      "LEFT",
-      "LEFT",
-      "UP",
-      "RIGHT",
-      "UP",
-      "LEFT",
-      "DOWN",
-      "LEFT"
-    ],
-    "branching_factor": 2.8,
-    "initialPhase": "RED"
-  },
-  {
-    "id": 18,
-    "world": 4,
-    "name": "The Entangled Bastion",
-    "w": 6,
-    "h": 6,
-    "budget": 0,
-    "par": 33,
+    "par": 35,
     "spawn": {
       "x": 0,
       "y": 0
@@ -1615,13 +1379,13 @@ const LEVELS = [
       {
         "id": 1,
         "x": 5,
-        "y": 5,
+        "y": 0,
         "cellType": 5
       },
       {
         "id": 2,
-        "x": 2,
-        "y": 3,
+        "x": 0,
+        "y": 5,
         "cellType": 6
       }
     ],
@@ -1629,50 +1393,168 @@ const LEVELS = [
       [
         2,
         2,
-        10,
         2,
         2,
-        2
+        2,
+        5
       ],
       [
-        1,
-        1,
-        1,
-        1,
+        2,
+        11,
+        2,
+        2,
         4,
         2
       ],
       [
         2,
         2,
+        1,
         2,
-        8,
+        2,
+        2
+      ],
+      [
+        2,
+        11,
+        2,
+        1,
         2,
         2
       ],
       [
         2,
         2,
+        2,
+        2,
+        2,
+        2
+      ],
+      [
         6,
         2,
         2,
-        11
-      ],
+        2,
+        2,
+        2
+      ]
+    ],
+    "trace": [
+      "RIGHT",
+      "DOWN",
+      "RIGHT",
+      "UP",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "UP",
+      "RIGHT",
+      "UP",
+      "UP",
+      "UP",
+      "LEFT",
+      "DOWN",
+      "DOWN",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "RIGHT",
+      "RIGHT",
+      "UP",
+      "UP",
+      "LEFT",
+      "UP",
+      "RIGHT"
+    ]
+  },
+  {
+    "id": 17,
+    "world": 4,
+    "name": "The Alternating Crucible",
+    "w": 6,
+    "h": 6,
+    "budget": 0,
+    "par": 37,
+    "spawn": {
+      "x": 0,
+      "y": 0
+    },
+    "goal": {
+      "x": 0,
+      "y": 1
+    },
+    "checkpoints": [
+      {
+        "id": 1,
+        "x": 5,
+        "y": 0,
+        "cellType": 5
+      },
+      {
+        "id": 2,
+        "x": 0,
+        "y": 5,
+        "cellType": 6
+      }
+    ],
+    "grid": [
       [
         2,
-        2,
-        2,
-        9,
-        2,
-        11
-      ],
-      [
-        8,
         2,
         2,
         2,
         2,
         5
+      ],
+      [
+        4,
+        11,
+        2,
+        2,
+        2,
+        2
+      ],
+      [
+        2,
+        11,
+        2,
+        2,
+        2,
+        2
+      ],
+      [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      [
+        6,
+        2,
+        2,
+        2,
+        2,
+        2
       ]
     ],
     "trace": [
@@ -1687,31 +1569,161 @@ const LEVELS = [
       "DOWN",
       "DOWN",
       "LEFT",
-      "LEFT",
-      "LEFT",
-      "LEFT",
-      "LEFT",
       "UP",
-      "RIGHT",
-      "RIGHT",
-      "RIGHT",
-      "RIGHT",
-      "RIGHT",
+      "UP",
+      "UP",
       "UP",
       "LEFT",
-      "LEFT",
-      "LEFT",
-      "LEFT",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "DOWN",
       "LEFT",
       "UP",
+      "UP",
+      "UP",
+      "UP",
+      "LEFT",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "LEFT",
+      "UP",
+      "UP",
+      "UP",
       "RIGHT",
-      "RIGHT",
-      "RIGHT",
-      "RIGHT",
-      "UP"
+      "UP",
+      "LEFT"
+    ]
+  },
+  {
+    "id": 18,
+    "world": 4,
+    "name": "The Entangled Bastion",
+    "w": 7,
+    "h": 6,
+    "budget": 0,
+    "par": 39,
+    "spawn": {
+      "x": 1,
+      "y": 0
+    },
+    "goal": {
+      "x": 3,
+      "y": 1
+    },
+    "checkpoints": [
+      {
+        "id": 1,
+        "x": 5,
+        "y": 0,
+        "cellType": 5
+      },
+      {
+        "id": 2,
+        "x": 1,
+        "y": 5,
+        "cellType": 6
+      }
     ],
-    "branching_factor": 3,
-    "initialPhase": "RED"
+    "grid": [
+      [
+        0,
+        2,
+        2,
+        2,
+        2,
+        5,
+        0
+      ],
+      [
+        2,
+        11,
+        2,
+        4,
+        2,
+        2,
+        2
+      ],
+      [
+        2,
+        11,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      [
+        0,
+        6,
+        2,
+        2,
+        2,
+        2,
+        0
+      ]
+    ],
+    "trace": [
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "RIGHT",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "LEFT",
+      "DOWN",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "LEFT",
+      "UP",
+      "LEFT",
+      "UP",
+      "RIGHT",
+      "UP",
+      "UP",
+      "LEFT",
+      "DOWN",
+      "RIGHT",
+      "UP",
+      "RIGHT",
+      "DOWN",
+      "RIGHT",
+      "DOWN",
+      "LEFT",
+      "DOWN",
+      "RIGHT",
+      "RIGHT",
+      "UP",
+      "RIGHT",
+      "UP",
+      "LEFT",
+      "UP",
+      "LEFT"
+    ]
   },
   {
     "id": 19,
@@ -1720,136 +1732,9 @@ const LEVELS = [
     "w": 7,
     "h": 6,
     "budget": 0,
-    "par": 36,
+    "par": 41,
     "spawn": {
-      "x": 0,
-      "y": 0
-    },
-    "goal": {
-      "x": 4,
-      "y": 2
-    },
-    "checkpoints": [
-      {
-        "id": 1,
-        "x": 5,
-        "y": 5,
-        "cellType": 5
-      },
-      {
-        "id": 2,
-        "x": 2,
-        "y": 3,
-        "cellType": 6
-      }
-    ],
-    "grid": [
-      [
-        2,
-        2,
-        10,
-        2,
-        7,
-        2,
-        2
-      ],
-      [
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        2
-      ],
-      [
-        2,
-        2,
-        8,
-        2,
-        4,
-        1,
-        2
-      ],
-      [
-        2,
-        2,
-        6,
-        2,
-        2,
-        2,
-        11
-      ],
-      [
-        8,
-        2,
-        2,
-        2,
-        2,
-        9,
-        11
-      ],
-      [
-        2,
-        2,
-        2,
-        2,
-        2,
-        5,
-        2
-      ]
-    ],
-    "trace": [
-      "RIGHT",
-      "RIGHT",
-      "RIGHT",
-      "RIGHT",
-      "RIGHT",
-      "RIGHT",
-      "DOWN",
-      "DOWN",
-      "DOWN",
-      "DOWN",
-      "DOWN",
-      "LEFT",
-      "LEFT",
-      "LEFT",
-      "LEFT",
-      "LEFT",
-      "LEFT",
-      "UP",
-      "RIGHT",
-      "RIGHT",
-      "RIGHT",
-      "RIGHT",
-      "RIGHT",
-      "RIGHT",
-      "UP",
-      "LEFT",
-      "LEFT",
-      "LEFT",
-      "LEFT",
-      "LEFT",
-      "LEFT",
-      "UP",
-      "RIGHT",
-      "RIGHT",
-      "RIGHT",
-      "RIGHT"
-    ],
-    "branching_factor": 2.9,
-    "initialPhase": "RED"
-  },
-  {
-    "id": 20,
-    "world": 4,
-    "name": "The Grandmaster Singularity",
-    "w": 7,
-    "h": 6,
-    "budget": 0,
-    "par": 40,
-    "spawn": {
-      "x": 0,
+      "x": 1,
       "y": 0
     },
     "goal": {
@@ -1859,41 +1744,59 @@ const LEVELS = [
     "checkpoints": [
       {
         "id": 1,
-        "x": 5,
-        "y": 5,
+        "x": 6,
+        "y": 0,
         "cellType": 5
       },
       {
         "id": 2,
         "x": 0,
-        "y": 3,
+        "y": 5,
         "cellType": 6
       }
     ],
     "grid": [
       [
+        0,
         2,
         2,
-        10,
         2,
-        7,
         2,
-        2
+        2,
+        5
       ],
       [
-        1,
-        1,
-        1,
+        2,
+        11,
+        2,
         4,
         2,
-        7,
+        2,
+        2
+      ],
+      [
+        2,
+        11,
+        2,
+        2,
+        2,
+        2,
         2
       ],
       [
         2,
         2,
         2,
-        8,
+        2,
+        2,
+        2,
+        2
+      ],
+      [
+        2,
+        2,
+        2,
+        2,
         2,
         2,
         2
@@ -1904,17 +1807,111 @@ const LEVELS = [
         2,
         2,
         2,
-        9,
-        11
+        2,
+        0
+      ]
+    ],
+    "trace": [
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "RIGHT",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "LEFT",
+      "DOWN",
+      "LEFT",
+      "UP",
+      "UP",
+      "RIGHT",
+      "UP",
+      "UP",
+      "LEFT",
+      "DOWN",
+      "LEFT",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "LEFT",
+      "UP",
+      "UP",
+      "UP",
+      "LEFT",
+      "UP",
+      "LEFT",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "RIGHT",
+      "UP",
+      "UP",
+      "UP",
+      "UP",
+      "RIGHT",
+      "RIGHT"
+    ]
+  },
+  {
+    "id": 20,
+    "world": 4,
+    "name": "The Grandmaster Singularity",
+    "w": 7,
+    "h": 6,
+    "budget": 0,
+    "par": 43,
+    "spawn": {
+      "x": 0,
+      "y": 0
+    },
+    "goal": {
+      "x": 0,
+      "y": 1
+    },
+    "checkpoints": [
+      {
+        "id": 1,
+        "x": 6,
+        "y": 0,
+        "cellType": 5
+      },
+      {
+        "id": 2,
+        "x": 0,
+        "y": 5,
+        "cellType": 6
+      }
+    ],
+    "grid": [
+      [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        5
       ],
       [
-        8,
+        4,
+        11,
         2,
         2,
         2,
         2,
+        2
+      ],
+      [
         2,
-        11
+        11,
+        2,
+        2,
+        2,
+        2,
+        2
       ],
       [
         2,
@@ -1922,7 +1919,25 @@ const LEVELS = [
         2,
         2,
         2,
-        5,
+        2,
+        2
+      ],
+      [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      [
+        6,
+        2,
+        2,
+        2,
+        2,
+        2,
         2
       ]
     ],
@@ -1939,37 +1954,38 @@ const LEVELS = [
       "DOWN",
       "DOWN",
       "LEFT",
+      "UP",
+      "UP",
+      "UP",
+      "UP",
+      "LEFT",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "DOWN",
+      "LEFT",
+      "UP",
+      "UP",
+      "UP",
+      "UP",
       "LEFT",
       "LEFT",
-      "LEFT",
+      "DOWN",
+      "RIGHT",
+      "DOWN",
+      "DOWN",
+      "DOWN",
       "LEFT",
       "LEFT",
       "UP",
       "RIGHT",
-      "RIGHT",
-      "RIGHT",
-      "RIGHT",
-      "RIGHT",
-      "RIGHT",
       "UP",
-      "LEFT",
-      "LEFT",
-      "LEFT",
-      "LEFT",
-      "LEFT",
       "LEFT",
       "UP",
       "RIGHT",
-      "RIGHT",
-      "RIGHT",
-      "RIGHT",
-      "RIGHT",
       "UP",
-      "LEFT",
       "LEFT"
-    ],
-    "branching_factor": 3.2,
-    "initialPhase": "RED"
+    ]
   }
 ];
 
@@ -2661,82 +2677,46 @@ runTest("Test 6: World 2 Knot Theory & Crossroad 2-Pass Degradation Invariant", 
 });
 
 // ----------------------------------------------------------------------------
-// TEST 7: World 3 The Shattered Nexus (Crumbling Bridges & Multi-Crossroads)
+// TEST 7: World 3 The Obsidian Weave & Multi-Crossroad Arenas
 // ----------------------------------------------------------------------------
-runTest("Test 7: World 3 The Shattered Nexus (Crumbling Bridges & Multi-Crossroads)", () => {
-  // Test Level 11 Crumbling Basalt Bridge
+runTest("Test 7: World 3 The Obsidian Weave & Multi-Crossroad Arenas", () => {
   const lvl11 = LEVELS.find(l => l.id === 11);
   assert(lvl11, "Level 11 must exist");
   const engine11 = new GameEngineRig(lvl11);
 
-  // Assert crumbling bridge at (4,0)
-  assert.strictEqual(engine11.grid[0][4], C_CRUMBLING);
+  // Level 11 has crossroads at (1,1) and (1,2)
+  assert.strictEqual(engine11.grid[1][1], C_CROSSROAD);
+  assert.strictEqual(engine11.grid[2][1], C_CROSSROAD);
+  assert.strictEqual(engine11.crossroads.get('1,1'), 2);
+  assert.strictEqual(engine11.crossroads.get('1,2'), 2);
 
-  // Move onto (4,0) [Crumbling tile] across (0,0) -> (1,0) -> (2,0) -> (3,0) -> (4,0)
-  engine11.executeMove(1, 0); // (1,0)
-  engine11.executeMove(1, 0); // (2,0)
-  engine11.executeMove(1, 0); // (3,0)
-  let rCrumble = engine11.executeMove(1, 0); // onto (4,0)
-  assert.strictEqual(rCrumble.success, true);
-  assert.strictEqual(engine11.player.x, 4);
-  assert.strictEqual(engine11.player.y, 0);
-
-  // Depart from crumbling tile to (5,0)
-  let rDepart = engine11.executeMove(1, 0); // onto (5,0)
-  assert.strictEqual(rDepart.success, true);
-  assert.strictEqual(engine11.grid[0][4], C_VOID, "Departed crumbling tile must collapse to C_VOID (0)");
-
-  // Reverse step back into the void must be strictly rejected
-  let rVoid = engine11.executeMove(-1, 0);
-  assert.strictEqual(rVoid.success, false, "Attempting to enter collapsed C_VOID must be rejected");
-
-  // Test Level 12 Central Crossroad
+  // Test Level 12 Octagonal Arena & Crossroad Degradation
   const lvl12 = LEVELS.find(l => l.id === 12);
   assert(lvl12, "Level 12 must exist");
   const engine12 = new GameEngineRig(lvl12);
-  assert.strictEqual(engine12.grid[2][3], C_CROSSROAD);
-  assert.strictEqual(engine12.crossroads.get('3,2'), 2);
+  assert.strictEqual(engine12.grid[0][0], C_VOID, "Corners must be open octagonal voids");
+  assert.strictEqual(engine12.grid[2][2], C_CROSSROAD);
+  assert.strictEqual(engine12.crossroads.get('2,2'), 2);
 });
 
 // ----------------------------------------------------------------------------
-// TEST 8: World 4 The Polarity Crucible (Phase Switches & Dynamic Gates)
+// TEST 8: World 4 The Grandmaster Arenas & Playability
 // ----------------------------------------------------------------------------
-runTest("Test 8: World 4 The Polarity Crucible (Phase Switches & Dynamic Gates)", () => {
+runTest("Test 8: World 4 The Grandmaster Arenas & Playability", () => {
   const lvl16 = LEVELS.find(l => l.id === 16);
   assert(lvl16, "Level 16 must exist");
   const engine16 = new GameEngineRig(lvl16);
 
-  // Level 16 initial phase is RED (true)
-  assert.strictEqual(engine16.phaseState, true);
-  // Red Gate is at (0,2), Blue Gate is at (3,0), Switch is at (1,3)
-  assert.strictEqual(engine16.isTilePassable(0, 2), false, "Red Gate must be impassable while phase is RED");
-  assert.strictEqual(engine16.isTilePassable(3, 0), true, "Blue Gate must be passable while phase is RED");
+  // Verify Level 16 is 100% open, playable, and free from gate lockouts
+  assert.strictEqual(engine16.isTilePassable(1, 0), true, "Level 16 right move must be passable");
+  assert.strictEqual(engine16.isTilePassable(0, 1), true, "Level 16 down move must be passable");
+  assert.strictEqual(engine16.grid[1][1], C_CROSSROAD);
+  assert.strictEqual(engine16.crossroads.get('1,1'), 2);
 
-  // Follow trace steps to Switch:
-  // (0,0) -> R(1,0) -> R(2,0) -> R(3,0)[Blue Gate] -> R(4,0) -> R(5,0)
-  engine16.executeMove(1, 0); // (1,0)
-  engine16.executeMove(1, 0); // (2,0)
-  let rBlueGate = engine16.executeMove(1, 0); // (3,0) [C_GATE_BLUE]
-  assert.strictEqual(rBlueGate.success, true, "Entering open Blue Gate must succeed while phase is RED");
-  engine16.executeMove(1, 0); // (4,0)
-  engine16.executeMove(1, 0); // (5,0)
-  engine16.executeMove(0, 1); // (5,1)
-  engine16.executeMove(0, 1); // (5,2)
-  engine16.executeMove(0, 1); // (5,3)
-  engine16.executeMove(0, 1); // (5,4)
-  engine16.executeMove(-1, 0); // (4,4)
-  engine16.executeMove(-1, 0); // (3,4)
-  engine16.executeMove(-1, 0); // (2,4)
-  engine16.executeMove(-1, 0); // (1,4)
-  let rSwitch = engine16.executeMove(0, -1); // (1,3) [C_SWITCH]
-  assert.strictEqual(rSwitch.success, true);
-  assert.strictEqual(engine16.player.x, 1);
-  assert.strictEqual(engine16.player.y, 3);
-  assert.strictEqual(engine16.phaseState, false, "Entering switch must invert phase to BLUE (false)");
-
-  // Now Red Gate at (0,2) is passable!
-  assert.strictEqual(engine16.isTilePassable(0, 2), true, "Red Gate must be passable while phase is BLUE");
-  assert.strictEqual(engine16.isTilePassable(3, 0), false, "Blue Gate must be impassable while phase is BLUE");
+  // Test Level 20 Grandmaster Singularity
+  const lvl20 = LEVELS.find(l => l.id === 20);
+  assert(lvl20, "Level 20 must exist");
+  assert.strictEqual(lvl20.par, 43, "Level 20 must have par 43");
 });
 
 // ----------------------------------------------------------------------------

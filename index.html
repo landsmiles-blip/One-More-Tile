@@ -103,6 +103,36 @@
     .level-badge {
       display: flex;
       flex-direction: column;
+      cursor: pointer;
+      padding: 4px 6px;
+      margin: -4px -4px;
+      border-radius: 8px;
+      transition: background 0.15s ease, transform 0.1s ease;
+    }
+
+    .level-badge:hover {
+      background: rgba(0, 240, 255, 0.08);
+    }
+
+    .level-badge:active {
+      transform: scale(0.97);
+    }
+
+    .level-badge-top {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .level-dropdown-arrow {
+      font-size: 10px;
+      color: var(--cyan-glow);
+      opacity: 0.8;
+      transition: transform 0.15s ease;
+    }
+
+    .level-badge:hover .level-dropdown-arrow {
+      transform: translateY(1px);
     }
 
     .level-title {
@@ -117,6 +147,10 @@
       font-size: 11px;
       color: var(--text-muted);
       font-weight: 500;
+      max-width: 140px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .budget-badge {
@@ -204,6 +238,18 @@
       border-color: rgba(0, 240, 255, 0.2);
     }
 
+    .hud-btn.level-btn {
+      color: var(--cyan-glow);
+      border-color: rgba(0, 240, 255, 0.25);
+      background: rgba(0, 240, 255, 0.05);
+      letter-spacing: 0.5px;
+    }
+
+    .hud-btn.level-btn:hover {
+      background: rgba(0, 240, 255, 0.12);
+      border-color: rgba(0, 240, 255, 0.4);
+    }
+
     /* Main Canvas Wrap */
     #canvas-wrap {
       flex: 1 1 0%;
@@ -249,6 +295,13 @@
     #deadlock-banner.show {
       opacity: 1;
       transform: translateX(-50%) translateY(0);
+    }
+
+    #toast.info {
+      background: rgba(0, 240, 255, 0.18);
+      border-color: var(--cyan-glow);
+      color: #f0f4fc;
+      box-shadow: 0 4px 20px rgba(0, 240, 255, 0.35);
     }
 
     /* Victory Modal */
@@ -363,18 +416,549 @@
       transform: scale(0.96);
       opacity: 0.9;
     }
+
+    /* YouTube Shorts / Creator Mode Styling */
+    #app-shell.shorts-active {
+      max-width: 410px;
+      height: 100%;
+      max-height: 840px;
+      border: 2px solid rgba(255, 215, 0, 0.45);
+      box-shadow: 0 0 50px rgba(255, 215, 0, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.1);
+    }
+
+    .shorts-hook-bar {
+      display: none;
+      width: 100%;
+      background: linear-gradient(135deg, #ffd700 0%, #ff8800 100%);
+      color: #060709;
+      font-weight: 900;
+      font-size: 12px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      padding: 8px 12px;
+      border-radius: 10px;
+      margin-bottom: 8px;
+      cursor: pointer;
+      text-align: center;
+      box-shadow: 0 4px 18px rgba(255, 183, 0, 0.4);
+      flex-direction: column;
+      gap: 2px;
+      animation: hookPulse 2.5s infinite ease-in-out;
+      user-select: none;
+    }
+
+    #app-shell.shorts-active .shorts-hook-bar {
+      display: flex;
+    }
+
+    .shorts-hook-text {
+      font-weight: 900;
+      line-height: 1.2;
+    }
+
+    .shorts-hook-hint {
+      font-size: 9px;
+      font-weight: 700;
+      opacity: 0.75;
+      letter-spacing: 0.3px;
+    }
+
+    @keyframes hookPulse {
+      0%, 100% { transform: scale(1); filter: brightness(1); }
+      50% { transform: scale(1.02); filter: brightness(1.15); }
+    }
+
+    .shorts-ticker-bar {
+      display: none;
+      width: 100%;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      color: var(--text-muted);
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 0;
+      margin-top: 4px;
+      text-transform: uppercase;
+    }
+
+    .shorts-ticker-bar strong {
+      color: var(--gold-glow);
+    }
+
+    #app-shell.shorts-active .shorts-ticker-bar {
+      display: flex;
+    }
+
+    .hud-btn.shorts-btn {
+      color: var(--gold-glow);
+      border-color: rgba(255, 215, 0, 0.3);
+      background: rgba(255, 215, 0, 0.08);
+    }
+
+    .hud-btn.shorts-btn:hover,
+    .hud-btn.shorts-btn.active {
+      background: rgba(255, 215, 0, 0.2);
+      border-color: var(--gold-glow);
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+    }
+
+    /* Viral 1-Tile-Left Rage Banner */
+    #one-tile-banner {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.85);
+      background: linear-gradient(135deg, rgba(255, 51, 102, 0.95) 0%, rgba(200, 20, 60, 0.95) 100%);
+      border: 2px solid #fff;
+      border-radius: 16px;
+      padding: 16px 20px;
+      text-align: center;
+      color: #fff;
+      box-shadow: 0 10px 40px rgba(255, 51, 102, 0.65), 0 0 20px rgba(255, 255, 255, 0.4);
+      z-index: 95;
+      pointer-events: none;
+      opacity: 0;
+      transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      width: 82%;
+      max-width: 320px;
+    }
+
+    #one-tile-banner.show {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+      animation: rageShake 0.45s ease-in-out;
+    }
+
+    @keyframes rageShake {
+      0%, 100% { transform: translate(-50%, -50%) rotate(0deg); }
+      20% { transform: translate(-52%, -50%) rotate(-3deg); }
+      40% { transform: translate(-48%, -50%) rotate(3deg); }
+      60% { transform: translate(-51%, -50%) rotate(-2deg); }
+      80% { transform: translate(-49%, -50%) rotate(1deg); }
+    }
+
+    .rage-title {
+      font-size: 18px;
+      font-weight: 900;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+    }
+
+    .rage-sub {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      opacity: 0.95;
+    }
+
+    /* Modal Victory Enhancements for Virality */
+    .modal-iq-badge {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.6px;
+      color: var(--gold-glow);
+      background: rgba(255, 215, 0, 0.12);
+      border: 1px solid rgba(255, 215, 0, 0.3);
+      padding: 4px 10px;
+      border-radius: 20px;
+      display: inline-block;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+
+    .modal-actions-grid {
+      display: flex;
+      gap: 8px;
+      width: 100%;
+    }
+
+    .modal-btn.share-btn {
+      background: rgba(0, 240, 255, 0.12);
+      border: 1px solid rgba(0, 240, 255, 0.35);
+      color: var(--cyan-glow);
+      box-shadow: none;
+    }
+
+    .modal-btn.share-btn:hover {
+      background: rgba(0, 240, 255, 0.22);
+      border-color: var(--cyan-glow);
+    }
+
+    .level-action-btn.gold {
+      border-color: rgba(255, 215, 0, 0.35);
+      background: rgba(255, 215, 0, 0.08);
+      color: var(--gold-glow);
+    }
+
+    .level-action-btn.gold:hover {
+      background: rgba(255, 215, 0, 0.2);
+    }
+
+    /* Level Selector Modal */
+    #level-select-modal {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(10, 11, 16, 0.88);
+      backdrop-filter: blur(14px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+      z-index: 120;
+    }
+
+    #level-select-modal.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .level-select-card {
+      background: var(--panel-bg);
+      border: 1px solid rgba(0, 240, 255, 0.25);
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.7), 0 0 35px rgba(0, 240, 255, 0.15);
+      border-radius: 20px;
+      padding: 20px 18px;
+      width: 92%;
+      max-width: 400px;
+      max-height: 82vh;
+      display: flex;
+      flex-direction: column;
+      transform: scale(0.92);
+      transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      box-sizing: border-box;
+      text-align: left;
+    }
+
+    #level-select-modal.show .level-select-card {
+      transform: scale(1);
+    }
+
+    .level-select-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 12px;
+      flex-shrink: 0;
+    }
+
+    .level-select-title-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .modal-close-btn {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: var(--text-muted);
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s ease;
+      line-height: 1;
+    }
+
+    .modal-close-btn:hover {
+      background: rgba(255, 51, 102, 0.2);
+      border-color: var(--crimson-fail);
+      color: #fff;
+    }
+
+    .level-select-actions {
+      display: none;
+    }
+
+    .level-select-footer {
+      display: flex;
+      gap: 8px;
+      margin-top: 14px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      flex-shrink: 0;
+    }
+
+    .clean-levels-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      width: 100%;
+      padding: 4px 2px;
+    }
+
+    .level-grid-tile {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 10px 4px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      transition: all 0.15s ease;
+      text-align: center;
+    }
+
+    .level-grid-tile:hover {
+      background: rgba(0, 240, 255, 0.1);
+      border-color: rgba(0, 240, 255, 0.35);
+      transform: translateY(-2px);
+    }
+
+    .level-grid-tile.active {
+      background: rgba(0, 240, 255, 0.15);
+      border-color: var(--cyan-glow);
+      box-shadow: 0 0 16px rgba(0, 240, 255, 0.3);
+    }
+
+    .level-grid-tile.locked {
+      opacity: 0.45;
+      cursor: pointer;
+    }
+
+    .tile-num {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .level-grid-tile.active .tile-num {
+      color: var(--cyan-glow);
+    }
+
+    .tile-stars {
+      display: flex;
+      gap: 2px;
+      font-size: 10px;
+      color: #3b4459;
+      line-height: 1;
+    }
+
+    .mini-star.active {
+      color: var(--gold-glow);
+      text-shadow: 0 0 4px rgba(255, 215, 0, 0.6);
+    }
+
+    .tile-par {
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .level-action-btn {
+      flex: 1;
+      padding: 7px 10px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      border-radius: 8px;
+      border: 1px solid rgba(0, 240, 255, 0.3);
+      background: rgba(0, 240, 255, 0.08);
+      color: var(--cyan-glow);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+    }
+
+    .level-action-btn:hover {
+      background: rgba(0, 240, 255, 0.18);
+      transform: translateY(-1px);
+    }
+
+    .level-action-btn.danger {
+      border-color: rgba(255, 51, 102, 0.35);
+      background: rgba(255, 51, 102, 0.08);
+      color: #ff6688;
+    }
+
+    .level-action-btn.danger:hover {
+      background: rgba(255, 51, 102, 0.2);
+      color: #fff;
+    }
+
+    .level-select-list {
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      padding-right: 4px;
+      margin-right: -4px;
+    }
+
+    .level-select-list::-webkit-scrollbar {
+      width: 5px;
+    }
+    .level-select-list::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 4px;
+    }
+    .level-select-list::-webkit-scrollbar-thumb {
+      background: rgba(0, 240, 255, 0.2);
+      border-radius: 4px;
+    }
+    .level-select-list::-webkit-scrollbar-thumb:hover {
+      background: rgba(0, 240, 255, 0.4);
+    }
+
+    .world-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .world-header {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.8px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 4px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .world-levels-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 6px;
+    }
+
+    .lvl-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 10px;
+      padding: 8px 10px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      text-align: left;
+      transition: all 0.15s ease;
+      position: relative;
+    }
+
+    .lvl-card:hover {
+      background: rgba(0, 240, 255, 0.08);
+      border-color: rgba(0, 240, 255, 0.3);
+      transform: translateY(-1px);
+    }
+
+    .lvl-card:active {
+      transform: scale(0.97);
+    }
+
+    .lvl-card.active {
+      background: rgba(0, 240, 255, 0.12);
+      border-color: var(--cyan-glow);
+      box-shadow: 0 0 14px rgba(0, 240, 255, 0.25);
+    }
+
+    .lvl-card.completed {
+      border-color: rgba(255, 215, 0, 0.25);
+    }
+
+    .lvl-card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .lvl-num-badge {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--cyan-glow);
+      letter-spacing: 0.5px;
+    }
+
+    .lvl-card.active .lvl-num-badge {
+      color: #fff;
+    }
+
+    .lvl-badge-playing {
+      font-size: 8px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      background: var(--cyan-glow);
+      color: #060709;
+      padding: 1px 4px;
+      border-radius: 4px;
+      text-transform: uppercase;
+    }
+
+    .lvl-stars-display {
+      font-size: 11px;
+      line-height: 1;
+      display: flex;
+      gap: 1px;
+    }
+
+    .lvl-star-mini {
+      color: #2c354a;
+    }
+
+    .lvl-star-mini.active {
+      color: var(--gold-glow);
+      text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+    }
+
+    .lvl-card-name {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-main);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .lvl-card-meta {
+      font-size: 9px;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
   </style>
 </head>
 <body>
   <div id="app-shell">
+    <!-- Shorts / Creator Mode Viral Hook Header -->
+    <div id="shorts-hook-bar" class="shorts-hook-bar" title="Click to cycle viral hook for Shorts / TikTok">
+      <span id="shorts-hook-text" class="shorts-hook-text">CAN YOU SOLVE THIS WITHOUT GETTING TRAPPED? 🧠</span>
+      <span class="shorts-hook-hint">↻ tap to change hook</span>
+    </div>
+
     <!-- Top HUD -->
     <header id="hud">
       <div class="hud-group">
-        <div class="level-badge">
-          <span id="level-num" class="level-title">LEVEL 1</span>
-          <span id="level-name" class="level-name">The Straightaway</span>
+        <div class="level-badge" id="level-badge-btn" role="button" tabindex="0" title="Select Level (L)">
+          <div class="level-badge-top">
+            <span id="level-num" class="level-title">LEVEL 1</span>
+            <span class="level-dropdown-arrow">▾</span>
+          </div>
+          <span id="level-name" class="level-name">The Open Arena</span>
         </div>
-        <span id="budget-tag" class="budget-badge">SPARE: 0</span>
+        <span id="budget-tag" class="budget-badge" style="display:none;">SPARE: 0</span>
       </div>
 
       <div class="hud-group">
@@ -385,6 +969,7 @@
         </div>
         <button id="undo-btn" class="hud-btn undo-btn" title="Undo Move (U / Z)">↺ UNDO</button>
         <button id="restart-btn" class="hud-btn" title="Restart Level (R)">↻</button>
+        <button id="level-select-btn" class="hud-btn level-btn" title="Choose Level (L)">☰</button>
       </div>
     </header>
 
@@ -393,20 +978,56 @@
       <canvas id="game-canvas"></canvas>
       <div id="toast">Route Severed — Tap Undo or R</div>
       <div id="deadlock-banner">Deadlock — Press R to Restart</div>
+      <div id="one-tile-banner">
+        <div class="rage-title">💀 ONE TILE LEFT! 😭</div>
+        <div class="rage-sub">98.4% OF PLAYERS FAIL HERE • PRESS R</div>
+      </div>
     </main>
+
+    <!-- Shorts / Creator Mode Bottom Ticker -->
+    <div id="shorts-ticker-bar" class="shorts-ticker-bar">
+      <span>🔥 PAR: <strong id="shorts-par">11</strong> MOVES</span>
+      <span>•</span>
+      <span>SOLVE RATE: <strong>1.8%</strong></span>
+    </div>
 
     <!-- Level Complete Modal -->
     <div id="victory-modal" class="modal-overlay">
       <div class="modal-card">
         <h2 class="modal-title">LEVEL SOLVED</h2>
         <div id="modal-sub" class="modal-subtitle">Path Complete</div>
+        <div id="modal-iq-badge" class="modal-iq-badge">🏆 TOP 0.2% WORLDWIDE (FLAWLESS)</div>
         <div class="modal-stars">
           <span id="m-star-1" class="modal-star">★</span>
           <span id="m-star-2" class="modal-star">★</span>
           <span id="m-star-3" class="modal-star">★</span>
         </div>
         <div id="modal-stats" class="modal-stats">Moves: 2 (Par: 2)</div>
-        <button id="next-btn" class="modal-btn">CONTINUE</button>
+        <div class="modal-actions-grid">
+          <button id="next-btn" class="modal-btn">CONTINUE</button>
+          <button id="share-btn" class="modal-btn share-btn" title="Share challenge link">📤 SHARE</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Level Selector Modal -->
+    <div id="level-select-modal" class="modal-overlay">
+      <div class="modal-card level-select-card">
+        <div class="level-select-header">
+          <div class="level-select-title-wrap">
+            <h2 class="modal-title">SELECT LEVEL</h2>
+            <div class="modal-subtitle">Choose a level (1 – 20)</div>
+          </div>
+          <button id="level-select-close" class="modal-close-btn" title="Close (Esc)">✕</button>
+        </div>
+
+        <div id="level-select-list" class="level-select-list"></div>
+
+        <div class="level-select-footer">
+          <button id="shorts-btn" class="level-action-btn" title="Toggle 9:16 Shorts Mode">📹 Shorts</button>
+          <button id="level-unlock-all-btn" class="level-action-btn" title="Unlock all 20 levels">🔓 Unlock All</button>
+          <button id="level-reset-prog-btn" class="level-action-btn danger" title="Reset all progress to Level 1">↺ Reset</button>
+        </div>
       </div>
     </div>
   </div>
@@ -446,22 +1067,49 @@
         this.ensureContext();
         if (!this.ctx) return;
         const now = this.ctx.currentTime;
+        
+        // Hypnotic pentatonic scale for viral ASMR shorts appeal
+        const scale = [261.63, 293.66, 329.63, 392.00, 440.00, 523.25, 587.33, 659.25];
+        const note = scale[streak % scale.length];
+
         const osc = this.ctx.createOscillator();
         const gain = this.ctx.createGain();
 
-        const baseFreq = Math.min(180, 110 + streak * 8);
         osc.type = 'triangle';
-        osc.frequency.setValueAtTime(baseFreq, now);
-        osc.frequency.exponentialRampToValueAtTime(45, now + 0.08);
+        osc.frequency.setValueAtTime(note, now);
+        osc.frequency.exponentialRampToValueAtTime(note * 0.85, now + 0.08);
 
-        gain.gain.setValueAtTime(0.35, now);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+        gain.gain.setValueAtTime(0.28, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.09);
 
         osc.connect(gain);
         gain.connect(this.ctx.destination);
 
         osc.start(now);
-        osc.stop(now + 0.09);
+        osc.stop(now + 0.1);
+      }
+
+      playOneTileFail() {
+        this.ensureContext();
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        
+        // Dramatic viral comic fail sting (saw drop + bass rumble)
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(170, now);
+        osc.frequency.exponentialRampToValueAtTime(32, now + 0.35);
+
+        gain.gain.setValueAtTime(0.42, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.38);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+
+        osc.start(now);
+        osc.stop(now + 0.4);
       }
 
       playWallBump() {
@@ -1383,79 +2031,11 @@
       {
         "id": 11,
         "world": 3,
-        "name": "The Basalt Crossing",
+        "name": "The Obsidian Weave",
         "w": 6,
-        "h": 5,
+        "h": 4,
         "budget": 0,
         "par": 25,
-        "spawn": {
-          "x": 0,
-          "y": 0
-        },
-        "goal": {
-          "x": 1,
-          "y": 2
-        },
-        "checkpoints": [
-          {
-            "id": 1,
-            "x": 4,
-            "y": 1,
-            "cellType": 5
-          }
-        ],
-        "grid": [
-          [
-            2,
-            2,
-            2,
-            2,
-            7,
-            2
-          ],
-          [
-            1,
-            1,
-            1,
-            2,
-            5,
-            2
-          ],
-          [
-            1,
-            4,
-            2,
-            11,
-            2,
-            2
-          ],
-          [
-            2,
-            2,
-            2,
-            2,
-            1,
-            2
-          ],
-          [
-            2,
-            2,
-            2,
-            2,
-            2,
-            2
-          ]
-        ],
-        "initialPhase": "RED"
-      },
-      {
-        "id": 12,
-        "world": 3,
-        "name": "The Dual Chasm",
-        "w": 6,
-        "h": 5,
-        "budget": 0,
-        "par": 27,
         "spawn": {
           "x": 0,
           "y": 0
@@ -1467,8 +2047,8 @@
         "checkpoints": [
           {
             "id": 1,
-            "x": 1,
-            "y": 4,
+            "x": 5,
+            "y": 0,
             "cellType": 5
           }
         ],
@@ -1477,22 +2057,114 @@
             2,
             2,
             2,
-            7,
             2,
-            2
+            2,
+            5
           ],
           [
             4,
-            1,
-            1,
+            11,
+            2,
             2,
             2,
             2
           ],
           [
             2,
-            7,
+            11,
             2,
+            2,
+            2,
+            2
+          ],
+          [
+            2,
+            2,
+            2,
+            2,
+            2,
+            2
+          ]
+        ],
+        "trace": [
+          "RIGHT",
+          "RIGHT",
+          "RIGHT",
+          "RIGHT",
+          "RIGHT",
+          "DOWN",
+          "DOWN",
+          "DOWN",
+          "LEFT",
+          "UP",
+          "UP",
+          "LEFT",
+          "DOWN",
+          "DOWN",
+          "LEFT",
+          "UP",
+          "UP",
+          "LEFT",
+          "DOWN",
+          "DOWN",
+          "LEFT",
+          "UP",
+          "RIGHT",
+          "UP",
+          "LEFT"
+        ]
+      },
+      {
+        "id": 12,
+        "world": 3,
+        "name": "The Double Helix",
+        "w": 6,
+        "h": 5,
+        "budget": 0,
+        "par": 27,
+        "spawn": {
+          "x": 1,
+          "y": 0
+        },
+        "goal": {
+          "x": 4,
+          "y": 4
+        },
+        "checkpoints": [
+          {
+            "id": 1,
+            "x": 4,
+            "y": 0,
+            "cellType": 5
+          },
+          {
+            "id": 2,
+            "x": 1,
+            "y": 4,
+            "cellType": 6
+          }
+        ],
+        "grid": [
+          [
+            0,
+            2,
+            2,
+            2,
+            5,
+            0
+          ],
+          [
+            2,
+            2,
+            2,
+            2,
+            2,
+            2
+          ],
+          [
+            2,
+            2,
+            11,
             11,
             2,
             2
@@ -1502,35 +2174,63 @@
             2,
             2,
             2,
-            1,
+            2,
             2
           ],
           [
+            0,
+            6,
             2,
-            5,
             2,
-            2,
-            2,
-            2
+            4,
+            0
           ]
         ],
-        "initialPhase": "RED"
+        "trace": [
+          "RIGHT",
+          "RIGHT",
+          "RIGHT",
+          "DOWN",
+          "RIGHT",
+          "DOWN",
+          "DOWN",
+          "LEFT",
+          "UP",
+          "LEFT",
+          "UP",
+          "LEFT",
+          "DOWN",
+          "RIGHT",
+          "DOWN",
+          "LEFT",
+          "UP",
+          "LEFT",
+          "UP",
+          "LEFT",
+          "DOWN",
+          "DOWN",
+          "RIGHT",
+          "DOWN",
+          "RIGHT",
+          "RIGHT",
+          "RIGHT"
+        ]
       },
       {
         "id": 13,
         "world": 3,
-        "name": "The Cloverleaf Fracture",
+        "name": "The Labyrinthine Cross",
         "w": 6,
-        "h": 6,
+        "h": 5,
         "budget": 0,
         "par": 29,
         "spawn": {
-          "x": 0,
+          "x": 1,
           "y": 0
         },
         "goal": {
-          "x": 1,
-          "y": 2
+          "x": 4,
+          "y": 4
         },
         "checkpoints": [
           {
@@ -1541,14 +2241,14 @@
           },
           {
             "id": 2,
-            "x": 4,
-            "y": 3,
+            "x": 0,
+            "y": 4,
             "cellType": 6
           }
         ],
         "grid": [
           [
-            2,
+            0,
             2,
             2,
             2,
@@ -1556,54 +2256,76 @@
             5
           ],
           [
-            1,
-            1,
-            1,
-            1,
-            1,
+            2,
+            11,
+            2,
+            2,
+            2,
             2
           ],
           [
+            2,
+            11,
+            2,
+            2,
+            2,
+            2
+          ],
+          [
+            2,
+            2,
+            2,
+            2,
+            2,
+            2
+          ],
+          [
+            6,
+            2,
+            2,
             2,
             4,
-            1,
-            1,
-            1,
-            2
-          ],
-          [
-            2,
-            2,
-            2,
-            2,
-            6,
-            11
-          ],
-          [
-            2,
-            2,
-            2,
-            2,
-            2,
-            11
-          ],
-          [
-            2,
-            2,
-            7,
-            2,
-            2,
-            2
+            0
           ]
         ],
-        "initialPhase": "RED"
+        "trace": [
+          "RIGHT",
+          "RIGHT",
+          "RIGHT",
+          "RIGHT",
+          "DOWN",
+          "DOWN",
+          "DOWN",
+          "LEFT",
+          "UP",
+          "UP",
+          "LEFT",
+          "DOWN",
+          "DOWN",
+          "LEFT",
+          "UP",
+          "UP",
+          "LEFT",
+          "DOWN",
+          "LEFT",
+          "UP",
+          "RIGHT",
+          "DOWN",
+          "DOWN",
+          "LEFT",
+          "DOWN",
+          "RIGHT",
+          "RIGHT",
+          "RIGHT",
+          "RIGHT"
+        ]
       },
       {
         "id": 14,
         "world": 3,
-        "name": "The Tri-Chamber Citadel",
+        "name": "The Tri-Chamber Nexus",
         "w": 6,
-        "h": 6,
+        "h": 5,
         "budget": 0,
         "par": 31,
         "spawn": {
@@ -1611,20 +2333,20 @@
           "y": 0
         },
         "goal": {
-          "x": 3,
-          "y": 2
+          "x": 0,
+          "y": 1
         },
         "checkpoints": [
           {
             "id": 1,
             "x": 5,
-            "y": 5,
+            "y": 0,
             "cellType": 5
           },
           {
             "id": 2,
-            "x": 4,
-            "y": 3,
+            "x": 0,
+            "y": 4,
             "cellType": 6
           }
         ],
@@ -1633,287 +2355,201 @@
             2,
             2,
             2,
-            7,
-            2,
-            2
-          ],
-          [
-            1,
-            1,
-            1,
-            1,
-            1,
-            2
-          ],
-          [
-            2,
-            7,
-            2,
-            4,
-            1,
-            2
-          ],
-          [
-            2,
-            2,
-            2,
-            2,
-            6,
-            11
-          ],
-          [
-            2,
-            2,
-            2,
-            2,
-            2,
-            11
-          ],
-          [
-            2,
-            2,
-            2,
             2,
             2,
             5
+          ],
+          [
+            4,
+            11,
+            2,
+            2,
+            2,
+            2
+          ],
+          [
+            2,
+            11,
+            2,
+            2,
+            2,
+            2
+          ],
+          [
+            2,
+            2,
+            2,
+            2,
+            2,
+            2
+          ],
+          [
+            6,
+            2,
+            2,
+            2,
+            2,
+            2
           ]
         ],
-        "initialPhase": "RED"
+        "trace": [
+          "RIGHT",
+          "RIGHT",
+          "RIGHT",
+          "RIGHT",
+          "RIGHT",
+          "DOWN",
+          "DOWN",
+          "DOWN",
+          "DOWN",
+          "LEFT",
+          "UP",
+          "UP",
+          "UP",
+          "LEFT",
+          "DOWN",
+          "DOWN",
+          "DOWN",
+          "LEFT",
+          "UP",
+          "UP",
+          "UP",
+          "LEFT",
+          "DOWN",
+          "DOWN",
+          "DOWN",
+          "LEFT",
+          "UP",
+          "UP",
+          "RIGHT",
+          "UP",
+          "LEFT"
+        ]
       },
       {
         "id": 15,
         "world": 3,
-        "name": "The Shattered Colosseum",
+        "name": "The Colosseum of Knots",
         "w": 6,
         "h": 6,
         "budget": 0,
         "par": 33,
         "spawn": {
-          "x": 0,
+          "x": 1,
           "y": 0
         },
         "goal": {
-          "x": 4,
+          "x": 3,
           "y": 1
         },
         "checkpoints": [
           {
             "id": 1,
-            "x": 3,
-            "y": 5,
+            "x": 4,
+            "y": 0,
             "cellType": 5
           },
           {
             "id": 2,
             "x": 1,
-            "y": 3,
+            "y": 5,
             "cellType": 6
           }
         ],
         "grid": [
           [
+            0,
             2,
             2,
             2,
-            2,
-            7,
-            2
+            5,
+            0
           ],
           [
-            1,
-            1,
-            1,
-            1,
+            2,
+            11,
+            2,
             4,
-            2
-          ],
-          [
-            2,
-            2,
-            7,
-            2,
             2,
             2
           ],
           [
             2,
+            11,
+            2,
+            2,
+            2,
+            2
+          ],
+          [
+            2,
+            2,
+            2,
+            2,
+            2,
+            2
+          ],
+          [
+            2,
+            2,
+            2,
+            2,
+            2,
+            2
+          ],
+          [
+            0,
             6,
             2,
             2,
             2,
-            11
-          ],
-          [
-            2,
-            2,
-            2,
-            2,
-            2,
-            11
-          ],
-          [
-            2,
-            2,
-            2,
-            5,
-            2,
-            2
+            0
           ]
         ],
-        "initialPhase": "RED"
+        "trace": [
+          "RIGHT",
+          "RIGHT",
+          "RIGHT",
+          "DOWN",
+          "RIGHT",
+          "DOWN",
+          "DOWN",
+          "DOWN",
+          "LEFT",
+          "DOWN",
+          "LEFT",
+          "UP",
+          "UP",
+          "RIGHT",
+          "UP",
+          "LEFT",
+          "LEFT",
+          "DOWN",
+          "DOWN",
+          "DOWN",
+          "LEFT",
+          "UP",
+          "LEFT",
+          "UP",
+          "RIGHT",
+          "UP",
+          "UP",
+          "LEFT",
+          "DOWN",
+          "RIGHT",
+          "UP",
+          "RIGHT",
+          "RIGHT"
+        ]
       },
       {
         "id": 16,
         "world": 4,
-        "name": "The Polarity Threshold",
-        "w": 6,
-        "h": 5,
-        "budget": 0,
-        "par": 28,
-        "spawn": {
-          "x": 0,
-          "y": 0
-        },
-        "goal": {
-          "x": 1,
-          "y": 1
-        },
-        "checkpoints": [
-          {
-            "id": 1,
-            "x": 5,
-            "y": 4,
-            "cellType": 5
-          }
-        ],
-        "grid": [
-          [
-            2,
-            2,
-            2,
-            10,
-            2,
-            2
-          ],
-          [
-            2,
-            4,
-            1,
-            2,
-            2,
-            2
-          ],
-          [
-            9,
-            2,
-            2,
-            11,
-            2,
-            2
-          ],
-          [
-            2,
-            8,
-            2,
-            2,
-            1,
-            2
-          ],
-          [
-            2,
-            2,
-            2,
-            2,
-            2,
-            5
-          ]
-        ],
-        "initialPhase": "RED"
-      },
-      {
-        "id": 17,
-        "world": 4,
-        "name": "The Alternating Vault",
+        "name": "The Polarity Nexus",
         "w": 6,
         "h": 6,
         "budget": 0,
-        "par": 30,
-        "spawn": {
-          "x": 0,
-          "y": 0
-        },
-        "goal": {
-          "x": 0,
-          "y": 2
-        },
-        "checkpoints": [
-          {
-            "id": 1,
-            "x": 4,
-            "y": 5,
-            "cellType": 5
-          }
-        ],
-        "grid": [
-          [
-            2,
-            2,
-            10,
-            2,
-            2,
-            7
-          ],
-          [
-            1,
-            2,
-            9,
-            1,
-            1,
-            2
-          ],
-          [
-            4,
-            11,
-            2,
-            1,
-            1,
-            2
-          ],
-          [
-            1,
-            2,
-            2,
-            2,
-            2,
-            2
-          ],
-          [
-            2,
-            2,
-            8,
-            2,
-            2,
-            2
-          ],
-          [
-            2,
-            2,
-            2,
-            2,
-            5,
-            2
-          ]
-        ],
-        "initialPhase": "RED"
-      },
-      {
-        "id": 18,
-        "world": 4,
-        "name": "The Entangled Bastion",
-        "w": 6,
-        "h": 6,
-        "budget": 0,
-        "par": 33,
+        "par": 35,
         "spawn": {
           "x": 0,
           "y": 0
@@ -1926,13 +2562,13 @@
           {
             "id": 1,
             "x": 5,
-            "y": 5,
+            "y": 0,
             "cellType": 5
           },
           {
             "id": 2,
-            "x": 2,
-            "y": 3,
+            "x": 0,
+            "y": 5,
             "cellType": 6
           }
         ],
@@ -1940,53 +2576,337 @@
           [
             2,
             2,
-            10,
             2,
             2,
-            2
+            2,
+            5
           ],
           [
-            1,
-            1,
-            1,
-            1,
+            2,
+            11,
+            2,
+            2,
             4,
             2
           ],
           [
             2,
             2,
+            1,
             2,
-            8,
+            2,
+            2
+          ],
+          [
+            2,
+            11,
+            2,
+            1,
             2,
             2
           ],
           [
             2,
             2,
+            2,
+            2,
+            2,
+            2
+          ],
+          [
             6,
             2,
             2,
-            11
-          ],
+            2,
+            2,
+            2
+          ]
+        ],
+        "trace": [
+          "RIGHT",
+          "DOWN",
+          "RIGHT",
+          "UP",
+          "RIGHT",
+          "RIGHT",
+          "RIGHT",
+          "DOWN",
+          "DOWN",
+          "DOWN",
+          "DOWN",
+          "DOWN",
+          "LEFT",
+          "LEFT",
+          "LEFT",
+          "LEFT",
+          "LEFT",
+          "UP",
+          "RIGHT",
+          "UP",
+          "UP",
+          "UP",
+          "LEFT",
+          "DOWN",
+          "DOWN",
+          "RIGHT",
+          "RIGHT",
+          "DOWN",
+          "RIGHT",
+          "RIGHT",
+          "UP",
+          "UP",
+          "LEFT",
+          "UP",
+          "RIGHT"
+        ]
+      },
+      {
+        "id": 17,
+        "world": 4,
+        "name": "The Alternating Crucible",
+        "w": 6,
+        "h": 6,
+        "budget": 0,
+        "par": 37,
+        "spawn": {
+          "x": 0,
+          "y": 0
+        },
+        "goal": {
+          "x": 0,
+          "y": 1
+        },
+        "checkpoints": [
+          {
+            "id": 1,
+            "x": 5,
+            "y": 0,
+            "cellType": 5
+          },
+          {
+            "id": 2,
+            "x": 0,
+            "y": 5,
+            "cellType": 6
+          }
+        ],
+        "grid": [
           [
             2,
-            2,
-            2,
-            9,
-            2,
-            11
-          ],
-          [
-            8,
             2,
             2,
             2,
             2,
             5
+          ],
+          [
+            4,
+            11,
+            2,
+            2,
+            2,
+            2
+          ],
+          [
+            2,
+            11,
+            2,
+            2,
+            2,
+            2
+          ],
+          [
+            2,
+            2,
+            2,
+            2,
+            2,
+            2
+          ],
+          [
+            2,
+            2,
+            2,
+            2,
+            2,
+            2
+          ],
+          [
+            6,
+            2,
+            2,
+            2,
+            2,
+            2
           ]
         ],
-        "initialPhase": "RED"
+        "trace": [
+          "RIGHT",
+          "RIGHT",
+          "RIGHT",
+          "RIGHT",
+          "RIGHT",
+          "DOWN",
+          "DOWN",
+          "DOWN",
+          "DOWN",
+          "DOWN",
+          "LEFT",
+          "UP",
+          "UP",
+          "UP",
+          "UP",
+          "LEFT",
+          "DOWN",
+          "DOWN",
+          "DOWN",
+          "DOWN",
+          "LEFT",
+          "UP",
+          "UP",
+          "UP",
+          "UP",
+          "LEFT",
+          "DOWN",
+          "DOWN",
+          "DOWN",
+          "DOWN",
+          "LEFT",
+          "UP",
+          "UP",
+          "UP",
+          "RIGHT",
+          "UP",
+          "LEFT"
+        ]
+      },
+      {
+        "id": 18,
+        "world": 4,
+        "name": "The Entangled Bastion",
+        "w": 7,
+        "h": 6,
+        "budget": 0,
+        "par": 39,
+        "spawn": {
+          "x": 1,
+          "y": 0
+        },
+        "goal": {
+          "x": 3,
+          "y": 1
+        },
+        "checkpoints": [
+          {
+            "id": 1,
+            "x": 5,
+            "y": 0,
+            "cellType": 5
+          },
+          {
+            "id": 2,
+            "x": 1,
+            "y": 5,
+            "cellType": 6
+          }
+        ],
+        "grid": [
+          [
+            0,
+            2,
+            2,
+            2,
+            2,
+            5,
+            0
+          ],
+          [
+            2,
+            11,
+            2,
+            4,
+            2,
+            2,
+            2
+          ],
+          [
+            2,
+            11,
+            2,
+            2,
+            2,
+            2,
+            2
+          ],
+          [
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2
+          ],
+          [
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2
+          ],
+          [
+            0,
+            6,
+            2,
+            2,
+            2,
+            2,
+            0
+          ]
+        ],
+        "trace": [
+          "RIGHT",
+          "RIGHT",
+          "RIGHT",
+          "RIGHT",
+          "DOWN",
+          "RIGHT",
+          "DOWN",
+          "DOWN",
+          "DOWN",
+          "LEFT",
+          "DOWN",
+          "LEFT",
+          "LEFT",
+          "LEFT",
+          "LEFT",
+          "UP",
+          "LEFT",
+          "UP",
+          "RIGHT",
+          "UP",
+          "UP",
+          "LEFT",
+          "DOWN",
+          "RIGHT",
+          "UP",
+          "RIGHT",
+          "DOWN",
+          "RIGHT",
+          "DOWN",
+          "LEFT",
+          "DOWN",
+          "RIGHT",
+          "RIGHT",
+          "UP",
+          "RIGHT",
+          "UP",
+          "LEFT",
+          "UP",
+          "LEFT"
+        ]
       },
       {
         "id": 19,
@@ -1995,97 +2915,9 @@
         "w": 7,
         "h": 6,
         "budget": 0,
-        "par": 36,
+        "par": 41,
         "spawn": {
-          "x": 0,
-          "y": 0
-        },
-        "goal": {
-          "x": 4,
-          "y": 2
-        },
-        "checkpoints": [
-          {
-            "id": 1,
-            "x": 5,
-            "y": 5,
-            "cellType": 5
-          },
-          {
-            "id": 2,
-            "x": 2,
-            "y": 3,
-            "cellType": 6
-          }
-        ],
-        "grid": [
-          [
-            2,
-            2,
-            10,
-            2,
-            7,
-            2,
-            2
-          ],
-          [
-            1,
-            1,
-            1,
-            1,
-            1,
-            1,
-            2
-          ],
-          [
-            2,
-            2,
-            8,
-            2,
-            4,
-            1,
-            2
-          ],
-          [
-            2,
-            2,
-            6,
-            2,
-            2,
-            2,
-            11
-          ],
-          [
-            8,
-            2,
-            2,
-            2,
-            2,
-            9,
-            11
-          ],
-          [
-            2,
-            2,
-            2,
-            2,
-            2,
-            5,
-            2
-          ]
-        ],
-        "initialPhase": "RED"
-      },
-      {
-        "id": 20,
-        "world": 4,
-        "name": "The Grandmaster Singularity",
-        "w": 7,
-        "h": 6,
-        "budget": 0,
-        "par": 40,
-        "spawn": {
-          "x": 0,
+          "x": 1,
           "y": 0
         },
         "goal": {
@@ -2095,41 +2927,59 @@
         "checkpoints": [
           {
             "id": 1,
-            "x": 5,
-            "y": 5,
+            "x": 6,
+            "y": 0,
             "cellType": 5
           },
           {
             "id": 2,
             "x": 0,
-            "y": 3,
+            "y": 5,
             "cellType": 6
           }
         ],
         "grid": [
           [
+            0,
             2,
             2,
-            10,
             2,
-            7,
             2,
-            2
+            2,
+            5
           ],
           [
-            1,
-            1,
-            1,
+            2,
+            11,
+            2,
             4,
             2,
-            7,
+            2,
+            2
+          ],
+          [
+            2,
+            11,
+            2,
+            2,
+            2,
+            2,
             2
           ],
           [
             2,
             2,
             2,
-            8,
+            2,
+            2,
+            2,
+            2
+          ],
+          [
+            2,
+            2,
+            2,
+            2,
             2,
             2,
             2
@@ -2140,17 +2990,111 @@
             2,
             2,
             2,
-            9,
-            11
+            2,
+            0
+          ]
+        ],
+        "trace": [
+          "RIGHT",
+          "RIGHT",
+          "RIGHT",
+          "RIGHT",
+          "RIGHT",
+          "DOWN",
+          "DOWN",
+          "DOWN",
+          "DOWN",
+          "LEFT",
+          "DOWN",
+          "LEFT",
+          "UP",
+          "UP",
+          "RIGHT",
+          "UP",
+          "UP",
+          "LEFT",
+          "DOWN",
+          "LEFT",
+          "DOWN",
+          "DOWN",
+          "DOWN",
+          "LEFT",
+          "UP",
+          "UP",
+          "UP",
+          "LEFT",
+          "UP",
+          "LEFT",
+          "DOWN",
+          "DOWN",
+          "DOWN",
+          "DOWN",
+          "RIGHT",
+          "UP",
+          "UP",
+          "UP",
+          "UP",
+          "RIGHT",
+          "RIGHT"
+        ]
+      },
+      {
+        "id": 20,
+        "world": 4,
+        "name": "The Grandmaster Singularity",
+        "w": 7,
+        "h": 6,
+        "budget": 0,
+        "par": 43,
+        "spawn": {
+          "x": 0,
+          "y": 0
+        },
+        "goal": {
+          "x": 0,
+          "y": 1
+        },
+        "checkpoints": [
+          {
+            "id": 1,
+            "x": 6,
+            "y": 0,
+            "cellType": 5
+          },
+          {
+            "id": 2,
+            "x": 0,
+            "y": 5,
+            "cellType": 6
+          }
+        ],
+        "grid": [
+          [
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            5
           ],
           [
-            8,
+            4,
+            11,
             2,
             2,
             2,
             2,
+            2
+          ],
+          [
             2,
-            11
+            11,
+            2,
+            2,
+            2,
+            2,
+            2
           ],
           [
             2,
@@ -2158,11 +3102,73 @@
             2,
             2,
             2,
-            5,
+            2,
+            2
+          ],
+          [
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2
+          ],
+          [
+            6,
+            2,
+            2,
+            2,
+            2,
+            2,
             2
           ]
         ],
-        "initialPhase": "RED"
+        "trace": [
+          "RIGHT",
+          "RIGHT",
+          "RIGHT",
+          "RIGHT",
+          "RIGHT",
+          "RIGHT",
+          "DOWN",
+          "DOWN",
+          "DOWN",
+          "DOWN",
+          "DOWN",
+          "LEFT",
+          "UP",
+          "UP",
+          "UP",
+          "UP",
+          "LEFT",
+          "DOWN",
+          "DOWN",
+          "DOWN",
+          "DOWN",
+          "LEFT",
+          "UP",
+          "UP",
+          "UP",
+          "UP",
+          "LEFT",
+          "LEFT",
+          "DOWN",
+          "RIGHT",
+          "DOWN",
+          "DOWN",
+          "DOWN",
+          "LEFT",
+          "LEFT",
+          "UP",
+          "RIGHT",
+          "UP",
+          "LEFT",
+          "UP",
+          "RIGHT",
+          "UP",
+          "LEFT"
+        ]
       }
     ];
 
@@ -2223,6 +3229,46 @@
         // DOM elements
         this.domLevelNum = document.getElementById('level-num');
         this.domLevelName = document.getElementById('level-name');
+        this.domLevelBadgeBtn = document.getElementById('level-badge-btn');
+        this.domLevelSelectBtn = document.getElementById('level-select-btn');
+        this.domLevelSelectModal = document.getElementById('level-select-modal');
+        this.domLevelSelectClose = document.getElementById('level-select-close');
+        this.domLevelSelectList = document.getElementById('level-select-list');
+        this.domLevelUnlockAllBtn = document.getElementById('level-unlock-all-btn');
+        this.domLevelResetProgBtn = document.getElementById('level-reset-prog-btn');
+        this.domDailyRunBtn = document.getElementById('daily-run-btn');
+        this.domEnterCodeBtn = document.getElementById('enter-code-btn');
+        this.domCoordsBtn = document.getElementById('coords-toggle-btn');
+        this.isLevelSelectOpen = false;
+        this.toastTimer = null;
+
+        // YouTube Virality & Shorts Creator Mode Elements
+        this.domAppShell = document.getElementById('app-shell');
+        this.domShortsBtn = document.getElementById('shorts-btn');
+        this.domShortsHookBar = document.getElementById('shorts-hook-bar');
+        this.domShortsHookText = document.getElementById('shorts-hook-text');
+        this.domShortsPar = document.getElementById('shorts-par');
+        this.domOneTileBanner = document.getElementById('one-tile-banner');
+        this.domModalIqBadge = document.getElementById('modal-iq-badge');
+        this.domShareBtn = document.getElementById('share-btn');
+        this.isShortsMode = false;
+        this.showCoordinates = false;
+        this.hookIndex = 0;
+        this.isDailyMode = false;
+        this.dailyStreak = 0;
+        this.lastDailyDate = null;
+
+        this.VIRAL_HOOKS = [
+          "CAN YOU SOLVE THIS WITHOUT GETTING TRAPPED? 🧠",
+          "99.2% FAIL WITH 1 TILE LEFT 💀",
+          "DON'T TOUCH THE SAME TILE TWICE 🚫",
+          "THIS LEVEL BROKE MY BRAIN 🤯",
+          "FAIL = 10 PUSHUPS 🏋️",
+          "ONLY 180+ IQ CAN FIND THE EXIT 🔥",
+          "LOOKS EASY UNTIL YOU TRY IT 😭",
+          "CAN YOU BEAT THIS IN UNDER 15 SECONDS? ⏱️"
+        ];
+
         this.domBudgetTag = document.getElementById('budget-tag');
         this.domStar1 = document.getElementById('star-1');
         this.domStar2 = document.getElementById('star-2');
@@ -2245,23 +3291,94 @@
         this.initDOMEvents();
         window.addEventListener('resize', () => this.resize());
         
+        if (this.isShortsMode && this.domAppShell) {
+          this.domAppShell.classList.add('shorts-active');
+          if (this.domShortsBtn) this.domShortsBtn.classList.add('active');
+        }
         this.loadLevel(this.currentLevelIndex);
+        if (this.resetNotificationMessage) {
+          this.showToast(this.resetNotificationMessage, 'info', 3500);
+        }
         requestAnimationFrame((t) => this.loop(t));
+      }
+
+      computeLevelsHash(levels) {
+        const s = JSON.stringify(levels);
+        let h = 5381;
+        for (let i = 0; i < s.length; i++) {
+          h = ((h << 5) + h) + s.charCodeAt(i);
+          h |= 0;
+        }
+        return 'rev_' + (h >>> 0).toString(36) + '_' + levels.length;
       }
 
       initStorage() {
         const STORAGE_KEY = 'one_more_tile_save_v1';
+        this.currentLevelsHash = this.computeLevelsHash(LEVELS);
+        this.resetNotificationMessage = null;
+
+        const urlParams = (typeof window !== 'undefined' && window.location && window.location.search) 
+          ? new URLSearchParams(window.location.search) : null;
+        const forceReset = urlParams ? urlParams.has('reset') : false;
+        const targetLvlParam = urlParams ? (urlParams.get('lvl') || urlParams.get('level')) : null;
+        const startInShorts = urlParams ? (urlParams.has('shorts') || urlParams.has('creator')) : false;
+        const startInDaily = urlParams ? urlParams.has('daily') : false;
+
         try {
           const raw = localStorage.getItem(STORAGE_KEY);
-          if (raw) {
+          if (raw && !forceReset) {
             const data = JSON.parse(raw);
+
+            // Check if levels were updated/revised (or missing hash from older build)
+            if (data && data.levelsHash !== this.currentLevelsHash) {
+              console.log(`[ONE MORE TILE] Level revision detected (${data.levelsHash || 'none'} -> ${this.currentLevelsHash}). Resetting game progress.`);
+              this.resetNotificationMessage = "Levels updated — progress reset for fresh testing!";
+              this.unlockedLevel = 1;
+              this.currentLevelIndex = 0;
+              this.starsEarned = {};
+              this.saveProgress();
+              return;
+            }
+
             if (data && typeof data.unlockedLevel === 'number') {
               this.unlockedLevel = Math.max(1, Math.min(LEVELS.length, data.unlockedLevel));
               const current = typeof data.currentLevel === 'number' ? data.currentLevel : 0;
               this.currentLevelIndex = Math.max(0, Math.min(this.unlockedLevel - 1, current));
               this.starsEarned = data.stars || {};
+              this.dailyStreak = data.dailyStreak || 0;
+              this.lastDailyDate = data.lastDailyDate || null;
+              this.isShortsMode = data.isShortsMode || false;
+              this.showCoordinates = data.showCoordinates || false;
+
+              // Parse ?lvl= or ?code= Challenge Codes (e.g. ?code=OMT-L16)
+              const codeParam = urlParams ? (urlParams.get('code') || urlParams.get('c')) : null;
+              if (codeParam) {
+                const m = codeParam.toUpperCase().match(/OMT-L(\d+)/);
+                if (m) {
+                  const cLvl = parseInt(m[1], 10);
+                  if (!isNaN(cLvl) && cLvl >= 1 && cLvl <= LEVELS.length) {
+                    this.currentLevelIndex = cLvl - 1;
+                    this.unlockedLevel = Math.max(this.unlockedLevel, cLvl);
+                    this.resetNotificationMessage = `Challenge Code Accepted: Level ${cLvl}!`;
+                  }
+                }
+              }
+
+              if (targetLvlParam) {
+                const pLvl = parseInt(targetLvlParam, 10);
+                if (!isNaN(pLvl) && pLvl >= 1 && pLvl <= LEVELS.length) {
+                  this.currentLevelIndex = pLvl - 1;
+                  this.unlockedLevel = Math.max(this.unlockedLevel, pLvl);
+                  this.resetNotificationMessage = `Creator Challenge: Beat Level ${pLvl} at Par!`;
+                }
+              }
+              if (startInShorts) this.isShortsMode = true;
+              if (startInDaily) this.isDailyMode = true;
               return;
             }
+          } else if (forceReset) {
+            console.log("[ONE MORE TILE] Force reset parameter detected (?reset). Resetting progress.");
+            this.resetNotificationMessage = "Progress reset via ?reset parameter.";
           }
         } catch (e) {
           console.warn("Storage read error, using defaults", e);
@@ -2269,6 +3386,7 @@
         this.unlockedLevel = 1;
         this.currentLevelIndex = 0;
         this.starsEarned = {};
+        this.saveProgress();
       }
 
       saveProgress() {
@@ -2276,9 +3394,14 @@
         try {
           const data = {
             version: 1,
+            levelsHash: this.currentLevelsHash || this.computeLevelsHash(LEVELS),
             unlockedLevel: this.unlockedLevel || 1,
             currentLevel: this.currentLevelIndex || 0,
             stars: this.starsEarned || {},
+            dailyStreak: this.dailyStreak || 0,
+            lastDailyDate: this.lastDailyDate || null,
+            isShortsMode: this.isShortsMode || false,
+            showCoordinates: this.showCoordinates || false,
             lastPlayedTimestamp: Date.now()
           };
           localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
@@ -2302,8 +3425,11 @@
         if (this.domDeadlockBanner) {
           this.domDeadlockBanner.classList.remove('show');
         }
+        if (this.domOneTileBanner) {
+          this.domOneTileBanner.classList.remove('show');
+        }
         if (this.domToast) {
-          this.domToast.classList.remove('show');
+          this.hideToast();
         }
         if (this.domVictoryModal) {
           this.domVictoryModal.classList.remove('show');
@@ -2311,13 +3437,221 @@
         if (this.domModal) {
           this.domModal.classList.remove('show');
         }
+        if (this.domLevelSelectModal) {
+          this.domLevelSelectModal.classList.remove('show');
+        }
+        this.isLevelSelectOpen = false;
       }
 
-      loadLevel(index) {
+      /* ==========================================================================
+         YOUTUBE VIRALITY & CREATOR MODE CONTROLLER
+         ========================================================================== */
+      toggleShortsMode() {
+        this.isShortsMode = !this.isShortsMode;
+        if (this.domAppShell) {
+          this.domAppShell.classList.toggle('shorts-active', this.isShortsMode);
+        }
+        if (this.domShortsBtn) {
+          this.domShortsBtn.classList.toggle('active', this.isShortsMode);
+        }
+        this.saveProgress();
+        this.resize();
+        this.showToast(this.isShortsMode ? "📹 9:16 Shorts Mode Active — Ready to Record!" : "Standard Mode Restored", 'info', 2500);
+      }
+
+      cycleViralHook() {
+        this.hookIndex = (this.hookIndex + 1) % this.VIRAL_HOOKS.length;
+        if (this.domShortsHookText) {
+          this.domShortsHookText.textContent = this.VIRAL_HOOKS[this.hookIndex];
+        }
+        sound.ensureContext();
+        sound.playMove(2);
+      }
+
+      getTodayDateKey() {
+        const d = new Date();
+        return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+      }
+
+      getDailyDayNumber() {
+        const epoch = new Date('2026-01-01').getTime();
+        return Math.max(1, Math.floor((Date.now() - epoch) / 86400000));
+      }
+
+      launchDailyRun() {
+        this.closeLevelSelect();
+        this.isDailyMode = true;
+        // Deterministic daily level selected from top mind-benders
+        const pool = [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19];
+        const targetIdx = pool[this.getDailyDayNumber() % pool.length];
+        this.loadLevel(targetIdx, true);
+        this.showToast(`🔥 DAILY RUN #${this.getDailyDayNumber()} • Streak: ${this.dailyStreak} Days`, 'info', 3500);
+      }
+
+      copyChallenge() {
+        const lvl = this.level.id;
+        const par = this.level.par;
+        const moves = this.moveCount;
+        const delta = moves - par;
+        const rating = delta === 0 ? 'Flawless Par 🏆' : `+${delta} moves`;
+        const code = this.isDailyMode 
+          ? `OMT-D${this.getDailyDayNumber()}-M${moves}${delta === 0 ? 'F' : ''}`
+          : `OMT-L${lvl}-M${moves}${delta === 0 ? 'F' : ''}`;
+        const url = (typeof window !== 'undefined' && window.location) 
+          ? window.location.origin + window.location.pathname + `?lvl=${lvl}&code=${code}` : '';
+
+        const text = this.isDailyMode 
+          ? `ONE MORE TILE 🧩 Daily #${this.getDailyDayNumber()}\n⭐ Cleared in ${moves} moves (${rating})\n🔥 Streak: ${this.dailyStreak} Days\n🎫 Challenge Code: [${code}]\nCan you beat me? 👇\n${url}`
+          : `ONE MORE TILE 🧩 Level ${lvl}\n⭐ Solved in ${moves} moves (Par: ${par})!\n🎫 Challenge Code: [${code}]\nCan you solve this without getting trapped?\nPlay here 👇\n${url}`;
+
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(() => {
+            this.showToast(`Challenge copied! Code: [${code}] 🚀`, 'info', 3500);
+          }).catch(() => {
+            this.showToast(`Challenge Code: [${code}]`, 'info', 2500);
+          });
+        } else {
+          this.showToast(`Challenge Code: [${code}]`, 'info', 2500);
+        }
+      }
+
+      toggleCoordinates() {
+        this.showCoordinates = !this.showCoordinates;
+        this.saveProgress();
+        this.showToast(this.showCoordinates ? "🔤 Grid Coordinates: ON (A1-F6)" : "🔤 Grid Coordinates: OFF", 'info', 2000);
+        if (this.domCoordsBtn) {
+          this.domCoordsBtn.classList.toggle('active', this.showCoordinates);
+        }
+      }
+
+      enterChallengeCode(codeStr = null) {
+        let code = codeStr;
+        if (!code && typeof window !== 'undefined' && window.prompt) {
+          code = window.prompt("Enter Challenge Code (e.g. OMT-L16 or OMT-D1):");
+        }
+        if (!code) return false;
+
+        code = code.trim().toUpperCase();
+        const dailyMatch = code.match(/OMT-D(\d+)/);
+        if (dailyMatch) {
+          this.closeLevelSelect();
+          this.launchDailyRun();
+          this.showToast(`🎮 Loaded Daily Run Challenge!`, 'info', 3000);
+          return true;
+        }
+
+        const levelMatch = code.match(/OMT-L(\d+)/);
+        if (levelMatch) {
+          const lvlNum = parseInt(levelMatch[1], 10);
+          if (lvlNum >= 1 && lvlNum <= LEVELS.length) {
+            this.closeLevelSelect();
+            this.selectLevel(lvlNum - 1);
+            this.showToast(`🎮 Loaded Challenge: Level ${lvlNum}!`, 'info', 3000);
+            return true;
+          }
+        }
+
+        this.showToast("Invalid Challenge Code format. Use e.g. OMT-L16", 'warn', 3000);
+        return false;
+      }
+
+      /* ==========================================================================
+         LEVEL SELECTOR CONTROLLER
+         ========================================================================== */
+      openLevelSelect() {
+        this.isLevelSelectOpen = true;
+        this.renderLevelSelectList();
+        if (this.domLevelSelectModal) {
+          this.domLevelSelectModal.classList.add('show');
+        }
+      }
+
+      closeLevelSelect() {
+        this.isLevelSelectOpen = false;
+        if (this.domLevelSelectModal) {
+          this.domLevelSelectModal.classList.remove('show');
+        }
+      }
+
+      toggleLevelSelect() {
+        if (this.isLevelSelectOpen) {
+          this.closeLevelSelect();
+        } else {
+          this.openLevelSelect();
+        }
+      }
+
+      selectLevel(index) {
+        this.closeLevelSelect();
+        this.resetDOMState();
+        this.hideModal();
+        this.loadLevel(index, true);
+        sound.ensureContext();
+        sound.playMove();
+      }
+
+      unlockAllLevels() {
+        this.unlockedLevel = LEVELS.length;
+        this.saveProgress();
+        this.renderLevelSelectList();
+        this.showToast("All 20 levels unlocked!", 'info', 2500);
+      }
+
+      resetAllProgress() {
+        this.unlockedLevel = 1;
+        this.currentLevelIndex = 0;
+        this.starsEarned = {};
+        this.saveProgress();
+        this.closeLevelSelect();
+        this.resetDOMState();
+        this.hideModal();
+        this.loadLevel(0, true);
+        this.showToast("Progress reset to Level 1", 'info', 2500);
+      }
+
+      renderLevelSelectList() {
+        if (!this.domLevelSelectList) return;
+        this.domLevelSelectList.innerHTML = '';
+
+        const gridEl = document.createElement('div');
+        gridEl.className = 'clean-levels-grid';
+
+        LEVELS.forEach((lvl, idx) => {
+          const card = document.createElement('div');
+          const isActive = (idx === this.currentLevelIndex);
+          const isUnlocked = (idx < (this.unlockedLevel || 1));
+          const stars = (this.starsEarned && this.starsEarned[lvl.id]) || 0;
+
+          card.className = `level-grid-tile${isActive ? ' active' : ''}${!isUnlocked ? ' locked' : ''}`;
+          card.title = `Level ${lvl.id}: ${lvl.name} (Par ${lvl.par})`;
+
+          const starHtml = [1, 2, 3].map(s => 
+            `<span class="mini-star${s <= stars ? ' active' : ''}">★</span>`
+          ).join('');
+
+          card.innerHTML = `
+            <div class="tile-num">${lvl.id}</div>
+            <div class="tile-stars">${isUnlocked ? starHtml : '🔒'}</div>
+            <div class="tile-par">Par ${lvl.par}</div>
+          `;
+
+          card.addEventListener('click', () => {
+            this.selectLevel(idx);
+          });
+
+          gridEl.appendChild(card);
+        });
+
+        this.domLevelSelectList.appendChild(gridEl);
+      }
+
+      loadLevel(index, bypassLock = false) {
         if (index < 0) index = 0;
         if (index >= LEVELS.length) index = 0;
-        if (this.unlockedLevel && index > this.unlockedLevel - 1) {
+        if (!bypassLock && this.unlockedLevel && index > this.unlockedLevel - 1) {
           index = this.unlockedLevel - 1;
+        } else if (bypassLock) {
+          this.unlockedLevel = Math.max(this.unlockedLevel || 1, index + 1);
         }
         this.currentLevelIndex = index;
         this.saveProgress();
@@ -2902,19 +4236,48 @@
         return true;
       }
 
+      getUnconsumedTileCount() {
+        let left = 0;
+        for (let y = 0; y < this.level.h; y++) {
+          for (let x = 0; x < this.level.w; x++) {
+            if (x === this.player.x && y === this.player.y) continue;
+            const c = this.grid[y][x];
+            if (c === C_UNTOUCHED || c === C_CHECKPOINT_1 || c === C_CHECKPOINT_2 || c === C_CRUMBLING) {
+              left++;
+            } else if (c === C_CROSSROAD) {
+              left += (this.crossroads ? (this.crossroads.get(`${x},${y}`) || 0) : 0);
+            }
+          }
+        }
+        return left;
+      }
+
       triggerHardDeadlock() {
         if (this.isVictorious) return; // Strict race condition block
         this.isDeadlocked = true;
-        sound.playGoalExtinguish();
-        this.showDeadlockBanner("Deadlock — Press R to Restart or Tap Undo");
 
-        // 750ms Auto-Reset Protocol (Preserves player agency if they tap Undo)
+        const tilesLeft = this.getUnconsumedTileCount();
+        if (tilesLeft === 1) {
+          // The ultimate YouTube Shorts rage-bait moment: 1 tile left!
+          sound.playOneTileFail();
+          if (this.domOneTileBanner) {
+            this.domOneTileBanner.classList.add('show');
+          } else {
+            this.showDeadlockBanner("🔥 1 TILE LEFT! 💀 (98.4% FAIL HERE)");
+          }
+        } else {
+          sound.playGoalExtinguish();
+          this.showDeadlockBanner("Deadlock — Press R to Restart or Tap Undo");
+        }
+
+        // Auto-Reset Protocol: 750ms standard, 3500ms on 1-tile near-miss or shorts mode for creator reaction
         this.clearAutoResetTimer();
+        const resetDelay = (tilesLeft === 1 || this.isShortsMode) ? 3500 : 750;
         this.autoResetTimer = setTimeout(() => {
           if (this.isDeadlocked && !this.isVictorious) {
             this.restart();
           }
-        }, 750);
+        }, resetDelay);
       }
 
       triggerVictory() {
@@ -3066,19 +4429,40 @@
         this.domStar1.classList.add('active');
         this.domStar2.classList.toggle('active', this.moveCount <= this.level.par + 2);
         this.domStar3.classList.toggle('active', !this.hasUndone && this.moveCount <= this.level.par);
+        if (this.domShortsPar) {
+          this.domShortsPar.textContent = this.level.par;
+        }
       }
 
-      showToast(msg) {
-        if (this.isVictorious) return;
+      showToast(msg, type = 'danger', duration = 2500) {
+        if (this.isVictorious && type !== 'info') return;
         if (this.domToast) {
           this.domToast.textContent = msg;
+          this.domToast.classList.remove('info');
+          if (type === 'info') {
+            this.domToast.classList.add('info');
+          }
           this.domToast.classList.add('show');
+          if (this.toastTimer) {
+            clearTimeout(this.toastTimer);
+            this.toastTimer = null;
+          }
+          if (duration > 0) {
+            this.toastTimer = setTimeout(() => {
+              this.hideToast();
+            }, duration);
+          }
         }
       }
 
       hideToast() {
         if (this.domToast) {
           this.domToast.classList.remove('show');
+          this.domToast.classList.remove('info');
+        }
+        if (this.toastTimer) {
+          clearTimeout(this.toastTimer);
+          this.toastTimer = null;
         }
       }
 
@@ -3100,10 +4484,35 @@
 
       showModal() {
         this.hideDeadlockBanner();
+        if (this.domOneTileBanner) this.domOneTileBanner.classList.remove('show');
         const delta = this.moveCount - this.level.par;
-        this.domModalSub.textContent = `Level ${this.level.id} Cleared`;
+        this.domModalSub.textContent = this.isDailyMode ? `Daily Run Cleared! 🔥 Streak: ${this.dailyStreak}` : `Level ${this.level.id} Cleared`;
         this.domModalStats.innerHTML = `Moves: <strong>${this.moveCount}</strong> (Par: ${this.level.par})<br>` +
           (this.hasUndone ? `<span style="color:var(--text-muted);font-size:11px;">(Undo used - Star 3 forfeited)</span>` : `<span style="color:var(--gold-glow);font-size:11px;">Flawless Lookahead!</span>`);
+
+        // Provocative Viral Authority & Percentile Rating
+        if (this.domModalIqBadge) {
+          if (!this.hasUndone && delta === 0) {
+            this.domModalIqBadge.textContent = "🏆 TOP 0.2% WORLDWIDE (FLAWLESS)";
+            this.domModalIqBadge.style.color = "var(--gold-glow)";
+          } else if (delta <= 2) {
+            this.domModalIqBadge.textContent = "⚡ TOP 4.8% WORLDWIDE (MASTER)";
+            this.domModalIqBadge.style.color = "var(--cyan-glow)";
+          } else {
+            this.domModalIqBadge.textContent = "🧩 TOP 22.5% WORLDWIDE (SOLVER)";
+            this.domModalIqBadge.style.color = "var(--text-muted)";
+          }
+        }
+
+        // Handle daily streak update
+        if (this.isDailyMode) {
+          const today = this.getTodayDateKey();
+          if (this.lastDailyDate !== today) {
+            this.dailyStreak = (this.dailyStreak || 0) + 1;
+            this.lastDailyDate = today;
+            this.saveProgress();
+          }
+        }
 
         this.domMStar1.classList.add('active');
         this.domMStar2.classList.toggle('active', delta <= 2);
@@ -3142,6 +4551,20 @@
       initDOMEvents() {
         // Keyboard controls
         window.addEventListener('keydown', (e) => {
+          if (this.isLevelSelectOpen) {
+            if (e.key === 'Escape' || e.key === 'l' || e.key === 'L') {
+              e.preventDefault();
+              this.closeLevelSelect();
+            }
+            return;
+          }
+
+          if (e.key === 'l' || e.key === 'L') {
+            e.preventDefault();
+            this.openLevelSelect();
+            return;
+          }
+
           if (e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W') {
             e.preventDefault();
             this.handleDirectionInput({ x: 0, y: -1 });
@@ -3160,6 +4583,9 @@
           } else if (e.key === 'r' || e.key === 'R') {
             e.preventDefault();
             this.restart();
+          } else if (e.key === 'c' || e.key === 'C') {
+            e.preventDefault();
+            this.toggleCoordinates();
           } else if (e.key === 'Enter' || e.key === ' ') {
             if (this.isVictorious) {
               e.preventDefault();
@@ -3216,6 +4642,7 @@
         };
 
         this.canvas.addEventListener('pointerdown', (e) => {
+          if (this.isLevelSelectOpen) return;
           if (this.canvas.setPointerCapture) {
             try { this.canvas.setPointerCapture(e.pointerId); } catch (_) {}
           }
@@ -3223,10 +4650,12 @@
           onTouchStart(pt.x, pt.y);
         });
         this.canvas.addEventListener('pointerup', (e) => {
+          if (this.isLevelSelectOpen) return;
           const pt = getCanvasRelativePointer(e);
           onTouchEnd(pt.x, pt.y);
         });
         this.canvas.addEventListener('pointercancel', (e) => {
+          if (this.isLevelSelectOpen) return;
           const pt = getCanvasRelativePointer(e);
           onTouchEnd(pt.x, pt.y);
         });
@@ -3235,6 +4664,48 @@
         this.domUndoBtn.addEventListener('click', () => this.undo());
         this.domRestartBtn.addEventListener('click', () => this.restart());
         this.domNextBtn.addEventListener('click', () => this.nextLevel());
+
+        // Level selector events
+        if (this.domLevelBadgeBtn) {
+          this.domLevelBadgeBtn.addEventListener('click', () => this.toggleLevelSelect());
+        }
+        if (this.domLevelSelectBtn) {
+          this.domLevelSelectBtn.addEventListener('click', () => this.toggleLevelSelect());
+        }
+        if (this.domLevelSelectClose) {
+          this.domLevelSelectClose.addEventListener('click', () => this.closeLevelSelect());
+        }
+        if (this.domLevelSelectModal) {
+          this.domLevelSelectModal.addEventListener('click', (e) => {
+            if (e.target === this.domLevelSelectModal) {
+              this.closeLevelSelect();
+            }
+          });
+        }
+        if (this.domLevelUnlockAllBtn) {
+          this.domLevelUnlockAllBtn.addEventListener('click', () => this.unlockAllLevels());
+        }
+        if (this.domLevelResetProgBtn) {
+          this.domLevelResetProgBtn.addEventListener('click', () => this.resetAllProgress());
+        }
+        if (this.domEnterCodeBtn) {
+          this.domEnterCodeBtn.addEventListener('click', () => this.enterChallengeCode());
+        }
+        if (this.domCoordsBtn) {
+          this.domCoordsBtn.addEventListener('click', () => this.toggleCoordinates());
+        }
+        if (this.domShortsBtn) {
+          this.domShortsBtn.addEventListener('click', () => this.toggleShortsMode());
+        }
+        if (this.domShortsHookBar) {
+          this.domShortsHookBar.addEventListener('click', () => this.cycleViralHook());
+        }
+        if (this.domShareBtn) {
+          this.domShareBtn.addEventListener('click', () => this.copyChallenge());
+        }
+        if (this.domDailyRunBtn) {
+          this.domDailyRunBtn.addEventListener('click', () => this.launchDailyRun());
+        }
       }
 
       /* ==========================================================================
@@ -3459,6 +4930,19 @@
           this.renderIceTile(px, py, size, now);
         } else if (cell === C_GOAL) {
           this.renderGoalTile(px, py, size, now);
+        }
+
+        // Creator Engine: Subtle Chess-Style Coordinates (A1-G7) for Chat Backseating & Comments
+        if (this.showCoordinates && cell !== C_VOID) {
+          const colLetters = 'ABCDEFG';
+          this.ctx.save();
+          this.ctx.fillStyle = cell === C_WALL ? 'rgba(255, 255, 255, 0.15)' : 'rgba(255, 255, 255, 0.35)';
+          this.ctx.font = `600 ${Math.max(9, Math.floor(size * 0.22))}px monospace`;
+          this.ctx.textAlign = 'left';
+          this.ctx.textBaseline = 'top';
+          const label = `${colLetters[x] || (x + 1)}${y + 1}`;
+          this.ctx.fillText(label, px + 4, py + 4);
+          this.ctx.restore();
         }
       }
 
