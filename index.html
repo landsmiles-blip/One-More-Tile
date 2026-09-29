@@ -68,6 +68,48 @@
       }
     }
 
+    /* Thematic World Border / Rim Lighting (Dynamic World 1-10 Glow) */
+    #app-shell.world-1 {
+      border: 2px solid rgba(0, 230, 118, 0.6) !important;
+      box-shadow: 0 0 35px rgba(0, 230, 118, 0.35) !important;
+    }
+    #app-shell.world-2 {
+      border: 2px solid rgba(212, 163, 115, 0.6) !important;
+      box-shadow: 0 0 35px rgba(212, 163, 115, 0.35) !important;
+    }
+    #app-shell.world-3 {
+      border: 2px solid rgba(0, 240, 255, 0.6) !important;
+      box-shadow: 0 0 35px rgba(0, 240, 255, 0.35) !important;
+    }
+    #app-shell.world-4 {
+      border: 2px solid rgba(213, 0, 249, 0.6) !important;
+      box-shadow: 0 0 35px rgba(213, 0, 249, 0.35) !important;
+    }
+    #app-shell.world-5 {
+      border: 2px solid rgba(255, 23, 68, 0.6) !important;
+      box-shadow: 0 0 35px rgba(255, 23, 68, 0.35) !important;
+    }
+    #app-shell.world-6 {
+      border: 2px solid rgba(255, 77, 109, 0.6) !important;
+      box-shadow: 0 0 35px rgba(255, 77, 109, 0.35) !important;
+    }
+    #app-shell.world-7 {
+      border: 2px solid rgba(56, 189, 248, 0.6) !important;
+      box-shadow: 0 0 35px rgba(56, 189, 248, 0.35) !important;
+    }
+    #app-shell.world-8 {
+      border: 2px solid rgba(245, 158, 11, 0.6) !important;
+      box-shadow: 0 0 35px rgba(245, 158, 11, 0.35) !important;
+    }
+    #app-shell.world-9 {
+      border: 2px solid rgba(16, 185, 129, 0.6) !important;
+      box-shadow: 0 0 35px rgba(16, 185, 129, 0.35) !important;
+    }
+    #app-shell.world-10 {
+      border: 2px solid rgba(168, 85, 247, 0.6) !important;
+      box-shadow: 0 0 35px rgba(168, 85, 247, 0.35) !important;
+    }
+
     /* Mobile Fluid Layout */
     @media screen and (max-width: 480px) {
       #app-shell, #app {
@@ -236,6 +278,39 @@
     .hud-btn.undo-btn {
       color: var(--cyan-glow);
       border-color: rgba(0, 240, 255, 0.2);
+    }
+
+    .undo-badge {
+      font-size: 10px;
+      font-weight: 800;
+      padding: 1px 5px;
+      border-radius: 8px;
+      background: rgba(0, 240, 255, 0.15);
+      color: var(--cyan-glow);
+      border: 1px solid rgba(0, 240, 255, 0.3);
+      letter-spacing: 0.5px;
+      margin-left: 3px;
+      transition: all 0.2s ease;
+      display: inline-block;
+      line-height: 1.2;
+    }
+
+    .undo-badge.empty,
+    .hud-btn.undo-btn.out-of-undos .undo-badge {
+      background: rgba(244, 63, 94, 0.22);
+      color: #f43f5e;
+      border-color: #f43f5e;
+      box-shadow: 0 0 8px rgba(244, 63, 94, 0.45);
+      animation: pulseCoral 1.5s infinite ease-in-out;
+    }
+
+    .hud-btn.undo-btn.out-of-undos {
+      border-color: rgba(244, 63, 94, 0.45);
+    }
+
+    @keyframes pulseCoral {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.08); }
     }
 
     .hud-btn.level-btn {
@@ -598,6 +673,164 @@
       background: rgba(255, 215, 0, 0.2);
     }
 
+    /* Ad-Gate Modal Styling */
+    #ad-gate-modal {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(10, 11, 16, 0.88);
+      backdrop-filter: blur(14px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+      z-index: 130;
+    }
+
+    #ad-gate-modal.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .ad-gate-card {
+      position: relative;
+      background: linear-gradient(180deg, #181d2c 0%, #121520 100%);
+      border: 1px solid rgba(244, 63, 94, 0.4);
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.75), 0 0 30px rgba(244, 63, 94, 0.25);
+      border-radius: 20px;
+      padding: 26px 20px;
+      width: 86%;
+      max-width: 320px;
+      text-align: center;
+      transform: scale(0.92);
+      transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    #ad-gate-modal.show .ad-gate-card {
+      transform: scale(1);
+    }
+
+    .ad-gate-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 1px;
+      color: #f43f5e;
+      background: rgba(244, 63, 94, 0.15);
+      border: 1px solid rgba(244, 63, 94, 0.35);
+      padding: 4px 12px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .ad-gate-title {
+      font-size: 20px;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+
+    .ad-gate-icon {
+      font-size: 32px;
+      margin-bottom: 10px;
+      animation: bounceAlert 1s infinite alternate ease-in-out;
+    }
+
+    @keyframes bounceAlert {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-4px); }
+    }
+
+    .ad-gate-copy {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-bottom: 20px;
+      padding: 0 4px;
+    }
+
+    .ad-gate-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+    }
+
+    .modal-btn.ad-btn-primary {
+      background: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%);
+      color: #fff;
+      border: none;
+      padding: 13px;
+      border-radius: var(--ui-radius);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      box-shadow: 0 4px 18px rgba(244, 63, 94, 0.45);
+      transition: transform 0.1s, opacity 0.15s, box-shadow 0.15s;
+      text-transform: uppercase;
+    }
+
+    .modal-btn.ad-btn-primary:hover {
+      box-shadow: 0 6px 22px rgba(244, 63, 94, 0.6);
+      filter: brightness(1.08);
+    }
+
+    .modal-btn.ad-btn-primary:active {
+      transform: scale(0.96);
+    }
+
+    .modal-btn.ad-btn-secondary {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      color: var(--text-main);
+      padding: 10px;
+      border-radius: var(--ui-radius);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.1s;
+    }
+
+    .modal-btn.ad-btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.25);
+    }
+
+    .modal-btn.ad-btn-secondary:active {
+      transform: scale(0.96);
+    }
+
+    .ad-gate-close {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: var(--text-muted);
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s ease;
+      line-height: 1;
+    }
+
+    .ad-gate-close:hover {
+      background: rgba(244, 63, 94, 0.2);
+      border-color: #f43f5e;
+      color: #fff;
+    }
+
     /* Level Selector Modal */
     #level-select-modal {
       position: absolute;
@@ -938,10 +1171,555 @@
       justify-content: space-between;
       align-items: center;
     }
+
+    /* ==========================================================================
+       PHASE 6: HONEYCOMB OVERWORLD, CYBER WIPE, TOLL BRIDGE & THEMATIC VISUALS
+       ========================================================================== */
+    
+    /* Cyber Hologram Wipe (<150ms scanline transition) */
+    #cyber-hologram-wipe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 250;
+      pointer-events: none;
+      opacity: 0;
+      background: linear-gradient(180deg, 
+        rgba(0, 240, 255, 0) 0%, 
+        rgba(0, 240, 255, 0.35) 45%, 
+        rgba(255, 255, 255, 0.95) 50%, 
+        rgba(0, 240, 255, 0.35) 55%, 
+        rgba(0, 240, 255, 0) 100%);
+      transform: translateY(-100%);
+      transition: transform 0.13s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.13s ease;
+    }
+    #cyber-hologram-wipe.active {
+      opacity: 1;
+      transform: translateY(100%);
+    }
+
+    /* Honeycomb Overworld Full-Screen Overlay */
+    #overworld-map {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      background: #080a10;
+      z-index: 120;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    #overworld-map.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .overworld-header {
+      width: 100%;
+      padding: 14px 16px 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: linear-gradient(180deg, rgba(19, 23, 34, 0.98) 0%, rgba(13, 16, 25, 0.9) 100%);
+      border-bottom: 1px solid rgba(0, 240, 255, 0.15);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+      flex-shrink: 0;
+      z-index: 10;
+    }
+    .overworld-title-wrap {
+      display: flex;
+      flex-direction: column;
+    }
+    .overworld-title {
+      font-size: 15px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .overworld-title-badge {
+      font-size: 9px;
+      padding: 2px 6px;
+      background: rgba(0, 240, 255, 0.15);
+      border: 1px solid var(--cyan-glow);
+      border-radius: 4px;
+      color: var(--cyan-glow);
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+    .overworld-subtitle {
+      font-size: 10px;
+      color: var(--text-muted);
+      letter-spacing: 1px;
+    }
+    .overworld-stats {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .overworld-stat-pill {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 4px 10px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .overworld-stat-pill.stars {
+      color: var(--gold-glow);
+      border-color: rgba(255, 215, 0, 0.3);
+      background: rgba(255, 215, 0, 0.08);
+    }
+    .overworld-stat-pill.lives {
+      color: var(--cyan-glow);
+      border-color: rgba(0, 240, 255, 0.3);
+      background: rgba(0, 240, 255, 0.08);
+    }
+
+    .overworld-scroll-area {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding: 16px 12px 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      -webkit-overflow-scrolling: touch;
+    }
+    .overworld-scroll-area::-webkit-scrollbar {
+      width: 4px;
+    }
+    .overworld-scroll-area::-webkit-scrollbar-thumb {
+      background: rgba(0, 240, 255, 0.2);
+      border-radius: 2px;
+    }
+
+    /* World Cluster */
+    .world-cluster {
+      position: relative;
+      background: #0e121c;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 14px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    .world-cluster.unlocked {
+      border-color: rgba(0, 240, 255, 0.25);
+    }
+    .world-cluster.active-world {
+      border-color: var(--cyan-glow);
+      box-shadow: 0 0 24px rgba(0, 240, 255, 0.15);
+    }
+    .world-cluster.locked {
+      opacity: 0.65;
+      filter: grayscale(0.5);
+    }
+
+    .world-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .world-header-left {
+      display: flex;
+      flex-direction: column;
+    }
+    .world-badge-num {
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      color: var(--cyan-glow);
+      text-transform: uppercase;
+    }
+    .world-title-name {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--text-main);
+      letter-spacing: 0.5px;
+    }
+    .world-stargate {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .world-stargate-meter {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--gold-glow);
+      background: rgba(255, 215, 0, 0.1);
+      border: 1px solid rgba(255, 215, 0, 0.25);
+      border-radius: 12px;
+      padding: 3px 8px;
+    }
+
+    /* Honeycomb Hive Grid */
+    .honeycomb-hive {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 0;
+      position: relative;
+    }
+    .hive-row {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+    }
+    .hive-row.staggered {
+      margin-top: -10px;
+    }
+
+    /* Hexagon Level Button */
+    .hex-level-btn {
+      width: 60px;
+      height: 68px;
+      position: relative;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #151b28;
+      clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+      transition: transform 0.15s ease, background 0.15s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .hex-level-btn:hover {
+      transform: scale(1.08);
+      background: #1c2438;
+    }
+    .hex-level-btn:active {
+      transform: scale(0.96);
+    }
+    .hex-level-btn.active-node {
+      background: #1b2840;
+      box-shadow: 0 0 16px rgba(0, 240, 255, 0.4);
+    }
+    .hex-level-btn.active-node::after {
+      content: '';
+      position: absolute;
+      inset: 2px;
+      clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+      border: 1.5px solid var(--cyan-glow);
+      pointer-events: none;
+      animation: hexPulse 1.8s infinite ease-in-out;
+    }
+    .hex-level-btn.cleared {
+      background: #162030;
+    }
+    .hex-level-btn.cleared::after {
+      content: '';
+      position: absolute;
+      inset: 2px;
+      clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+      border: 1px solid rgba(255, 215, 0, 0.35);
+      pointer-events: none;
+    }
+    .hex-level-btn.locked {
+      background: #0f131c;
+      cursor: not-allowed;
+      opacity: 0.55;
+    }
+    .hex-level-btn.locked:hover {
+      transform: none;
+    }
+
+    @keyframes hexPulse {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 1; }
+    }
+
+    .hex-level-num {
+      font-size: 14px;
+      font-weight: 900;
+      color: var(--text-main);
+      line-height: 1;
+      margin-bottom: 3px;
+    }
+    .hex-level-stars {
+      display: flex;
+      gap: 1px;
+      font-size: 9px;
+      line-height: 1;
+    }
+    .hex-star {
+      color: #2a3348;
+    }
+    .hex-star.earned {
+      color: var(--gold-glow);
+      text-shadow: 0 0 4px rgba(255, 215, 0, 0.6);
+    }
+    .hex-lock-icon {
+      font-size: 13px;
+      color: #4a5670;
+    }
+
+    /* World Lock Shield & Padlock Shatter */
+    .world-lock-shield {
+      position: absolute;
+      inset: 0;
+      background: rgba(10, 13, 20, 0.88);
+      backdrop-filter: blur(4px);
+      border-radius: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      z-index: 5;
+      cursor: pointer;
+      padding: 16px;
+      text-align: center;
+      transition: opacity 0.35s ease, transform 0.35s ease;
+    }
+    .world-lock-shield.shattering {
+      animation: padlockShatter 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      pointer-events: none;
+    }
+    @keyframes padlockShatter {
+      0% { transform: scale(1); opacity: 1; filter: brightness(1); }
+      30% { transform: scale(1.15); opacity: 1; filter: brightness(2); }
+      100% { transform: scale(1.4); opacity: 0; filter: blur(8px) brightness(3); }
+    }
+    .lock-shield-icon {
+      font-size: 26px;
+      margin-bottom: 2px;
+    }
+    .lock-shield-title {
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      color: #ffb700;
+      text-transform: uppercase;
+    }
+    .lock-shield-sub {
+      font-size: 10px;
+      color: var(--text-muted);
+      line-height: 1.3;
+    }
+    .lock-shield-cta {
+      margin-top: 4px;
+      padding: 4px 10px;
+      background: rgba(255, 183, 0, 0.15);
+      border: 1px solid rgba(255, 183, 0, 0.4);
+      border-radius: 12px;
+      font-size: 10px;
+      font-weight: 700;
+      color: #ffb700;
+    }
+
+    /* Toll Bridge Modal */
+    .toll-progress-box {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      padding: 10px;
+      margin: 12px 0 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .toll-progress-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+    }
+    .toll-progress-bar {
+      width: 100%;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .toll-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #ffb700, #ffd700);
+      width: 0%;
+      transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Cyber Tutorial Tooltip */
+    #cyber-tutorial-tooltip {
+      position: absolute;
+      z-index: 80;
+      background: rgba(8, 12, 22, 0.95);
+      border: 1px solid var(--cyan-glow);
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.4), inset 0 0 12px rgba(0, 240, 255, 0.15);
+      border-radius: 8px;
+      padding: 8px 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      pointer-events: none;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.25s ease, transform 0.25s ease;
+      white-space: nowrap;
+    }
+    #cyber-tutorial-tooltip.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    #cyber-tutorial-tooltip.shake {
+      animation: tooltipShake 0.3s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+    }
+    @keyframes tooltipShake {
+      10%, 90% { transform: translate3d(-2px, 0, 0); }
+      20%, 80% { transform: translate3d(3px, 0, 0); }
+      30%, 50%, 70% { transform: translate3d(-3px, 0, 0); }
+      40%, 60% { transform: translate3d(3px, 0, 0); }
+    }
+    .cyber-tooltip-icon {
+      font-size: 14px;
+      color: var(--cyan-glow);
+      animation: pulse 1s infinite alternate;
+    }
+    .cyber-tooltip-text {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      color: #ffffff;
+      text-transform: uppercase;
+    }
+
+    /* Level Entrance Thematic World Banner */
+    .level-entrance-banner {
+      position: absolute;
+      top: 14px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-24px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      padding: 7px 18px;
+      background: rgba(10, 14, 22, 0.94);
+      border: 1.5px solid var(--cyan-glow);
+      border-radius: 20px;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8), 0 0 16px rgba(0, 240, 255, 0.3);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.32s ease, transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 100;
+      white-space: nowrap;
+    }
+    .level-entrance-banner.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+    .banner-world-badge {
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--cyan-glow);
+    }
+    .banner-level-title {
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      color: var(--text-main);
+    }
+
+    /* World-Grouped Level Selector Styles */
+    .level-select-world-section {
+      margin-bottom: 14px;
+      background: rgba(255, 255, 255, 0.025);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 12px;
+      padding: 10px 10px 8px;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .level-select-world-section.active-world {
+      border-color: rgba(0, 240, 255, 0.4);
+      box-shadow: 0 0 14px rgba(0, 240, 255, 0.1);
+    }
+    .level-select-world-section.world-locked {
+      opacity: 0.65;
+    }
+    .level-select-world-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      padding-bottom: 5px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .level-select-world-title {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      text-transform: uppercase;
+    }
+    .level-select-world-meter {
+      font-size: 10px;
+      font-weight: 800;
+      color: var(--gold-glow);
+      background: rgba(255, 215, 0, 0.1);
+      border: 1px solid rgba(255, 215, 0, 0.25);
+      border-radius: 10px;
+      padding: 2px 7px;
+    }
+    .level-select-world-meter.complete {
+      color: #00e676;
+      background: rgba(0, 230, 118, 0.12);
+      border-color: rgba(0, 230, 118, 0.3);
+    }
+
+    /* Flying Star Particle */
+    .flying-star-particle {
+      position: absolute;
+      z-index: 300;
+      color: var(--gold-glow);
+      font-size: 20px;
+      pointer-events: none;
+      text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+      transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    /* HUD Map Button */
+    .hud-btn.map-btn {
+      font-weight: 800;
+      font-size: 11px;
+      letter-spacing: 0.5px;
+      color: var(--cyan-glow);
+      border-color: rgba(0, 240, 255, 0.3);
+      background: rgba(0, 240, 255, 0.06);
+    }
+    .hud-btn.map-btn:hover {
+      background: rgba(0, 240, 255, 0.15);
+      border-color: var(--cyan-glow);
+    }
+
   </style>
 </head>
 <body>
   <div id="app-shell">
+    <!-- Cyber Hologram Wipe Transition (<150ms) -->
+    <div id="cyber-hologram-wipe"></div>
+
     <!-- Shorts / Creator Mode Viral Hook Header -->
     <div id="shorts-hook-bar" class="shorts-hook-bar" title="Click to cycle viral hook for Shorts / TikTok">
       <span id="shorts-hook-text" class="shorts-hook-text">CAN YOU SOLVE THIS WITHOUT GETTING TRAPPED? 🧠</span>
@@ -967,8 +1745,9 @@
           <span id="star-2" class="star active">★</span>
           <span id="star-3" class="star active">★</span>
         </div>
-        <button id="undo-btn" class="hud-btn undo-btn" title="Undo Move (U / Z)">↺ UNDO</button>
+        <button id="undo-btn" class="hud-btn undo-btn" title="Undo Move (3/3 remaining) (U / Z)">↺ UNDO <span id="undo-badge" class="undo-badge">3/3</span></button>
         <button id="restart-btn" class="hud-btn" title="Restart Level (R)">↻</button>
+        <button id="hud-map-btn" class="hud-btn map-btn" title="Honeycomb Overworld Map (M)">⬡ MAP</button>
         <button id="level-select-btn" class="hud-btn level-btn" title="Choose Level (L)">☰</button>
       </div>
     </header>
@@ -976,11 +1755,23 @@
     <!-- Canvas Game Viewport -->
     <main id="canvas-wrap">
       <canvas id="game-canvas"></canvas>
+
+      <!-- Level Entrance Thematic World Banner -->
+      <div id="level-entrance-banner" class="level-entrance-banner">
+        <div id="banner-world-badge" class="banner-world-badge">WORLD 1: MAYAN RUINS</div>
+        <div id="banner-level-title" class="banner-level-title">LEVEL 1 • The Open Arena</div>
+      </div>
       <div id="toast">Route Severed — Tap Undo or R</div>
       <div id="deadlock-banner">Deadlock — Press R to Restart</div>
       <div id="one-tile-banner">
         <div class="rage-title">💀 ONE TILE LEFT! 😭</div>
         <div class="rage-sub">98.4% OF PLAYERS FAIL HERE • PRESS R</div>
+      </div>
+    
+      <!-- Cyber Tutorial Tooltip -->
+      <div id="cyber-tutorial-tooltip">
+        <span class="cyber-tooltip-icon">⚡</span>
+        <span id="cyber-tooltip-text" class="cyber-tooltip-text">SWIPE DOWN TO DISPLACE CRATE</span>
       </div>
     </main>
 
@@ -1016,7 +1807,7 @@
         <div class="level-select-header">
           <div class="level-select-title-wrap">
             <h2 class="modal-title">SELECT LEVEL</h2>
-            <div class="modal-subtitle">Choose a level (1 – 20)</div>
+            <div class="modal-subtitle">Choose a level (1 – 50) across 10 Worlds</div>
           </div>
           <button id="level-select-close" class="modal-close-btn" title="Close (Esc)">✕</button>
         </div>
@@ -1025,8 +1816,81 @@
 
         <div class="level-select-footer">
           <button id="shorts-btn" class="level-action-btn" title="Toggle 9:16 Shorts Mode">📹 Shorts</button>
-          <button id="level-unlock-all-btn" class="level-action-btn" title="Unlock all 20 levels">🔓 Unlock All</button>
+          <button id="level-unlock-all-btn" class="level-action-btn" title="Unlock all 50 levels across all 10 Worlds">🔓 Unlock All</button>
           <button id="level-reset-prog-btn" class="level-action-btn danger" title="Reset all progress to Level 1">↺ Reset</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ad-Gate Out of Undos Modal -->
+    <div id="ad-gate-modal" class="modal-overlay">
+      <div class="modal-card ad-gate-card">
+        <button id="ad-gate-close" class="ad-gate-close" title="Close (Esc)">✕</button>
+        <div class="ad-gate-badge">OUT OF UNDOS</div>
+        <h2 class="modal-title ad-gate-title">Out of Undos!</h2>
+        <div class="ad-gate-icon">⚠️</div>
+        <p class="ad-gate-copy">
+          Don't lose your progress! Watch a quick ad to get +3 undos and keep your run alive, or restart the level.
+        </p>
+        <div class="ad-gate-actions">
+          <button id="btn-watch-ad" class="modal-btn ad-btn-primary" title="Watch quick ad for +3 Undos">
+            🎥 Watch Ad for +3 Undos
+          </button>
+          <button id="btn-ad-restart" class="modal-btn ad-btn-secondary" title="Restart Level">
+            Restart Level
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Honeycomb Overworld Map Screen (10 Worlds Matrix) -->
+    <div id="overworld-map" class="overworld-screen">
+      <header class="overworld-header">
+        <div class="overworld-title-wrap">
+          <div class="overworld-title">
+            ONE MORE TILE <span class="overworld-title-badge">OVERWORLD</span>
+          </div>
+          <div class="overworld-subtitle">10 WORLDS • 50 LEVELS • TAP UNLOCKED HEX</div>
+        </div>
+        <div class="overworld-stats">
+          <div class="overworld-stat-pill stars" title="Total Stars Earned">
+            ★ <span id="overworld-stars-count">0</span>/150
+          </div>
+          <button id="overworld-close-btn" class="modal-close-btn" style="position:static; margin-left:6px;" title="Back to Game (Esc)">✕</button>
+        </div>
+      </header>
+
+      <div id="overworld-scroll-area" class="overworld-scroll-area">
+        <!-- 10 World clusters rendered dynamically -->
+      </div>
+    </div>
+
+    <!-- Toll Bridge Modal (Star-Gate Monetization) -->
+    <div id="toll-bridge-modal" class="modal-overlay">
+      <div class="modal-card ad-gate-card">
+        <button id="toll-bridge-close" class="ad-gate-close" title="Close (Esc)">✕</button>
+        <div class="ad-gate-badge" style="color:#ffd700; background:rgba(255,215,0,0.15); border-color:rgba(255,215,0,0.35);">GATE ENCRYPTED</div>
+        <h2 id="toll-bridge-title" class="modal-title ad-gate-title">World Locked</h2>
+        <div class="ad-gate-icon">🔒</div>
+        <p id="toll-bridge-copy" class="ad-gate-copy">
+          Requires 14 Stars in previous World to unlock, or bypass immediately via sponsor clearance.
+        </p>
+        <div class="toll-progress-box">
+          <div class="toll-progress-label">
+            <span>Sponsor Clearance</span>
+            <span id="toll-progress-text">0 / 2</span>
+          </div>
+          <div class="toll-progress-bar">
+            <div id="toll-progress-fill" class="toll-progress-fill"></div>
+          </div>
+        </div>
+        <div class="ad-gate-actions">
+          <button id="btn-watch-toll-ad" class="modal-btn ad-btn-primary" title="Watch Sponsor Video to Bypass">
+            🎥 Watch Sponsor Video (0/2)
+          </button>
+          <button id="btn-toll-cancel" class="modal-btn ad-btn-secondary" title="Return to Map">
+            Return to Map
+          </button>
         </div>
       </div>
     </div>
@@ -1131,6 +1995,58 @@
 
         osc.start(now);
         osc.stop(now + 0.07);
+      }
+
+      playLaserRefract() {
+        this.ensureContext();
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(880, now);
+        osc.frequency.exponentialRampToValueAtTime(1760, now + 0.12);
+        gain.gain.setValueAtTime(0.25, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.14);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.15);
+      }
+
+      playIceImpact() {
+        this.ensureContext();
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(440, now);
+        osc.frequency.exponentialRampToValueAtTime(110, now + 0.1);
+        gain.gain.setValueAtTime(0.3, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.12);
+      }
+
+      playRuneUnlock() {
+        this.ensureContext();
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        [523.25, 659.25, 783.99, 1046.5].forEach((freq, idx) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, now + idx * 0.05);
+          gain.gain.setValueAtTime(0.18, now + idx * 0.05);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.05 + 0.2);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now + idx * 0.05);
+          osc.stop(now + idx * 0.05 + 0.22);
+        });
       }
 
       playStarShatter() {
@@ -1412,6 +2328,129 @@
         osc.stop(now + 0.17);
       }
 
+      playAdGateSting() {
+        this.ensureContext();
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        const osc1 = this.ctx.createOscillator();
+        const osc2 = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+
+        osc1.type = 'sawtooth';
+        osc1.frequency.setValueAtTime(620, now);
+        osc1.frequency.exponentialRampToValueAtTime(220, now + 0.25);
+
+        osc2.type = 'triangle';
+        osc2.frequency.setValueAtTime(659, now);
+        osc2.frequency.exponentialRampToValueAtTime(180, now + 0.25);
+
+        gain.gain.setValueAtTime(0.35, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
+
+        osc1.connect(gain);
+        osc2.connect(gain);
+        gain.connect(this.ctx.destination);
+
+        osc1.start(now);
+        osc2.start(now);
+        osc1.stop(now + 0.3);
+        osc2.stop(now + 0.3);
+      }
+
+      playWarningPing() {
+        this.playAdGateSting();
+      }
+
+      playAdRewardChime() {
+        this.ensureContext();
+        if (!this.ctx) return;
+        const notes = [698.46, 880.00, 1046.50, 1396.91];
+        notes.forEach((freq, i) => {
+          const now = this.ctx.currentTime + i * 0.06;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, now);
+          osc.frequency.exponentialRampToValueAtTime(freq * 1.02, now + 0.2);
+
+          gain.gain.setValueAtTime(0.32, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+
+          osc.start(now);
+          osc.stop(now + 0.38);
+        });
+      }
+
+      playRewardChime() {
+        this.playAdRewardChime();
+      }
+
+      playCratePush() {
+        this.ensureContext();
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(110, now);
+        osc.frequency.exponentialRampToValueAtTime(75, now + 0.14);
+
+        gain.gain.setValueAtTime(0.3, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+
+        osc.start(now);
+        osc.stop(now + 0.16);
+
+        if (navigator.vibrate) {
+          try { navigator.vibrate(25); } catch (_) {}
+        }
+      }
+
+      playCrateBridge() {
+        this.ensureContext();
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        
+        // Low resonant thud
+        const osc1 = this.ctx.createOscillator();
+        const gain1 = this.ctx.createGain();
+        osc1.type = 'triangle';
+        osc1.frequency.setValueAtTime(130, now);
+        osc1.frequency.exponentialRampToValueAtTime(55, now + 0.22);
+        gain1.gain.setValueAtTime(0.4, now);
+        gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.24);
+        osc1.connect(gain1);
+        gain1.connect(this.ctx.destination);
+
+        // Metallic ping
+        const osc2 = this.ctx.createOscillator();
+        const gain2 = this.ctx.createGain();
+        osc2.type = 'sine';
+        osc2.frequency.setValueAtTime(880, now);
+        osc2.frequency.exponentialRampToValueAtTime(440, now + 0.15);
+        gain2.gain.setValueAtTime(0.25, now);
+        gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+        osc2.connect(gain2);
+        gain2.connect(this.ctx.destination);
+
+        osc1.start(now);
+        osc2.start(now);
+        osc1.stop(now + 0.25);
+        osc2.stop(now + 0.25);
+
+        if (navigator.vibrate) {
+          try { navigator.vibrate([40, 30, 60]); } catch (_) {}
+        }
+      }
+
       playCrossroadChime(visitsRemaining) {
         this.ensureContext();
         if (!this.ctx) return;
@@ -1472,1704 +2511,70 @@
     const C_GATE_BLUE = 10;
     const C_CROSSROAD = 11;
     const C_ICE = 12;
+    const C_CRATE = 13;
+    const C_RUNE_KEY = 14;
+    const C_RUNE_GATE = 15;
+    const C_LASER_EMIT = 16;
+    const C_MIRROR_SLASH = 17;
+    const C_MIRROR_BSLASH = 18;
+    const C_LASER_RECEPT = 19;
+    const C_LASER_GATE = 20;
+    const C_CONVEYOR_U = 21;
+    const C_CONVEYOR_D = 22;
+    const C_CONVEYOR_R = 23;
+    const C_CONVEYOR_L = 24;
 
     const LEVELS = [
-      {
-        "id": 1,
-        "world": 1,
-        "name": "The Open Arena",
-        "w": 4,
-        "h": 3,
-        "budget": 0,
-        "par": 11,
-        "spawn": {
-          "x": 0,
-          "y": 0
-        },
-        "goal": {
-          "x": 0,
-          "y": 1
-        },
-        "checkpoints": [],
-        "grid": [
-          [
-            2,
-            2,
-            2,
-            2
-          ],
-          [
-            4,
-            2,
-            2,
-            2
-          ],
-          [
-            2,
-            2,
-            2,
-            2
-          ]
-        ]
-      },
-      {
-        "id": 2,
-        "world": 1,
-        "name": "The Central Pillar",
-        "w": 4,
-        "h": 4,
-        "budget": 0,
-        "par": 14,
-        "spawn": {
-          "x": 0,
-          "y": 0
-        },
-        "goal": {
-          "x": 0,
-          "y": 2
-        },
-        "checkpoints": [],
-        "grid": [
-          [
-            2,
-            2,
-            2,
-            2
-          ],
-          [
-            2,
-            2,
-            1,
-            2
-          ],
-          [
-            4,
-            2,
-            2,
-            2
-          ],
-          [
-            2,
-            2,
-            2,
-            2
-          ]
-        ]
-      },
-      {
-        "id": 3,
-        "world": 1,
-        "name": "The Dual Pillars",
-        "w": 5,
-        "h": 4,
-        "budget": 0,
-        "par": 17,
-        "spawn": {
-          "x": 0,
-          "y": 0
-        },
-        "goal": {
-          "x": 0,
-          "y": 3
-        },
-        "checkpoints": [],
-        "grid": [
-          [
-            2,
-            2,
-            2,
-            2,
-            2
-          ],
-          [
-            2,
-            2,
-            1,
-            2,
-            2
-          ],
-          [
-            2,
-            2,
-            1,
-            2,
-            2
-          ],
-          [
-            4,
-            2,
-            2,
-            2,
-            2
-          ]
-        ]
-      },
-      {
-        "id": 4,
-        "world": 1,
-        "name": "The Parity Split",
-        "w": 5,
-        "h": 5,
-        "budget": 0,
-        "par": 23,
-        "spawn": {
-          "x": 0,
-          "y": 0
-        },
-        "goal": {
-          "x": 1,
-          "y": 4
-        },
-        "checkpoints": [
-          {
-            "id": 1,
-            "x": 4,
-            "y": 0,
-            "cellType": 5
-          }
-        ],
-        "grid": [
-          [
-            2,
-            2,
-            2,
-            2,
-            5
-          ],
-          [
-            2,
-            2,
-            2,
-            2,
-            2
-          ],
-          [
-            2,
-            2,
-            1,
-            2,
-            2
-          ],
-          [
-            2,
-            2,
-            2,
-            2,
-            2
-          ],
-          [
-            2,
-            4,
-            2,
-            2,
-            2
-          ]
-        ]
-      },
-      {
-        "id": 5,
-        "world": 1,
-        "name": "The Hamiltonian Crucible",
-        "w": 5,
-        "h": 4,
-        "budget": 0,
-        "par": 19,
-        "spawn": {
-          "x": 0,
-          "y": 0
-        },
-        "goal": {
-          "x": 4,
-          "y": 3
-        },
-        "checkpoints": [
-          {
-            "id": 1,
-            "x": 4,
-            "y": 0,
-            "cellType": 5
-          },
-          {
-            "id": 2,
-            "x": 0,
-            "y": 3,
-            "cellType": 6
-          }
-        ],
-        "grid": [
-          [
-            2,
-            2,
-            2,
-            2,
-            5
-          ],
-          [
-            2,
-            2,
-            2,
-            2,
-            2
-          ],
-          [
-            2,
-            2,
-            2,
-            2,
-            2
-          ],
-          [
-            6,
-            2,
-            2,
-            2,
-            4
-          ]
-        ]
-      },
-      {
-        "id": 6,
-        "world": 2,
-        "name": "The Figure Eight",
-        "w": 5,
-        "h": 3,
-        "budget": 0,
-        "par": 15,
-        "spawn": {
-          "x": 0,
-          "y": 0
-        },
-        "goal": {
-          "x": 3,
-          "y": 2
-        },
-        "checkpoints": [],
-        "grid": [
-          [
-            2,
-            2,
-            2,
-            2,
-            2
-          ],
-          [
-            2,
-            2,
-            11,
-            2,
-            2
-          ],
-          [
-            2,
-            2,
-            2,
-            4,
-            2
-          ]
-        ]
-      },
-      {
-        "id": 7,
-        "world": 2,
-        "name": "The Twin Hubs",
-        "w": 5,
-        "h": 5,
-        "budget": 0,
-        "par": 24,
-        "spawn": {
-          "x": 0,
-          "y": 0
-        },
-        "goal": {
-          "x": 4,
-          "y": 4
-        },
-        "checkpoints": [],
-        "grid": [
-          [
-            2,
-            2,
-            2,
-            2,
-            2
-          ],
-          [
-            2,
-            2,
-            1,
-            2,
-            2
-          ],
-          [
-            2,
-            11,
-            2,
-            11,
-            2
-          ],
-          [
-            2,
-            2,
-            1,
-            2,
-            2
-          ],
-          [
-            2,
-            2,
-            2,
-            2,
-            4
-          ]
-        ]
-      },
-      {
-        "id": 8,
-        "world": 2,
-        "name": "The Trefoil Knot",
-        "w": 6,
-        "h": 4,
-        "budget": 0,
-        "par": 25,
-        "spawn": {
-          "x": 0,
-          "y": 0
-        },
-        "goal": {
-          "x": 0,
-          "y": 3
-        },
-        "checkpoints": [
-          {
-            "id": 1,
-            "x": 5,
-            "y": 0,
-            "cellType": 5
-          }
-        ],
-        "grid": [
-          [
-            2,
-            2,
-            2,
-            2,
-            2,
-            5
-          ],
-          [
-            2,
-            11,
-            2,
-            2,
-            2,
-            2
-          ],
-          [
-            2,
-            2,
-            2,
-            11,
-            2,
-            2
-          ],
-          [
-            4,
-            2,
-            2,
-            2,
-            2,
-            2
-          ]
-        ]
-      },
-      {
-        "id": 9,
-        "world": 2,
-        "name": "The Celtic Cross",
-        "w": 6,
-        "h": 5,
-        "budget": 0,
-        "par": 31,
-        "spawn": {
-          "x": 0,
-          "y": 0
-        },
-        "goal": {
-          "x": 5,
-          "y": 4
-        },
-        "checkpoints": [
-          {
-            "id": 1,
-            "x": 5,
-            "y": 0,
-            "cellType": 5
-          },
-          {
-            "id": 2,
-            "x": 0,
-            "y": 4,
-            "cellType": 6
-          }
-        ],
-        "grid": [
-          [
-            2,
-            2,
-            2,
-            2,
-            2,
-            5
-          ],
-          [
-            2,
-            2,
-            2,
-            2,
-            2,
-            2
-          ],
-          [
-            2,
-            2,
-            11,
-            11,
-            2,
-            2
-          ],
-          [
-            2,
-            2,
-            2,
-            2,
-            2,
-            2
-          ],
-          [
-            6,
-            2,
-            2,
-            2,
-            2,
-            4
-          ]
-        ]
-      },
-      {
-        "id": 10,
-        "world": 2,
-        "name": "The Gordian Web",
-        "w": 6,
-        "h": 5,
-        "budget": 0,
-        "par": 30,
-        "spawn": {
-          "x": 0,
-          "y": 0
-        },
-        "goal": {
-          "x": 0,
-          "y": 4
-        },
-        "checkpoints": [
-          {
-            "id": 1,
-            "x": 5,
-            "y": 0,
-            "cellType": 5
-          },
-          {
-            "id": 2,
-            "x": 5,
-            "y": 4,
-            "cellType": 6
-          }
-        ],
-        "grid": [
-          [
-            2,
-            2,
-            2,
-            2,
-            2,
-            5
-          ],
-          [
-            2,
-            2,
-            2,
-            2,
-            2,
-            2
-          ],
-          [
-            2,
-            2,
-            11,
-            2,
-            2,
-            2
-          ],
-          [
-            2,
-            2,
-            2,
-            2,
-            2,
-            2
-          ],
-          [
-            4,
-            2,
-            2,
-            2,
-            2,
-            6
-          ]
-        ]
-      },
-      {
-        "id": 11,
-        "world": 3,
-        "name": "The Obsidian Weave",
-        "w": 6,
-        "h": 4,
-        "budget": 0,
-        "par": 25,
-        "spawn": {
-          "x": 0,
-          "y": 0
-        },
-        "goal": {
-          "x": 0,
-          "y": 1
-        },
-        "checkpoints": [
-          {
-            "id": 1,
-            "x": 5,
-            "y": 0,
-            "cellType": 5
-          }
-        ],
-        "grid": [
-          [
-            2,
-            2,
-            2,
-            2,
-            2,
-            5
-          ],
-          [
-            4,
-            11,
-            2,
-            2,
-            2,
-            2
-          ],
-          [
-            2,
-            11,
-            2,
-            2,
-            2,
-            2
-          ],
-          [
-            2,
-            2,
-            2,
-            2,
-            2,
-            2
-          ]
-        ],
-        "trace": [
-          "RIGHT",
-          "RIGHT",
-          "RIGHT",
-          "RIGHT",
-          "RIGHT",
-          "DOWN",
-          "DOWN",
-          "DOWN",
-          "LEFT",
-          "UP",
-          "UP",
-          "LEFT",
-          "DOWN",
-          "DOWN",
-          "LEFT",
-          "UP",
-          "UP",
-          "LEFT",
-          "DOWN",
-          "DOWN",
-          "LEFT",
-          "UP",
-          "RIGHT",
-          "UP",
-          "LEFT"
-        ]
-      },
-      {
-        "id": 12,
-        "world": 3,
-        "name": "The Double Helix",
-        "w": 6,
-        "h": 5,
-        "budget": 0,
-        "par": 27,
-        "spawn": {
-          "x": 1,
-          "y": 0
-        },
-        "goal": {
-          "x": 4,
-          "y": 4
-        },
-        "checkpoints": [
-          {
-            "id": 1,
-            "x": 4,
-            "y": 0,
-            "cellType": 5
-          },
-          {
-            "id": 2,
-            "x": 1,
-            "y": 4,
-            "cellType": 6
-          }
-        ],
-        "grid": [
-          [
-            0,
-            2,
-            2,
-            2,
-            5,
-            0
-          ],
-          [
-            2,
-            2,
-            2,
-            2,
-            2,
-            2
-          ],
-          [
-            2,
-            2,
-            11,
-            11,
-            2,
-            2
-          ],
-          [
-            2,
-            2,
-            2,
-            2,
-            2,
-            2
-          ],
-          [
-            0,
-            6,
-            2,
-            2,
-            4,
-            0
-          ]
-        ],
-        "trace": [
-          "RIGHT",
-          "RIGHT",
-          "RIGHT",
-          "DOWN",
-          "RIGHT",
-          "DOWN",
-          "DOWN",
-          "LEFT",
-          "UP",
-          "LEFT",
-          "UP",
-          "LEFT",
-          "DOWN",
-          "RIGHT",
-          "DOWN",
-          "LEFT",
-          "UP",
-          "LEFT",
-          "UP",
-          "LEFT",
-          "DOWN",
-          "DOWN",
-          "RIGHT",
-          "DOWN",
-          "RIGHT",
-          "RIGHT",
-          "RIGHT"
-        ]
-      },
-      {
-        "id": 13,
-        "world": 3,
-        "name": "The Labyrinthine Cross",
-        "w": 6,
-        "h": 5,
-        "budget": 0,
-        "par": 29,
-        "spawn": {
-          "x": 1,
-          "y": 0
-        },
-        "goal": {
-          "x": 4,
-          "y": 4
-        },
-        "checkpoints": [
-          {
-            "id": 1,
-            "x": 5,
-            "y": 0,
-            "cellType": 5
-          },
-          {
-            "id": 2,
-            "x": 0,
-            "y": 4,
-            "cellType": 6
-          }
-        ],
-        "grid": [
-          [
-            0,
-            2,
-            2,
-            2,
-            2,
-            5
-          ],
-          [
-            2,
-            11,
-            2,
-            2,
-            2,
-            2
-          ],
-          [
-            2,
-            11,
-            2,
-            2,
-            2,
-            2
-          ],
-          [
-            2,
-            2,
-            2,
-            2,
-            2,
-            2
-          ],
-          [
-            6,
-            2,
-            2,
-            2,
-            4,
-            0
-          ]
-        ],
-        "trace": [
-          "RIGHT",
-          "RIGHT",
-          "RIGHT",
-          "RIGHT",
-          "DOWN",
-          "DOWN",
-          "DOWN",
-          "LEFT",
-          "UP",
-          "UP",
-          "LEFT",
-          "DOWN",
-          "DOWN",
-          "LEFT",
-          "UP",
-          "UP",
-          "LEFT",
-          "DOWN",
-          "LEFT",
-          "UP",
-          "RIGHT",
-          "DOWN",
-          "DOWN",
-          "LEFT",
-          "DOWN",
-          "RIGHT",
-          "RIGHT",
-          "RIGHT",
-          "RIGHT"
-        ]
-      },
-      {
-        "id": 14,
-        "world": 3,
-        "name": "The Tri-Chamber Nexus",
-        "w": 6,
-        "h": 5,
-        "budget": 0,
-        "par": 31,
-        "spawn": {
-          "x": 0,
-          "y": 0
-        },
-        "goal": {
-          "x": 0,
-          "y": 1
-        },
-        "checkpoints": [
-          {
-            "id": 1,
-            "x": 5,
-            "y": 0,
-            "cellType": 5
-          },
-          {
-            "id": 2,
-            "x": 0,
-            "y": 4,
-            "cellType": 6
-          }
-        ],
-        "grid": [
-          [
-            2,
-            2,
-            2,
-            2,
-            2,
-            5
-          ],
-          [
-            4,
-            11,
-            2,
-            2,
-            2,
-            2
-          ],
-          [
-            2,
-            11,
-            2,
-            2,
-            2,
-            2
-          ],
-          [
-            2,
-            2,
-            2,
-            2,
-            2,
-            2
-          ],
-          [
-            6,
-            2,
-            2,
-            2,
-            2,
-            2
-          ]
-        ],
-        "trace": [
-          "RIGHT",
-          "RIGHT",
-          "RIGHT",
-          "RIGHT",
-          "RIGHT",
-          "DOWN",
-          "DOWN",
-          "DOWN",
-          "DOWN",
-          "LEFT",
-          "UP",
-          "UP",
-          "UP",
-          "LEFT",
-          "DOWN",
-          "DOWN",
-          "DOWN",
-          "LEFT",
-          "UP",
-          "UP",
-          "UP",
-          "LEFT",
-          "DOWN",
-          "DOWN",
-          "DOWN",
-          "LEFT",
-          "UP",
-          "UP",
-          "RIGHT",
-          "UP",
-          "LEFT"
-        ]
-      },
-      {
-        "id": 15,
-        "world": 3,
-        "name": "The Colosseum of Knots",
-        "w": 6,
-        "h": 6,
-        "budget": 0,
-        "par": 33,
-        "spawn": {
-          "x": 1,
-          "y": 0
-        },
-        "goal": {
-          "x": 3,
-          "y": 1
-        },
-        "checkpoints": [
-          {
-            "id": 1,
-            "x": 4,
-            "y": 0,
-            "cellType": 5
-          },
-          {
-            "id": 2,
-            "x": 1,
-            "y": 5,
-            "cellType": 6
-          }
-        ],
-        "grid": [
-          [
-            0,
-            2,
-            2,
-            2,
-            5,
-            0
-          ],
-          [
-            2,
-            11,
-            2,
-            4,
-            2,
-            2
-          ],
-          [
-            2,
-            11,
-            2,
-            2,
-            2,
-            2
-          ],
-          [
-            2,
-            2,
-            2,
-            2,
-            2,
-            2
-          ],
-          [
-            2,
-            2,
-            2,
-            2,
-            2,
-            2
-          ],
-          [
-            0,
-            6,
-            2,
-            2,
-            2,
-            0
-          ]
-        ],
-        "trace": [
-          "RIGHT",
-          "RIGHT",
-          "RIGHT",
-          "DOWN",
-          "RIGHT",
-          "DOWN",
-          "DOWN",
-          "DOWN",
-          "LEFT",
-          "DOWN",
-          "LEFT",
-          "UP",
-          "UP",
-          "RIGHT",
-          "UP",
-          "LEFT",
-          "LEFT",
-          "DOWN",
-          "DOWN",
-          "DOWN",
-          "LEFT",
-          "UP",
-          "LEFT",
-          "UP",
-          "RIGHT",
-          "UP",
-          "UP",
-          "LEFT",
-          "DOWN",
-          "RIGHT",
-          "UP",
-          "RIGHT",
-          "RIGHT"
-        ]
-      },
-      {
-        "id": 16,
-        "world": 4,
-        "name": "The Polarity Nexus",
-        "w": 6,
-        "h": 6,
-        "budget": 0,
-        "par": 35,
-        "spawn": {
-          "x": 0,
-          "y": 0
-        },
-        "goal": {
-          "x": 4,
-          "y": 1
-        },
-        "checkpoints": [
-          {
-            "id": 1,
-            "x": 5,
-            "y": 0,
-            "cellType": 5
-          },
-          {
-            "id": 2,
-            "x": 0,
-            "y": 5,
-            "cellType": 6
-          }
-        ],
-        "grid": [
-          [
-            2,
-            2,
-            2,
-            2,
-            2,
-            5
-          ],
-          [
-            2,
-            11,
-            2,
-            2,
-            4,
-            2
-          ],
-          [
-            2,
-            2,
-            1,
-            2,
-            2,
-            2
-          ],
-          [
-            2,
-            11,
-            2,
-            1,
-            2,
-            2
-          ],
-          [
-            2,
-            2,
-            2,
-            2,
-            2,
-            2
-          ],
-          [
-            6,
-            2,
-            2,
-            2,
-            2,
-            2
-          ]
-        ],
-        "trace": [
-          "RIGHT",
-          "DOWN",
-          "RIGHT",
-          "UP",
-          "RIGHT",
-          "RIGHT",
-          "RIGHT",
-          "DOWN",
-          "DOWN",
-          "DOWN",
-          "DOWN",
-          "DOWN",
-          "LEFT",
-          "LEFT",
-          "LEFT",
-          "LEFT",
-          "LEFT",
-          "UP",
-          "RIGHT",
-          "UP",
-          "UP",
-          "UP",
-          "LEFT",
-          "DOWN",
-          "DOWN",
-          "RIGHT",
-          "RIGHT",
-          "DOWN",
-          "RIGHT",
-          "RIGHT",
-          "UP",
-          "UP",
-          "LEFT",
-          "UP",
-          "RIGHT"
-        ]
-      },
-      {
-        "id": 17,
-        "world": 4,
-        "name": "The Alternating Crucible",
-        "w": 6,
-        "h": 6,
-        "budget": 0,
-        "par": 37,
-        "spawn": {
-          "x": 0,
-          "y": 0
-        },
-        "goal": {
-          "x": 0,
-          "y": 1
-        },
-        "checkpoints": [
-          {
-            "id": 1,
-            "x": 5,
-            "y": 0,
-            "cellType": 5
-          },
-          {
-            "id": 2,
-            "x": 0,
-            "y": 5,
-            "cellType": 6
-          }
-        ],
-        "grid": [
-          [
-            2,
-            2,
-            2,
-            2,
-            2,
-            5
-          ],
-          [
-            4,
-            11,
-            2,
-            2,
-            2,
-            2
-          ],
-          [
-            2,
-            11,
-            2,
-            2,
-            2,
-            2
-          ],
-          [
-            2,
-            2,
-            2,
-            2,
-            2,
-            2
-          ],
-          [
-            2,
-            2,
-            2,
-            2,
-            2,
-            2
-          ],
-          [
-            6,
-            2,
-            2,
-            2,
-            2,
-            2
-          ]
-        ],
-        "trace": [
-          "RIGHT",
-          "RIGHT",
-          "RIGHT",
-          "RIGHT",
-          "RIGHT",
-          "DOWN",
-          "DOWN",
-          "DOWN",
-          "DOWN",
-          "DOWN",
-          "LEFT",
-          "UP",
-          "UP",
-          "UP",
-          "UP",
-          "LEFT",
-          "DOWN",
-          "DOWN",
-          "DOWN",
-          "DOWN",
-          "LEFT",
-          "UP",
-          "UP",
-          "UP",
-          "UP",
-          "LEFT",
-          "DOWN",
-          "DOWN",
-          "DOWN",
-          "DOWN",
-          "LEFT",
-          "UP",
-          "UP",
-          "UP",
-          "RIGHT",
-          "UP",
-          "LEFT"
-        ]
-      },
-      {
-        "id": 18,
-        "world": 4,
-        "name": "The Entangled Bastion",
-        "w": 7,
-        "h": 6,
-        "budget": 0,
-        "par": 39,
-        "spawn": {
-          "x": 1,
-          "y": 0
-        },
-        "goal": {
-          "x": 3,
-          "y": 1
-        },
-        "checkpoints": [
-          {
-            "id": 1,
-            "x": 5,
-            "y": 0,
-            "cellType": 5
-          },
-          {
-            "id": 2,
-            "x": 1,
-            "y": 5,
-            "cellType": 6
-          }
-        ],
-        "grid": [
-          [
-            0,
-            2,
-            2,
-            2,
-            2,
-            5,
-            0
-          ],
-          [
-            2,
-            11,
-            2,
-            4,
-            2,
-            2,
-            2
-          ],
-          [
-            2,
-            11,
-            2,
-            2,
-            2,
-            2,
-            2
-          ],
-          [
-            2,
-            2,
-            2,
-            2,
-            2,
-            2,
-            2
-          ],
-          [
-            2,
-            2,
-            2,
-            2,
-            2,
-            2,
-            2
-          ],
-          [
-            0,
-            6,
-            2,
-            2,
-            2,
-            2,
-            0
-          ]
-        ],
-        "trace": [
-          "RIGHT",
-          "RIGHT",
-          "RIGHT",
-          "RIGHT",
-          "DOWN",
-          "RIGHT",
-          "DOWN",
-          "DOWN",
-          "DOWN",
-          "LEFT",
-          "DOWN",
-          "LEFT",
-          "LEFT",
-          "LEFT",
-          "LEFT",
-          "UP",
-          "LEFT",
-          "UP",
-          "RIGHT",
-          "UP",
-          "UP",
-          "LEFT",
-          "DOWN",
-          "RIGHT",
-          "UP",
-          "RIGHT",
-          "DOWN",
-          "RIGHT",
-          "DOWN",
-          "LEFT",
-          "DOWN",
-          "RIGHT",
-          "RIGHT",
-          "UP",
-          "RIGHT",
-          "UP",
-          "LEFT",
-          "UP",
-          "LEFT"
-        ]
-      },
-      {
-        "id": 19,
-        "world": 4,
-        "name": "The Crucible of Duality",
-        "w": 7,
-        "h": 6,
-        "budget": 0,
-        "par": 41,
-        "spawn": {
-          "x": 1,
-          "y": 0
-        },
-        "goal": {
-          "x": 3,
-          "y": 1
-        },
-        "checkpoints": [
-          {
-            "id": 1,
-            "x": 6,
-            "y": 0,
-            "cellType": 5
-          },
-          {
-            "id": 2,
-            "x": 0,
-            "y": 5,
-            "cellType": 6
-          }
-        ],
-        "grid": [
-          [
-            0,
-            2,
-            2,
-            2,
-            2,
-            2,
-            5
-          ],
-          [
-            2,
-            11,
-            2,
-            4,
-            2,
-            2,
-            2
-          ],
-          [
-            2,
-            11,
-            2,
-            2,
-            2,
-            2,
-            2
-          ],
-          [
-            2,
-            2,
-            2,
-            2,
-            2,
-            2,
-            2
-          ],
-          [
-            2,
-            2,
-            2,
-            2,
-            2,
-            2,
-            2
-          ],
-          [
-            6,
-            2,
-            2,
-            2,
-            2,
-            2,
-            0
-          ]
-        ],
-        "trace": [
-          "RIGHT",
-          "RIGHT",
-          "RIGHT",
-          "RIGHT",
-          "RIGHT",
-          "DOWN",
-          "DOWN",
-          "DOWN",
-          "DOWN",
-          "LEFT",
-          "DOWN",
-          "LEFT",
-          "UP",
-          "UP",
-          "RIGHT",
-          "UP",
-          "UP",
-          "LEFT",
-          "DOWN",
-          "LEFT",
-          "DOWN",
-          "DOWN",
-          "DOWN",
-          "LEFT",
-          "UP",
-          "UP",
-          "UP",
-          "LEFT",
-          "UP",
-          "LEFT",
-          "DOWN",
-          "DOWN",
-          "DOWN",
-          "DOWN",
-          "RIGHT",
-          "UP",
-          "UP",
-          "UP",
-          "UP",
-          "RIGHT",
-          "RIGHT"
-        ]
-      },
-      {
-        "id": 20,
-        "world": 4,
-        "name": "The Grandmaster Singularity",
-        "w": 7,
-        "h": 6,
-        "budget": 0,
-        "par": 43,
-        "spawn": {
-          "x": 0,
-          "y": 0
-        },
-        "goal": {
-          "x": 0,
-          "y": 1
-        },
-        "checkpoints": [
-          {
-            "id": 1,
-            "x": 6,
-            "y": 0,
-            "cellType": 5
-          },
-          {
-            "id": 2,
-            "x": 0,
-            "y": 5,
-            "cellType": 6
-          }
-        ],
-        "grid": [
-          [
-            2,
-            2,
-            2,
-            2,
-            2,
-            2,
-            5
-          ],
-          [
-            4,
-            11,
-            2,
-            2,
-            2,
-            2,
-            2
-          ],
-          [
-            2,
-            11,
-            2,
-            2,
-            2,
-            2,
-            2
-          ],
-          [
-            2,
-            2,
-            2,
-            2,
-            2,
-            2,
-            2
-          ],
-          [
-            2,
-            2,
-            2,
-            2,
-            2,
-            2,
-            2
-          ],
-          [
-            6,
-            2,
-            2,
-            2,
-            2,
-            2,
-            2
-          ]
-        ],
-        "trace": [
-          "RIGHT",
-          "RIGHT",
-          "RIGHT",
-          "RIGHT",
-          "RIGHT",
-          "RIGHT",
-          "DOWN",
-          "DOWN",
-          "DOWN",
-          "DOWN",
-          "DOWN",
-          "LEFT",
-          "UP",
-          "UP",
-          "UP",
-          "UP",
-          "LEFT",
-          "DOWN",
-          "DOWN",
-          "DOWN",
-          "DOWN",
-          "LEFT",
-          "UP",
-          "UP",
-          "UP",
-          "UP",
-          "LEFT",
-          "LEFT",
-          "DOWN",
-          "RIGHT",
-          "DOWN",
-          "DOWN",
-          "DOWN",
-          "LEFT",
-          "LEFT",
-          "UP",
-          "RIGHT",
-          "UP",
-          "LEFT",
-          "UP",
-          "RIGHT",
-          "UP",
-          "LEFT"
-        ]
-      }
+      {"id":1,"world":1,"name":"The Open Arena","w":4,"h":3,"budget":0,"par":11,"spawn":{"x":0,"y":0},"goal":{"x":0,"y":1},"checkpoints":[],"grid":[[2,2,2,2],[4,2,2,2],[2,2,2,2]],"trace":["RIGHT","RIGHT","RIGHT","DOWN","DOWN","LEFT","UP","LEFT","DOWN","LEFT","UP"],"branching_factor":2.1},
+      {"id":2,"world":1,"name":"The Central Pillar","w":4,"h":4,"budget":0,"par":14,"spawn":{"x":0,"y":0},"goal":{"x":0,"y":2},"checkpoints":[],"grid":[[2,2,2,2],[2,2,1,2],[4,2,2,2],[2,2,2,2]],"trace":["DOWN","RIGHT","UP","RIGHT","RIGHT","DOWN","DOWN","DOWN","LEFT","UP","LEFT","DOWN","LEFT","UP"],"branching_factor":2.3},
+      {"id":3,"world":1,"name":"The Dual Pillars","w":5,"h":4,"budget":0,"par":17,"spawn":{"x":0,"y":0},"goal":{"x":0,"y":3},"checkpoints":[],"grid":[[2,2,2,2,2],[2,2,1,2,2],[2,2,1,2,2],[4,2,2,2,2]],"trace":["RIGHT","RIGHT","RIGHT","RIGHT","DOWN","LEFT","DOWN","RIGHT","DOWN","LEFT","LEFT","LEFT","UP","UP","LEFT","DOWN","DOWN"],"branching_factor":2.4},
+      {"id":4,"world":1,"name":"The Parity Split","w":5,"h":5,"budget":0,"par":23,"spawn":{"x":0,"y":0},"goal":{"x":1,"y":4},"checkpoints":[{"id":1,"x":4,"y":0,"cellType":5}],"grid":[[2,2,2,2,5],[2,2,2,2,2],[2,2,1,2,2],[2,2,2,2,2],[2,4,2,2,2]],"trace":["RIGHT","RIGHT","RIGHT","RIGHT","DOWN","DOWN","DOWN","DOWN","LEFT","LEFT","UP","RIGHT","UP","UP","LEFT","LEFT","LEFT","DOWN","RIGHT","DOWN","LEFT","DOWN","RIGHT"],"branching_factor":2.5},
+      {"id":5,"world":1,"name":"The Hamiltonian Crucible","w":5,"h":4,"budget":0,"par":19,"spawn":{"x":0,"y":0},"goal":{"x":4,"y":3},"checkpoints":[{"id":1,"x":4,"y":0,"cellType":5},{"id":2,"x":0,"y":3,"cellType":6}],"grid":[[2,2,2,2,5],[2,2,2,2,2],[2,2,2,2,2],[6,2,2,2,4]],"trace":["RIGHT","RIGHT","RIGHT","RIGHT","DOWN","LEFT","LEFT","LEFT","LEFT","DOWN","DOWN","RIGHT","UP","RIGHT","DOWN","RIGHT","UP","RIGHT","DOWN"],"branching_factor":2.6},
+      {"id":6,"world":2,"name":"The Figure Eight","w":5,"h":3,"budget":0,"par":15,"spawn":{"x":0,"y":0},"goal":{"x":3,"y":2},"checkpoints":[],"grid":[[2,2,2,2,2],[2,2,11,2,2],[2,2,2,4,2]],"trace":["RIGHT","RIGHT","DOWN","LEFT","LEFT","DOWN","RIGHT","RIGHT","UP","RIGHT","UP","RIGHT","DOWN","DOWN","LEFT"],"branching_factor":2.2},
+      {"id":7,"world":2,"name":"The Twin Hubs","w":5,"h":5,"budget":0,"par":24,"spawn":{"x":0,"y":0},"goal":{"x":4,"y":4},"checkpoints":[],"grid":[[2,2,2,2,2],[2,2,1,2,2],[2,11,2,11,2],[2,2,1,2,2],[2,2,2,2,4]],"trace":["RIGHT","RIGHT","RIGHT","RIGHT","DOWN","LEFT","DOWN","RIGHT","LEFT","LEFT","LEFT","LEFT","UP","RIGHT","DOWN","DOWN","LEFT","DOWN","RIGHT","RIGHT","RIGHT","UP","RIGHT","DOWN"],"branching_factor":2.4},
+      {"id":8,"world":2,"name":"The Trefoil Knot","w":6,"h":4,"budget":0,"par":25,"spawn":{"x":0,"y":0},"goal":{"x":0,"y":3},"checkpoints":[{"id":1,"x":5,"y":0,"cellType":5}],"grid":[[2,2,2,2,2,5],[2,11,2,2,2,2],[2,2,2,11,2,2],[4,2,2,2,2,2]],"trace":["RIGHT","RIGHT","RIGHT","RIGHT","RIGHT","DOWN","LEFT","LEFT","DOWN","RIGHT","RIGHT","DOWN","LEFT","LEFT","UP","LEFT","DOWN","LEFT","UP","UP","RIGHT","LEFT","LEFT","DOWN","DOWN"],"branching_factor":2.5},
+      {"id":9,"world":2,"name":"The Celtic Cross","w":6,"h":5,"budget":0,"par":31,"spawn":{"x":0,"y":0},"goal":{"x":5,"y":4},"checkpoints":[{"id":1,"x":5,"y":0,"cellType":5},{"id":2,"x":0,"y":4,"cellType":6}],"grid":[[2,2,2,2,2,5],[2,2,2,2,2,2],[2,2,11,11,2,2],[2,2,2,2,2,2],[6,2,2,2,2,4]],"trace":["RIGHT","RIGHT","RIGHT","RIGHT","RIGHT","DOWN","LEFT","LEFT","LEFT","LEFT","LEFT","DOWN","RIGHT","RIGHT","RIGHT","RIGHT","RIGHT","DOWN","LEFT","LEFT","UP","LEFT","DOWN","LEFT","LEFT","DOWN","RIGHT","RIGHT","RIGHT","RIGHT","RIGHT"],"branching_factor":2.6},
+      {"id":10,"world":2,"name":"The Gordian Web","w":6,"h":5,"budget":0,"par":30,"spawn":{"x":0,"y":0},"goal":{"x":0,"y":4},"checkpoints":[{"id":1,"x":5,"y":0,"cellType":5},{"id":2,"x":5,"y":4,"cellType":6}],"grid":[[2,2,2,2,2,5],[2,2,2,2,2,2],[2,2,11,2,2,2],[2,2,2,2,2,2],[4,2,2,2,2,6]],"trace":["RIGHT","RIGHT","RIGHT","RIGHT","RIGHT","DOWN","LEFT","LEFT","LEFT","LEFT","LEFT","DOWN","RIGHT","RIGHT","RIGHT","LEFT","DOWN","RIGHT","RIGHT","UP","RIGHT","DOWN","DOWN","LEFT","LEFT","LEFT","LEFT","UP","LEFT","DOWN"],"branching_factor":2.7},
+      {"id":11,"world":3,"name":"The Obsidian Weave","w":6,"h":4,"budget":0,"par":25,"spawn":{"x":0,"y":0},"goal":{"x":0,"y":1},"checkpoints":[{"id":1,"x":5,"y":0,"cellType":5}],"grid":[[2,2,2,2,2,5],[4,11,2,2,2,2],[2,11,2,2,2,2],[2,2,2,2,2,2]],"trace":["RIGHT","RIGHT","RIGHT","RIGHT","RIGHT","DOWN","DOWN","DOWN","LEFT","UP","UP","LEFT","DOWN","DOWN","LEFT","UP","UP","LEFT","DOWN","DOWN","LEFT","UP","RIGHT","UP","LEFT"]},
+      {"id":12,"world":3,"name":"The Double Helix","w":6,"h":5,"budget":0,"par":27,"spawn":{"x":1,"y":0},"goal":{"x":4,"y":4},"checkpoints":[{"id":1,"x":4,"y":0,"cellType":5},{"id":2,"x":1,"y":4,"cellType":6}],"grid":[[0,2,2,2,5,0],[2,2,2,2,2,2],[2,2,11,11,2,2],[2,2,2,2,2,2],[0,6,2,2,4,0]],"trace":["RIGHT","RIGHT","RIGHT","DOWN","RIGHT","DOWN","DOWN","LEFT","UP","LEFT","UP","LEFT","DOWN","RIGHT","DOWN","LEFT","UP","LEFT","UP","LEFT","DOWN","DOWN","RIGHT","DOWN","RIGHT","RIGHT","RIGHT"]},
+      {"id":13,"world":3,"name":"The Labyrinthine Cross","w":6,"h":5,"budget":0,"par":29,"spawn":{"x":1,"y":0},"goal":{"x":4,"y":4},"checkpoints":[{"id":1,"x":5,"y":0,"cellType":5},{"id":2,"x":0,"y":4,"cellType":6}],"grid":[[0,2,2,2,2,5],[2,11,2,2,2,2],[2,11,2,2,2,2],[2,2,2,2,2,2],[6,2,2,2,4,0]],"trace":["RIGHT","RIGHT","RIGHT","RIGHT","DOWN","DOWN","DOWN","LEFT","UP","UP","LEFT","DOWN","DOWN","LEFT","UP","UP","LEFT","DOWN","LEFT","UP","RIGHT","DOWN","DOWN","LEFT","DOWN","RIGHT","RIGHT","RIGHT","RIGHT"]},
+      {"id":14,"world":3,"name":"The Tri-Chamber Nexus","w":6,"h":5,"budget":0,"par":31,"spawn":{"x":0,"y":0},"goal":{"x":0,"y":1},"checkpoints":[{"id":1,"x":5,"y":0,"cellType":5},{"id":2,"x":0,"y":4,"cellType":6}],"grid":[[2,2,2,2,2,5],[4,11,2,2,2,2],[2,11,2,2,2,2],[2,2,2,2,2,2],[6,2,2,2,2,2]],"trace":["RIGHT","RIGHT","RIGHT","RIGHT","RIGHT","DOWN","DOWN","DOWN","DOWN","LEFT","UP","UP","UP","LEFT","DOWN","DOWN","DOWN","LEFT","UP","UP","UP","LEFT","DOWN","DOWN","DOWN","LEFT","UP","UP","RIGHT","UP","LEFT"]},
+      {"id":15,"world":3,"name":"The Colosseum of Knots","w":6,"h":6,"budget":0,"par":33,"spawn":{"x":1,"y":0},"goal":{"x":3,"y":1},"checkpoints":[{"id":1,"x":4,"y":0,"cellType":5},{"id":2,"x":1,"y":5,"cellType":6}],"grid":[[0,2,2,2,5,0],[2,11,2,4,2,2],[2,11,2,2,2,2],[2,2,2,2,2,2],[2,2,2,2,2,2],[0,6,2,2,2,0]],"trace":["RIGHT","RIGHT","RIGHT","DOWN","RIGHT","DOWN","DOWN","DOWN","LEFT","DOWN","LEFT","UP","UP","RIGHT","UP","LEFT","LEFT","DOWN","DOWN","DOWN","LEFT","UP","LEFT","UP","RIGHT","UP","UP","LEFT","DOWN","RIGHT","UP","RIGHT","RIGHT"]},
+      {"id":16,"world":4,"name":"The Polarity Nexus","w":6,"h":6,"budget":0,"par":35,"spawn":{"x":0,"y":0},"goal":{"x":4,"y":1},"checkpoints":[{"id":1,"x":5,"y":0,"cellType":5},{"id":2,"x":0,"y":5,"cellType":6}],"grid":[[2,2,2,2,2,5],[2,11,2,2,4,2],[2,2,1,2,2,2],[2,11,2,1,2,2],[2,2,2,2,2,2],[6,2,2,2,2,2]],"trace":["RIGHT","DOWN","RIGHT","UP","RIGHT","RIGHT","RIGHT","DOWN","DOWN","DOWN","DOWN","DOWN","LEFT","LEFT","LEFT","LEFT","LEFT","UP","RIGHT","UP","UP","UP","LEFT","DOWN","DOWN","RIGHT","RIGHT","DOWN","RIGHT","RIGHT","UP","UP","LEFT","UP","RIGHT"]},
+      {"id":17,"world":4,"name":"The Alternating Crucible","w":6,"h":6,"budget":0,"par":37,"spawn":{"x":0,"y":0},"goal":{"x":0,"y":1},"checkpoints":[{"id":1,"x":5,"y":0,"cellType":5},{"id":2,"x":0,"y":5,"cellType":6}],"grid":[[2,2,2,2,2,5],[4,11,2,2,2,2],[2,11,2,2,2,2],[2,2,2,2,2,2],[2,2,2,2,2,2],[6,2,2,2,2,2]],"trace":["RIGHT","RIGHT","RIGHT","RIGHT","RIGHT","DOWN","DOWN","DOWN","DOWN","DOWN","LEFT","UP","UP","UP","UP","LEFT","DOWN","DOWN","DOWN","DOWN","LEFT","UP","UP","UP","UP","LEFT","DOWN","DOWN","DOWN","DOWN","LEFT","UP","UP","UP","RIGHT","UP","LEFT"]},
+      {"id":18,"world":4,"name":"The Entangled Bastion","w":7,"h":6,"budget":0,"par":39,"spawn":{"x":1,"y":0},"goal":{"x":3,"y":1},"checkpoints":[{"id":1,"x":5,"y":0,"cellType":5},{"id":2,"x":1,"y":5,"cellType":6}],"grid":[[0,2,2,2,2,5,0],[2,11,2,4,2,2,2],[2,11,2,2,2,2,2],[2,2,2,2,2,2,2],[2,2,2,2,2,2,2],[0,6,2,2,2,2,0]],"trace":["RIGHT","RIGHT","RIGHT","RIGHT","DOWN","RIGHT","DOWN","DOWN","DOWN","LEFT","DOWN","LEFT","LEFT","LEFT","LEFT","UP","LEFT","UP","RIGHT","UP","UP","LEFT","DOWN","RIGHT","UP","RIGHT","DOWN","RIGHT","DOWN","LEFT","DOWN","RIGHT","RIGHT","UP","RIGHT","UP","LEFT","UP","LEFT"]},
+      {"id":19,"world":4,"name":"The Crucible of Duality","w":7,"h":6,"budget":0,"par":41,"spawn":{"x":1,"y":0},"goal":{"x":3,"y":1},"checkpoints":[{"id":1,"x":6,"y":0,"cellType":5},{"id":2,"x":0,"y":5,"cellType":6}],"grid":[[0,2,2,2,2,2,5],[2,11,2,4,2,2,2],[2,11,2,2,2,2,2],[2,2,2,2,2,2,2],[2,2,2,2,2,2,2],[6,2,2,2,2,2,0]],"trace":["RIGHT","RIGHT","RIGHT","RIGHT","RIGHT","DOWN","DOWN","DOWN","DOWN","LEFT","DOWN","LEFT","UP","UP","RIGHT","UP","UP","LEFT","DOWN","LEFT","DOWN","DOWN","DOWN","LEFT","UP","UP","UP","LEFT","UP","LEFT","DOWN","DOWN","DOWN","DOWN","RIGHT","UP","UP","UP","UP","RIGHT","RIGHT"]},
+      {"id":20,"world":4,"name":"The Grandmaster Singularity","w":7,"h":6,"budget":0,"par":43,"spawn":{"x":0,"y":0},"goal":{"x":0,"y":1},"checkpoints":[{"id":1,"x":6,"y":0,"cellType":5},{"id":2,"x":0,"y":5,"cellType":6}],"grid":[[2,2,2,2,2,2,5],[4,11,2,2,2,2,2],[2,11,2,2,2,2,2],[2,2,2,2,2,2,2],[2,2,2,2,2,2,2],[6,2,2,2,2,2,2]],"trace":["RIGHT","RIGHT","RIGHT","RIGHT","RIGHT","RIGHT","DOWN","DOWN","DOWN","DOWN","DOWN","LEFT","UP","UP","UP","UP","LEFT","DOWN","DOWN","DOWN","DOWN","LEFT","UP","UP","UP","UP","LEFT","LEFT","DOWN","RIGHT","DOWN","DOWN","DOWN","LEFT","LEFT","UP","RIGHT","UP","LEFT","UP","RIGHT","UP","LEFT"]},
+      {"id":21,"world":5,"name":"The Kinetic Fulcrum","w":5,"h":5,"budget":17,"par":14,"spawn":{"x":0,"y":0},"goal":{"x":4,"y":4},"initialPhase":"RED","checkpoints":[{"id":1,"x":4,"y":0,"cellType":5}],"crates":[{"id":1,"x":1,"y":3,"active":true}],"grid":[[2,2,1,2,5],[2,2,1,2,2],[2,2,9,2,2],[2,2,8,1,2],[2,2,1,2,4]],"trace":["DOWN","DOWN","DOWN","RIGHT","UP","RIGHT","RIGHT","UP","UP","RIGHT","DOWN","DOWN","DOWN","DOWN"]},
+      {"id":22,"world":5,"name":"The Chasm Bridge","w":5,"h":5,"budget":15,"par":12,"spawn":{"x":0,"y":0},"goal":{"x":4,"y":4},"initialPhase":"RED","checkpoints":[{"id":1,"x":4,"y":0,"cellType":5}],"crates":[{"id":1,"x":1,"y":2,"active":true}],"grid":[[2,2,1,2,5],[2,2,1,2,2],[2,2,0,2,2],[2,2,1,2,2],[2,2,1,2,4]],"trace":["DOWN","DOWN","RIGHT","RIGHT","RIGHT","UP","UP","RIGHT","DOWN","DOWN","DOWN","DOWN"]},
+      {"id":23,"world":5,"name":"The Crumbling Crusher","w":6,"h":5,"budget":16,"par":13,"spawn":{"x":0,"y":0},"goal":{"x":5,"y":4},"initialPhase":"RED","checkpoints":[{"id":1,"x":5,"y":0,"cellType":5}],"crates":[{"id":1,"x":1,"y":2,"active":true},{"id":2,"x":5,"y":2,"active":true}],"grid":[[2,2,1,2,2,5],[2,2,1,2,2,2],[2,2,7,2,2,2],[2,2,1,2,1,0],[2,2,1,2,1,4]],"trace":["DOWN","DOWN","RIGHT","RIGHT","RIGHT","UP","UP","RIGHT","RIGHT","DOWN","DOWN","DOWN","DOWN"]},
+      {"id":24,"world":5,"name":"The Dual Bastion Paradox","w":6,"h":5,"budget":18,"par":15,"spawn":{"x":0,"y":0},"goal":{"x":5,"y":4},"initialPhase":"RED","checkpoints":[{"id":1,"x":5,"y":0,"cellType":5}],"crates":[{"id":1,"x":1,"y":3,"active":true},{"id":2,"x":5,"y":2,"active":true}],"grid":[[2,2,1,2,2,5],[2,2,1,2,2,2],[2,2,9,2,2,2],[2,2,8,1,1,0],[2,2,1,1,1,4]],"trace":["DOWN","DOWN","DOWN","RIGHT","UP","RIGHT","RIGHT","UP","UP","RIGHT","RIGHT","DOWN","DOWN","DOWN","DOWN"]},
+      {"id":25,"world":5,"name":"The Singularity Engine","w":6,"h":5,"budget":16,"par":13,"spawn":{"x":0,"y":0},"goal":{"x":5,"y":4},"initialPhase":"RED","checkpoints":[{"id":1,"x":4,"y":0,"cellType":5},{"id":2,"x":5,"y":2,"cellType":6}],"crates":[{"id":1,"x":1,"y":2,"active":true},{"id":2,"x":4,"y":2,"active":true}],"grid":[[2,2,1,2,5,2],[2,2,1,2,2,10],[2,2,7,2,2,6],[2,2,1,2,8,9],[2,2,1,2,1,4]],"trace":["DOWN","DOWN","RIGHT","RIGHT","RIGHT","UP","UP","RIGHT","DOWN","DOWN","RIGHT","DOWN","DOWN"]},
+      {"id":26,"world":6,"name":"The Frozen Torii","w":5,"h":4,"spawn":{"x":0,"y":0},"goal":{"x":4,"y":3},"grid":[[2,12,12,12,2],[2,1,1,1,2],[2,1,1,1,2],[2,12,12,12,4]],"par":4,"budget":7,"trace":["RIGHT","DOWN","DOWN","DOWN"]},
+      {"id":27,"world":6,"name":"Glacial Katana Drift","w":5,"h":5,"spawn":{"x":0,"y":0},"goal":{"x":4,"y":4},"initialPhase":"RED","grid":[[2,12,12,2,2],[2,1,1,8,2],[2,1,1,1,2],[2,9,1,12,2],[2,2,2,2,4]],"par":6,"budget":9,"trace":["RIGHT","RIGHT","DOWN","DOWN","DOWN","DOWN"]},
+      {"id":28,"world":6,"name":"Crate Avalanche","w":6,"h":5,"spawn":{"x":0,"y":0},"goal":{"x":5,"y":4},"crates":[{"id":1,"x":1,"y":2,"active":true}],"grid":[[2,2,2,12,12,2],[2,2,1,1,1,2],[2,2,0,12,12,2],[2,1,1,1,1,2],[2,2,2,2,2,4]],"par":7,"budget":10,"trace":["RIGHT","RIGHT","RIGHT","DOWN","DOWN","DOWN","DOWN"]},
+      {"id":29,"world":6,"name":"Ronin's Narrow Escape","w":6,"h":6,"spawn":{"x":0,"y":0},"goal":{"x":5,"y":5},"checkpoints":[{"id":1,"x":5,"y":0,"cellType":5}],"grid":[[2,12,12,12,2,5],[2,1,1,1,2,2],[2,12,12,12,1,2],[2,2,1,12,12,2],[2,1,1,1,1,2],[2,2,2,2,2,4]],"par":7,"budget":10,"trace":["RIGHT","RIGHT","DOWN","DOWN","DOWN","DOWN","DOWN"]},
+      {"id":30,"world":6,"name":"Shogun's Kinetic Citadel","w":6,"h":6,"spawn":{"x":0,"y":0},"goal":{"x":5,"y":5},"initialPhase":"RED","crates":[{"id":1,"x":1,"y":2,"active":true}],"checkpoints":[{"id":1,"x":5,"y":0,"cellType":5}],"grid":[[2,2,2,12,2,5],[2,1,1,1,2,2],[2,2,8,12,1,2],[2,9,1,1,12,2],[2,2,1,2,2,2],[2,2,2,2,2,4]],"par":9,"budget":12,"trace":["RIGHT","RIGHT","RIGHT","RIGHT","DOWN","DOWN","DOWN","DOWN","DOWN"]},
+      {"id":31,"world":7,"name":"Vegvisir Compass","w":5,"h":4,"spawn":{"x":0,"y":0},"goal":{"x":0,"y":3},"grid":[[2,2,2,2,14],[2,2,2,2,2],[15,1,1,1,2],[4,1,2,2,2]],"par":11,"budget":14,"trace":["RIGHT","RIGHT","RIGHT","RIGHT","DOWN","LEFT","LEFT","LEFT","LEFT","DOWN","DOWN"]},
+      {"id":32,"world":7,"name":"Bifrost Shards","w":5,"h":5,"spawn":{"x":0,"y":0},"goal":{"x":4,"y":4},"grid":[[2,2,2,2,14],[2,1,1,1,2],[2,2,2,1,2],[2,1,15,1,2],[2,2,2,2,4]],"par":8,"budget":11,"trace":["RIGHT","RIGHT","RIGHT","RIGHT","DOWN","DOWN","DOWN","DOWN"]},
+      {"id":33,"world":7,"name":"The Crate Sled","w":6,"h":5,"spawn":{"x":0,"y":0},"goal":{"x":5,"y":4},"crates":[{"id":1,"x":1,"y":2,"active":true}],"grid":[[2,2,2,12,2,14],[2,1,1,1,1,2],[2,2,0,12,2,2],[2,1,1,1,1,15],[2,2,2,2,2,4]],"par":8,"budget":11,"trace":["RIGHT","RIGHT","RIGHT","RIGHT","DOWN","DOWN","DOWN","DOWN"]},
+      {"id":34,"world":7,"name":"Valkyrie Runematrix","w":6,"h":6,"spawn":{"x":0,"y":0},"goal":{"x":5,"y":5},"grid":[[2,12,12,2,2,14],[2,1,1,1,2,2],[2,11,2,2,1,2],[2,1,1,1,12,2],[2,2,1,1,1,15],[2,2,2,2,2,4]],"par":8,"budget":11,"trace":["RIGHT","RIGHT","RIGHT","DOWN","DOWN","DOWN","DOWN","DOWN"]},
+      {"id":35,"world":7,"name":"Valhalla's Gates","w":7,"h":6,"spawn":{"x":0,"y":0},"goal":{"x":6,"y":5},"crates":[{"id":1,"x":1,"y":2,"active":true}],"grid":[[2,2,2,12,12,2,14],[2,1,1,1,1,2,2],[2,2,0,12,2,1,2],[2,1,1,1,1,1,15],[2,2,2,2,2,2,2],[2,2,2,2,2,2,4]],"par":9,"budget":12,"trace":["RIGHT","RIGHT","RIGHT","RIGHT","DOWN","DOWN","DOWN","DOWN","DOWN"]},
+      {"id":36,"world":8,"name":"Solar Ray Awakening","w":5,"h":5,"spawn":{"x":0,"y":0},"goal":{"x":4,"y":4},"emitters":{"2,0":{"dx":0,"dy":1,"name":"DOWN"}},"mirrors":[{"id":1,"x":1,"y":2,"type":18,"active":true}],"grid":[[2,2,16,1,1],[2,1,2,1,1],[2,2,2,2,19],[2,2,2,1,1],[2,2,2,20,4]],"par":8,"budget":11,"trace":["DOWN","DOWN","RIGHT","DOWN","RIGHT","DOWN","RIGHT","RIGHT"]},
+      {"id":37,"world":8,"name":"Prismatic Reflection","w":6,"h":5,"spawn":{"x":0,"y":0},"goal":{"x":5,"y":4},"emitters":{"3,0":{"dx":0,"dy":1,"name":"DOWN"}},"mirrors":[{"id":1,"x":2,"y":2,"type":18,"active":true}],"grid":[[2,2,2,16,1,1],[2,1,2,2,1,1],[2,2,2,2,2,19],[2,2,2,2,1,1],[2,2,2,2,20,4]],"par":9,"budget":12,"trace":["DOWN","DOWN","RIGHT","RIGHT","DOWN","RIGHT","DOWN","RIGHT","RIGHT"]},
+      {"id":38,"world":8,"name":"Crate Beam Interceptor","w":6,"h":6,"spawn":{"x":0,"y":0},"goal":{"x":5,"y":5},"crates":[{"id":1,"x":2,"y":1,"active":true}],"emitters":{"3,0":{"dx":0,"dy":1,"name":"DOWN"}},"mirrors":[{"id":1,"x":2,"y":3,"type":18,"active":true}],"grid":[[2,2,2,16,1,1],[2,1,2,2,1,1],[2,2,2,2,1,1],[2,2,2,2,2,19],[2,2,2,2,1,1],[2,2,2,2,20,4]],"par":10,"budget":13,"trace":["DOWN","DOWN","RIGHT","DOWN","RIGHT","DOWN","RIGHT","DOWN","RIGHT","RIGHT"]},
+      {"id":39,"world":8,"name":"Tonatiuh's Solar Altar","w":7,"h":6,"spawn":{"x":0,"y":0},"goal":{"x":6,"y":5},"emitters":{"4,0":{"dx":0,"dy":1,"name":"DOWN"}},"mirrors":[{"id":1,"x":3,"y":3,"type":18,"active":true}],"grid":[[2,2,2,2,16,1,1],[2,1,1,2,2,1,1],[2,2,2,2,2,1,1],[2,2,2,2,2,2,19],[2,2,2,2,2,1,1],[2,2,2,2,2,20,4]],"par":11,"budget":14,"trace":["DOWN","DOWN","RIGHT","RIGHT","DOWN","RIGHT","DOWN","RIGHT","DOWN","RIGHT","RIGHT"]},
+      {"id":40,"world":8,"name":"Quetzalcoatl's Prism","w":7,"h":6,"spawn":{"x":0,"y":0},"goal":{"x":6,"y":5},"emitters":{"4,0":{"dx":0,"dy":1,"name":"DOWN"}},"mirrors":[{"id":1,"x":3,"y":2,"type":18,"active":true}],"checkpoints":[{"id":1,"x":1,"y":4,"cellType":5}],"grid":[[2,2,2,2,16,1,1],[2,1,2,2,2,1,1],[2,2,2,2,2,2,19],[2,2,2,2,2,1,1],[2,5,2,2,2,1,1],[2,2,2,2,2,20,4]],"par":15,"budget":18,"trace":["RIGHT","RIGHT","DOWN","DOWN","RIGHT","DOWN","DOWN","LEFT","LEFT","DOWN","RIGHT","RIGHT","RIGHT","RIGHT","RIGHT"]},
+      {"id":41,"world":9,"name":"Bazaar Flux Stream","w":5,"h":4,"spawn":{"x":0,"y":0},"goal":{"x":4,"y":1},"grid":[[2,23,2,22,2],[2,1,1,2,4],[2,1,1,2,2],[2,2,2,2,2]],"par":3,"budget":6,"trace":["RIGHT","RIGHT","RIGHT"]},
+      {"id":42,"world":9,"name":"Muqarnas Momentum","w":5,"h":5,"spawn":{"x":0,"y":0},"goal":{"x":4,"y":4},"grid":[[2,23,2,2,2],[2,1,1,1,2],[2,2,2,22,2],[2,1,1,1,2],[2,2,2,2,4]],"par":7,"budget":10,"trace":["RIGHT","RIGHT","RIGHT","DOWN","DOWN","DOWN","DOWN"]},
+      {"id":43,"world":9,"name":"Crate Conveyor Siphon","w":6,"h":5,"spawn":{"x":0,"y":0},"goal":{"x":5,"y":4},"initialPhase":"RED","crates":[{"id":1,"x":1,"y":2,"active":true}],"grid":[[2,2,2,2,2,2],[2,1,1,1,1,2],[2,2,23,8,1,2],[2,9,1,1,1,2],[2,2,2,2,2,4]],"par":9,"budget":12,"trace":["RIGHT","RIGHT","RIGHT","RIGHT","RIGHT","DOWN","DOWN","DOWN","DOWN"]},
+      {"id":44,"world":9,"name":"Flux Glacier Chaining","w":6,"h":6,"spawn":{"x":0,"y":0},"goal":{"x":5,"y":5},"grid":[[2,23,12,12,2,2],[2,1,1,1,2,2],[2,2,2,2,1,2],[2,1,1,1,12,2],[2,2,1,1,2,2],[2,2,2,2,2,4]],"par":8,"budget":11,"trace":["RIGHT","RIGHT","RIGHT","DOWN","DOWN","DOWN","DOWN","DOWN"]},
+      {"id":45,"world":9,"name":"Citadel of Perpetual Flow","w":7,"h":6,"spawn":{"x":0,"y":0},"goal":{"x":6,"y":5},"crates":[{"id":1,"x":1,"y":2,"active":true}],"grid":[[2,23,12,2,2,2,2],[2,1,1,1,1,1,2],[2,2,0,23,2,1,2],[2,1,1,1,1,1,2],[2,2,2,2,2,2,2],[2,2,2,2,2,2,4]],"par":10,"budget":13,"trace":["RIGHT","RIGHT","RIGHT","RIGHT","RIGHT","DOWN","DOWN","DOWN","DOWN","DOWN"]},
+      {"id":46,"world":10,"name":"Prometheus Spark","w":6,"h":6,"spawn":{"x":0,"y":0},"goal":{"x":5,"y":5},"emitters":{"3,0":{"dx":0,"dy":1,"name":"DOWN"}},"mirrors":[{"id":1,"x":2,"y":2,"type":18,"active":true}],"grid":[[2,23,12,16,1,1],[2,1,2,2,1,1],[2,2,2,2,2,19],[2,2,2,2,1,1],[2,2,2,2,1,1],[2,2,2,2,20,4]],"par":10,"budget":13,"trace":["DOWN","DOWN","RIGHT","RIGHT","DOWN","RIGHT","DOWN","DOWN","RIGHT","RIGHT"]},
+      {"id":47,"world":10,"name":"Hephaestus Crucible","w":7,"h":6,"spawn":{"x":0,"y":0},"goal":{"x":6,"y":5},"crates":[{"id":1,"x":1,"y":2,"active":true}],"grid":[[2,12,12,2,2,2,14],[2,1,1,1,1,1,2],[2,2,0,12,2,1,2],[2,1,1,1,1,1,15],[2,2,2,2,2,2,2],[2,2,2,2,2,2,4]],"par":9,"budget":12,"trace":["RIGHT","RIGHT","RIGHT","RIGHT","DOWN","DOWN","DOWN","DOWN","DOWN"]},
+      {"id":48,"world":10,"name":"The Aegis Matrix","w":7,"h":6,"spawn":{"x":0,"y":0},"goal":{"x":6,"y":5},"emitters":{"4,0":{"dx":0,"dy":1,"name":"DOWN"}},"mirrors":[{"id":1,"x":3,"y":2,"type":18,"active":true}],"grid":[[2,23,12,2,16,1,14],[2,1,2,2,2,1,2],[2,2,2,2,2,2,19],[2,2,1,2,2,1,1],[2,2,2,2,2,15,1],[2,2,2,2,2,20,4]],"par":10,"budget":13,"trace":["RIGHT","DOWN","DOWN","RIGHT","DOWN","RIGHT","DOWN","DOWN","RIGHT","RIGHT"]},
+      {"id":49,"world":10,"name":"Titan's Kinetic Gauntlet","w":8,"h":6,"spawn":{"x":0,"y":0},"goal":{"x":7,"y":5},"crates":[{"id":1,"x":1,"y":2,"active":true}],"emitters":{"4,0":{"dx":0,"dy":1,"name":"DOWN"}},"mirrors":[{"id":1,"x":3,"y":3,"type":18,"active":true}],"grid":[[2,23,12,12,16,1,1,14],[2,1,1,1,2,1,1,2],[2,2,0,12,2,2,1,2],[2,2,2,2,2,2,2,19],[2,2,1,2,2,2,15,1],[2,2,2,2,2,2,20,4]],"par":12,"budget":15,"trace":["DOWN","DOWN","RIGHT","RIGHT","DOWN","RIGHT","DOWN","RIGHT","RIGHT","DOWN","RIGHT","RIGHT"]},
+      {"id":50,"world":10,"name":"The Beaupre Singularity","w":8,"h":7,"spawn":{"x":0,"y":0},"goal":{"x":7,"y":6},"crates":[{"id":1,"x":1,"y":2,"active":true}],"emitters":{"4,0":{"dx":0,"dy":1,"name":"DOWN"}},"mirrors":[{"id":1,"x":3,"y":3,"type":18,"active":true}],"checkpoints":[{"id":1,"x":0,"y":4,"cellType":5}],"grid":[[2,23,12,12,16,1,1,14],[2,1,1,1,2,1,1,2],[2,2,0,12,2,2,1,2],[2,2,2,2,2,2,2,19],[5,2,1,2,2,2,1,2],[2,2,2,2,2,2,15,1],[2,2,2,2,2,2,20,4]],"par":15,"budget":18,"trace":["DOWN","DOWN","DOWN","DOWN","RIGHT","UP","RIGHT","RIGHT","DOWN","RIGHT","RIGHT","DOWN","DOWN","RIGHT","RIGHT"]}
     ];
 
     /* ==========================================================================
@@ -3223,6 +2628,16 @@
         // Checkpoints state
         this.c1Collected = false;
         this.c2Collected = false;
+
+        // Pushable Crates, Mirrors & 3-Undo Allocation defaults
+        this.crates = [];
+        this.mirrors = [];
+        this.keysHeld = new Set();
+        this.activeBeams = [];
+        this.laserGateOpen = false;
+        this.undosRemaining = 3;
+        this.adGateModalTriggered = false;
+        this.hideAdGateModal();
         this.hasC1 = false;
         this.hasC2 = false;
 
@@ -3241,6 +2656,33 @@
         this.domCoordsBtn = document.getElementById('coords-toggle-btn');
         this.isLevelSelectOpen = false;
         this.toastTimer = null;
+
+        // Dual Navigation: Overworld Map & 10 Worlds Matrix
+        this.domOverworldMap = document.getElementById('overworld-map');
+        this.domOverworldScrollArea = document.getElementById('overworld-scroll-area');
+        this.domOverworldStarsCount = document.getElementById('overworld-stars-count');
+        this.domOverworldCloseBtn = document.getElementById('overworld-close-btn');
+        this.domTollBridgeModal = document.getElementById('toll-bridge-modal');
+        this.domTollBridgeClose = document.getElementById('toll-bridge-close');
+        this.domTollBridgeTitle = document.getElementById('toll-bridge-title');
+        this.domTollBridgeCopy = document.getElementById('toll-bridge-copy');
+        this.domTollProgressText = document.getElementById('toll-progress-text');
+        this.domTollProgressFill = document.getElementById('toll-progress-fill');
+        this.domBtnWatchTollAd = document.getElementById('btn-watch-toll-ad');
+        this.domBtnTollCancel = document.getElementById('btn-toll-cancel');
+        this.domHudMapBtn = document.getElementById('hud-map-btn');
+        this.domLevelEntranceBanner = document.getElementById('level-entrance-banner');
+        this.domBannerWorldBadge = document.getElementById('banner-world-badge');
+        this.domBannerLevelTitle = document.getElementById('banner-level-title');
+
+        this.isOverworldOpen = false;
+        this.currentTollWorld = null;
+        this.tollProgress = {};
+        this.bypassedWorlds = {};
+        this.bannerTimer = null;
+        this.unlockedAllDev = false;
+        this.lastWonStars = 0;
+        this.lastWonLevelId = 0;
 
         // YouTube Virality & Shorts Creator Mode Elements
         this.domAppShell = document.getElementById('app-shell');
@@ -3282,6 +2724,20 @@
         this.domMStar1 = document.getElementById('m-star-1');
         this.domMStar2 = document.getElementById('m-star-2');
         this.domMStar3 = document.getElementById('m-star-3');
+        // Pushable Crates & Undo Economy defaults
+        this.crates = [];
+        this.mirrors = [];
+        this.keysHeld = new Set();
+        this.activeBeams = [];
+        this.laserGateOpen = false;
+        this.undosRemaining = 3;
+        this.adGateModalTriggered = false;
+        this.isAdGateOpen = false;
+        this.domUndoBadge = document.getElementById('undo-badge');
+        this.domAdGateModal = document.getElementById('ad-gate-modal');
+        this.domBtnWatchAd = document.getElementById('btn-watch-ad');
+        this.domBtnAdRestart = document.getElementById('btn-ad-restart');
+        this.domAdGateClose = document.getElementById('ad-gate-close');
         this.domUndoBtn = document.getElementById('undo-btn');
         this.domRestartBtn = document.getElementById('restart-btn');
         this.domNextBtn = document.getElementById('next-btn');
@@ -3349,6 +2805,8 @@
               this.lastDailyDate = data.lastDailyDate || null;
               this.isShortsMode = data.isShortsMode || false;
               this.showCoordinates = data.showCoordinates || false;
+              this.tollProgress = data.tollProgress || {};
+              this.bypassedWorlds = data.bypassedWorlds || {};
 
               // Parse ?lvl= or ?code= Challenge Codes (e.g. ?code=OMT-L16)
               const codeParam = urlParams ? (urlParams.get('code') || urlParams.get('c')) : null;
@@ -3398,6 +2856,8 @@
             unlockedLevel: this.unlockedLevel || 1,
             currentLevel: this.currentLevelIndex || 0,
             stars: this.starsEarned || {},
+            tollProgress: this.tollProgress || {},
+            bypassedWorlds: this.bypassedWorlds || {},
             dailyStreak: this.dailyStreak || 0,
             lastDailyDate: this.lastDailyDate || null,
             isShortsMode: this.isShortsMode || false,
@@ -3440,6 +2900,7 @@
         if (this.domLevelSelectModal) {
           this.domLevelSelectModal.classList.remove('show');
         }
+        this.hideAdGateModal();
         this.isLevelSelectOpen = false;
       }
 
@@ -3592,57 +3053,363 @@
 
       unlockAllLevels() {
         this.unlockedLevel = LEVELS.length;
+        this.unlockedAllDev = true;
+        for (let w = 1; w <= 10; w++) {
+          this.bypassedWorlds[w] = true;
+        }
         this.saveProgress();
         this.renderLevelSelectList();
-        this.showToast("All 20 levels unlocked!", 'info', 2500);
+        this.renderOverworldMap();
+        this.showToast("All 10 Worlds & 50 Levels Unlocked! 🔓", 'success', 2500);
       }
 
       resetAllProgress() {
         this.unlockedLevel = 1;
         this.currentLevelIndex = 0;
         this.starsEarned = {};
+        this.tollProgress = {};
+        this.bypassedWorlds = {};
+        this.unlockedAllDev = false;
         this.saveProgress();
         this.closeLevelSelect();
+        this.closeOverworld();
         this.resetDOMState();
         this.hideModal();
         this.loadLevel(0, true);
         this.showToast("Progress reset to Level 1", 'info', 2500);
       }
 
+      /* ==========================================================================
+         WORLD REGISTRY & PROGRESSION CONTROLLER (WORLDS 1–10)
+         ========================================================================== */
+      static get WORLD_INFO() {
+        return [
+          { id: 1, name: 'Mayan Ruins', theme: 'Open Weaves & Anti-Corridors', color: '#00e676', icon: '🏛️' },
+          { id: 2, name: 'Ancient Egypt', theme: 'Knot Theory & 2-Pass Crossroads', color: '#d4a373', icon: '👁️' },
+          { id: 3, name: 'Obsidian Vault', theme: 'Multi-Crossroad Basalt Weaves', color: '#00f0ff', icon: '💎' },
+          { id: 4, name: 'Babylon Gardens', theme: 'Polarity Switches & Gates', color: '#d500f9', icon: '🌸' },
+          { id: 5, name: 'Roman Colosseum', theme: 'Pushable Crates & Void Bridging', color: '#ff1744', icon: '⚔️' },
+          { id: 6, name: 'Feudal Japan', theme: 'Glacial Ice Sliding & Katana Drift', color: '#ff4d6d', icon: '⛩️' },
+          { id: 7, name: 'Viking Valhalla', theme: 'Vegvisir Compass & Rune Keys', color: '#38bdf8', icon: '🧭' },
+          { id: 8, name: 'Aztec Sun Temple', theme: 'Solar Ray Emitters & Quartz Mirrors', color: '#f59e0b', icon: '☀️' },
+          { id: 9, name: 'Persian Citadel', theme: 'Bazaar Flux Streams & Vector Belts', color: '#10b981', icon: '🕌' },
+          { id: 10, name: 'Celestial Olympus', theme: 'Singularity Chaining Finale', color: '#a855f7', icon: '⚡' }
+        ];
+      }
+
+      isWorldUnlocked(worldIndex) {
+        if (worldIndex <= 1) return true;
+        if (this.unlockedAllDev) return true;
+        if (this.bypassedWorlds && this.bypassedWorlds[worldIndex]) return true;
+        // World N requires >= 14 stars in World N-1
+        const prevWorld = worldIndex - 1;
+        return this.getWorldStars(prevWorld) >= 14;
+      }
+
+      getWorldStars(worldIndex) {
+        const startId = (worldIndex - 1) * 5 + 1;
+        let sum = 0;
+        for (let id = startId; id < startId + 5; id++) {
+          sum += (this.starsEarned && this.starsEarned[id]) || 0;
+        }
+        return sum;
+      }
+
+      getTotalStars() {
+        let sum = 0;
+        for (let id = 1; id <= LEVELS.length; id++) {
+          sum += (this.starsEarned && this.starsEarned[id]) || 0;
+        }
+        return sum;
+      }
+
       renderLevelSelectList() {
         if (!this.domLevelSelectList) return;
         this.domLevelSelectList.innerHTML = '';
 
-        const gridEl = document.createElement('div');
-        gridEl.className = 'clean-levels-grid';
+        GameEngine.WORLD_INFO.forEach(w => {
+          const section = document.createElement('div');
+          const isWorldUnlocked = this.isWorldUnlocked(w.id);
+          const starsInWorld = this.getWorldStars(w.id);
+          const isCurrentWorld = (this.level && this.level.world === w.id);
 
-        LEVELS.forEach((lvl, idx) => {
-          const card = document.createElement('div');
-          const isActive = (idx === this.currentLevelIndex);
-          const isUnlocked = (idx < (this.unlockedLevel || 1));
-          const stars = (this.starsEarned && this.starsEarned[lvl.id]) || 0;
-
-          card.className = `level-grid-tile${isActive ? ' active' : ''}${!isUnlocked ? ' locked' : ''}`;
-          card.title = `Level ${lvl.id}: ${lvl.name} (Par ${lvl.par})`;
-
-          const starHtml = [1, 2, 3].map(s => 
-            `<span class="mini-star${s <= stars ? ' active' : ''}">★</span>`
-          ).join('');
-
-          card.innerHTML = `
-            <div class="tile-num">${lvl.id}</div>
-            <div class="tile-stars">${isUnlocked ? starHtml : '🔒'}</div>
-            <div class="tile-par">Par ${lvl.par}</div>
+          section.className = `level-select-world-section${isCurrentWorld ? ' active-world' : ''}${!isWorldUnlocked ? ' world-locked' : ''}`;
+          
+          const header = document.createElement('div');
+          header.className = 'level-select-world-header';
+          header.innerHTML = `
+            <div class="level-select-world-title" style="color:${w.color};">
+              <span>${w.icon}</span>
+              <span>WORLD ${w.id}: ${w.name}</span>
+            </div>
+            <div class="level-select-world-meter${starsInWorld >= 14 ? ' complete' : ''}">
+              ★ ${starsInWorld}/15
+            </div>
           `;
+          section.appendChild(header);
 
-          card.addEventListener('click', () => {
-            this.selectLevel(idx);
-          });
+          const gridEl = document.createElement('div');
+          gridEl.className = 'clean-levels-grid';
 
-          gridEl.appendChild(card);
+          const startLevelIdx = (w.id - 1) * 5;
+          for (let i = 0; i < 5; i++) {
+            const lvlIdx = startLevelIdx + i;
+            const lvl = LEVELS[lvlIdx];
+            if (!lvl) continue;
+
+            const card = document.createElement('div');
+            const isActive = (lvlIdx === this.currentLevelIndex);
+            const isUnlocked = isWorldUnlocked && (lvlIdx < (this.unlockedLevel || 1));
+            const stars = (this.starsEarned && this.starsEarned[lvl.id]) || 0;
+
+            card.className = `level-grid-tile${isActive ? ' active' : ''}${!isUnlocked ? ' locked' : ''}`;
+            card.title = `Level ${lvl.id}: ${lvl.name} (Par ${lvl.par})`;
+
+            const starHtml = [1, 2, 3].map(s => 
+              `<span class="mini-star${s <= stars ? ' active' : ''}">★</span>`
+            ).join('');
+
+            card.innerHTML = `
+              <div class="tile-num">${lvl.id}</div>
+              <div class="tile-stars">${isUnlocked ? starHtml : '🔒'}</div>
+              <div class="tile-par">Par ${lvl.par}</div>
+            `;
+
+            card.addEventListener('click', () => {
+              if (isUnlocked) {
+                this.selectLevel(lvlIdx);
+              } else if (!isWorldUnlocked) {
+                this.showToast(`World ${w.id} locked: Earn 14★ in World ${w.id - 1}`, 'warn', 2500);
+                sound.playWallBump();
+              } else {
+                this.showToast(`Beat Level ${lvl.id - 1} to unlock`, 'warn', 2000);
+                sound.playWallBump();
+              }
+            });
+
+            gridEl.appendChild(card);
+          }
+
+          section.appendChild(gridEl);
+          this.domLevelSelectList.appendChild(section);
+        });
+      }
+
+      /* ==========================================================================
+         HONEYCOMB OVERWORLD MAP CONTROLLER
+         ========================================================================== */
+      openOverworld() {
+        this.isOverworldOpen = true;
+        this.renderOverworldMap();
+        if (this.domOverworldMap) {
+          this.domOverworldMap.classList.add('show');
+        }
+      }
+
+      closeOverworld() {
+        this.isOverworldOpen = false;
+        if (this.domOverworldMap) {
+          this.domOverworldMap.classList.remove('show');
+        }
+      }
+
+      toggleOverworld() {
+        if (this.isOverworldOpen) this.closeOverworld();
+        else this.openOverworld();
+      }
+
+      renderOverworldMap() {
+        if (!this.domOverworldScrollArea) return;
+        this.domOverworldScrollArea.innerHTML = '';
+
+        if (this.domOverworldStarsCount) {
+          this.domOverworldStarsCount.textContent = this.getTotalStars();
+        }
+
+        GameEngine.WORLD_INFO.forEach(w => {
+          const clusterEl = document.createElement('div');
+          const isUnlocked = this.isWorldUnlocked(w.id);
+          const starsInWorld = this.getWorldStars(w.id);
+          const isCurrentWorld = (this.level && this.level.world === w.id);
+
+          clusterEl.className = 'world-cluster' + (isUnlocked ? ' unlocked' : ' locked') + (isCurrentWorld ? ' active-world' : '');
+          clusterEl.id = 'world-cluster-' + w.id;
+
+          const header = document.createElement('div');
+          header.className = 'world-header';
+          header.innerHTML = 
+            '<div class="world-header-left">' +
+              '<div class="world-badge-num" style="color:' + w.color + ';">WORLD ' + w.id + ' • ' + w.theme + '</div>' +
+              '<div class="world-title-name">' + w.icon + ' ' + w.name + '</div>' +
+            '</div>' +
+            '<div class="world-stargate">' +
+              '<div class="world-stargate-meter' + (starsInWorld >= 14 ? ' complete' : '') + '" id="world-meter-' + w.id + '">' +
+                '★ <span id="world-stars-val-' + w.id + '">' + starsInWorld + '</span>/15' +
+              '</div>' +
+            '</div>';
+          clusterEl.appendChild(header);
+
+          const hiveEl = document.createElement('div');
+          hiveEl.className = 'honeycomb-hive';
+
+          const row1 = document.createElement('div');
+          row1.className = 'hive-row';
+
+          const row2 = document.createElement('div');
+          row2.className = 'hive-row staggered';
+
+          const startLevelIdx = (w.id - 1) * 5;
+          for (let i = 0; i < 5; i++) {
+            const lvlIdx = startLevelIdx + i;
+            const lvl = LEVELS[lvlIdx];
+            if (!lvl) continue;
+
+            const hexBtn = document.createElement('div');
+            const levelUnlocked = isUnlocked && (lvlIdx < (this.unlockedLevel || 1));
+            const isActive = (lvlIdx === this.currentLevelIndex);
+            const stars = (this.starsEarned && this.starsEarned[lvl.id]) || 0;
+            const isCleared = stars > 0;
+
+            hexBtn.className = 'hex-level-btn' + (isActive ? ' active-node' : '') + (isCleared ? ' cleared' : '') + (!levelUnlocked ? ' locked' : '');
+            hexBtn.id = 'hex-node-' + lvl.id;
+            hexBtn.title = 'Level ' + lvl.id + ': ' + lvl.name + ' (Par ' + lvl.par + ')';
+
+            if (levelUnlocked) {
+              const starsHtml = [1, 2, 3].map(s => 
+                '<span class="hex-star' + (s <= stars ? ' earned' : '') + '">★</span>'
+              ).join('');
+              hexBtn.innerHTML = 
+                '<div class="hex-level-num">' + lvl.id + '</div>' +
+                '<div class="hex-level-stars">' + starsHtml + '</div>';
+              hexBtn.addEventListener('click', () => {
+                this.selectLevelFromOverworld(lvlIdx);
+              });
+            } else {
+              hexBtn.innerHTML = 
+                '<div class="hex-lock-icon">🔒</div>' +
+                '<div style="font-size:10px; color:#5a6885; font-weight:700;">' + lvl.id + '</div>';
+              hexBtn.addEventListener('click', () => {
+                if (!isUnlocked) {
+                  this.openTollBridgeModal(w.id);
+                } else {
+                  sound.playWallBump();
+                  this.showToast('Clear Level ' + (lvl.id - 1) + ' to unlock', 'warn', 2000);
+                }
+              });
+            }
+
+            if (i < 3) row1.appendChild(hexBtn);
+            else row2.appendChild(hexBtn);
+          }
+
+          hiveEl.appendChild(row1);
+          hiveEl.appendChild(row2);
+          clusterEl.appendChild(hiveEl);
+
+          if (!isUnlocked) {
+            const lockShield = document.createElement('div');
+            lockShield.className = 'world-lock-shield';
+            lockShield.id = 'world-lock-shield-' + w.id;
+            const prevWorldStars = this.getWorldStars(w.id - 1);
+            lockShield.innerHTML = 
+              '<div class="lock-shield-icon">🔒</div>' +
+              '<div class="lock-shield-title">WORLD ' + w.id + ' ENCRYPTED</div>' +
+              '<div class="lock-shield-sub">Requires 14 Stars in World ' + (w.id - 1) + ' (' + prevWorldStars + '/14)</div>' +
+              '<div class="lock-shield-cta">🎥 Tap to Bypass via Sponsor</div>';
+            lockShield.addEventListener('click', () => {
+              this.openTollBridgeModal(w.id);
+            });
+            clusterEl.appendChild(lockShield);
+          }
+
+          this.domOverworldScrollArea.appendChild(clusterEl);
         });
 
-        this.domLevelSelectList.appendChild(gridEl);
+        setTimeout(() => {
+          const activeEl = this.domOverworldScrollArea.querySelector('.active-world') ||
+                           this.domOverworldScrollArea.querySelector('.unlocked:last-of-type');
+          if (activeEl) {
+            activeEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        }, 80);
+      }
+
+      selectLevelFromOverworld(levelIndex) {
+        sound.ensureContext();
+        sound.playMove();
+        this.closeOverworld();
+        this.resetDOMState();
+        this.hideModal();
+        this.loadLevel(levelIndex, true);
+      }
+
+      openTollBridgeModal(worldIndex) {
+        this.currentTollWorld = worldIndex;
+        const progress = (this.tollProgress && this.tollProgress[worldIndex]) || 0;
+        if (this.domTollBridgeTitle) {
+          this.domTollBridgeTitle.textContent = 'WORLD ' + worldIndex + ' ENCRYPTED';
+        }
+        if (this.domTollBridgeCopy) {
+          this.domTollBridgeCopy.textContent = 'World ' + worldIndex + ' requires 14 Stars in World ' + (worldIndex - 1) + ' to unlock, or bypass immediately via sponsor clearance:';
+        }
+        this.updateTollBridgeProgressUI(progress);
+        if (this.domTollBridgeModal) {
+          this.domTollBridgeModal.classList.add('show');
+        }
+      }
+
+      hideTollBridgeModal() {
+        if (this.domTollBridgeModal) {
+          this.domTollBridgeModal.classList.remove('show');
+        }
+        this.currentTollWorld = null;
+      }
+
+      updateTollBridgeProgressUI(count) {
+        if (this.domTollProgressText) {
+          this.domTollProgressText.textContent = count + ' / 2';
+        }
+        if (this.domTollProgressFill) {
+          this.domTollProgressFill.style.width = count >= 2 ? '100%' : (count === 1 ? '50%' : '0%');
+        }
+        if (this.domBtnWatchTollAd) {
+          this.domBtnWatchTollAd.innerHTML = '🎥 Watch Sponsor Video (' + count + '/2)';
+        }
+      }
+
+      watchTollSponsor() {
+        if (!this.currentTollWorld) return;
+        const w = this.currentTollWorld;
+        const current = (this.tollProgress && this.tollProgress[w]) || 0;
+        const updated = current + 1;
+        this.tollProgress[w] = updated;
+
+        this.updateTollBridgeProgressUI(updated);
+        sound.playAdRewardChime();
+
+        if (updated >= 2) {
+          this.bypassedWorlds[w] = true;
+          this.saveProgress();
+          this.showToast('World ' + w + ' clearance granted!', 'success', 2500);
+          this.hideTollBridgeModal();
+          this.shatterPadlock(w);
+        } else {
+          this.saveProgress();
+        }
+      }
+
+      shatterPadlock(worldIndex) {
+        sound.playVictory();
+        this.screenShakeTime = 250;
+        const shield = document.getElementById('world-lock-shield-' + worldIndex);
+        if (shield) {
+          shield.classList.add('shattering');
+          setTimeout(() => {
+            this.renderOverworldMap();
+          }, 550);
+        } else {
+          this.renderOverworldMap();
+        }
       }
 
       loadLevel(index, bypassLock = false) {
@@ -3677,6 +3444,51 @@
         this.hasC2 = (this.level.checkpoints && this.level.checkpoints.some(c => c.id === 2)) || false;
         this.c1Collected = false;
         this.c2Collected = false;
+
+        // Dynamic Thematic World Rim Glow
+        const shell = document.getElementById('app-shell');
+        if (shell && this.level) {
+          for (let w = 1; w <= 10; w++) shell.classList.remove(`world-${w}`);
+          shell.classList.add(`world-${this.level.world}`);
+        }
+
+        // Animated Entrance Thematic World Banner
+        const wInfo = GameEngine.WORLD_INFO[(this.level.world || 1) - 1] || GameEngine.WORLD_INFO[0];
+        if (this.domBannerWorldBadge) {
+          this.domBannerWorldBadge.textContent = `${wInfo.icon} WORLD ${this.level.world}: ${wInfo.name.toUpperCase()}`;
+          this.domBannerWorldBadge.style.color = wInfo.color;
+        }
+        if (this.domBannerLevelTitle) {
+          this.domBannerLevelTitle.textContent = `LEVEL ${this.level.id} • ${this.level.name}`;
+        }
+        if (this.domLevelEntranceBanner) {
+          this.domLevelEntranceBanner.style.borderColor = wInfo.color;
+          this.domLevelEntranceBanner.style.boxShadow = `0 4px 20px rgba(0, 0, 0, 0.8), 0 0 16px ${wInfo.color}40`;
+          this.domLevelEntranceBanner.classList.add('show');
+          clearTimeout(this.bannerTimer);
+          this.bannerTimer = setTimeout(() => {
+            if (this.domLevelEntranceBanner) {
+              this.domLevelEntranceBanner.classList.remove('show');
+            }
+          }, 1800);
+        }
+
+        // Phase 5 & 7 Pushable Entities & Lasers
+        this.crates = (this.level.crates || []).map(c => ({
+          id: c.id,
+          x: c.x,
+          y: c.y,
+          active: c.active !== undefined ? c.active : true
+        }));
+        this.mirrors = (this.level.mirrors || []).map(m => ({
+          id: m.id,
+          x: m.x,
+          y: m.y,
+          type: m.type,
+          active: m.active !== undefined ? m.active : true
+        }));
+        this.keysHeld = new Set(this.level.keysHeld || []);
+        this.updateLaserSystem();
 
         this.moveCount = 0;
         this.moveStreak = 0;
@@ -3761,6 +3573,9 @@
 
       restart() {
         this.clearAutoResetTimer();
+        this.undosRemaining = 3;
+        this.adGateModalTriggered = false;
+        this.hideAdGateModal();
         sound.playMove(0);
         this.resetDOMState();
         this.loadLevel(this.currentLevelIndex);
@@ -3788,13 +3603,120 @@
         this.attemptMove(dir);
       }
 
+      getCrateAt(x, y) {
+        if (!this.crates) return null;
+        return this.crates.find(c => c.active && c.x === x && c.y === y) || null;
+      }
+
+      getMirrorAt(x, y) {
+        if (!this.mirrors) return null;
+        return this.mirrors.find(m => m.active && m.x === x && m.y === y) || null;
+      }
+
+      updateLaserSystem() {
+        this.laserGateOpen = false;
+        this.activeBeams = [];
+        if (!this.level) return;
+
+        for (let y = 0; y < this.level.h; y++) {
+          for (let x = 0; x < this.level.w; x++) {
+            if (this.grid && this.grid[y] && this.grid[y][x] === C_LASER_EMIT) {
+              const emitDir = (this.level.emitters && this.level.emitters[`${x},${y}`]) || { dx: 1, dy: 0, name: 'RIGHT' };
+              this.traceLaserBeam(x, y, emitDir);
+            }
+          }
+        }
+      }
+
+      traceLaserBeam(startX, startY, startDir) {
+        let cx = startX;
+        let cy = startY;
+        let cdir = startDir;
+        let bounces = 0;
+
+        while (bounces < 16) {
+          cx += cdir.dx;
+          cy += cdir.dy;
+          if (cx < 0 || cx >= this.level.w || cy < 0 || cy >= this.level.h) break;
+
+          this.activeBeams.push({ x: cx, y: cy, dir: cdir });
+
+          const crate = this.getCrateAt(cx, cy);
+          if (crate) break;
+
+          const mirror = this.getMirrorAt(cx, cy);
+          if (mirror) {
+            bounces++;
+            if (mirror.type === C_MIRROR_SLASH) {
+              if (cdir.name === 'UP') cdir = { dx: 1, dy: 0, name: 'RIGHT' };
+              else if (cdir.name === 'RIGHT') cdir = { dx: 0, dy: -1, name: 'UP' };
+              else if (cdir.name === 'DOWN') cdir = { dx: -1, dy: 0, name: 'LEFT' };
+              else if (cdir.name === 'LEFT') cdir = { dx: 0, dy: 1, name: 'DOWN' };
+            } else if (mirror.type === C_MIRROR_BSLASH) {
+              if (cdir.name === 'UP') cdir = { dx: -1, dy: 0, name: 'LEFT' };
+              else if (cdir.name === 'LEFT') cdir = { dx: 0, dy: -1, name: 'UP' };
+              else if (cdir.name === 'DOWN') cdir = { dx: 1, dy: 0, name: 'RIGHT' };
+              else if (cdir.name === 'RIGHT') cdir = { dx: 0, dy: 1, name: 'DOWN' };
+            }
+            continue;
+          }
+
+          const cell = this.grid[cy][cx];
+          if (cell === C_WALL) break;
+          if (cell === C_LASER_RECEPT) {
+            this.laserGateOpen = true;
+            break;
+          }
+        }
+      }
+
+      isLaserActiveAt(x, y) {
+        if (!this.activeBeams) return false;
+        return this.activeBeams.some(b => b.x === x && b.y === y);
+      }
+
+      isSwitchDepressed() {
+        const crateDep = this.crates && this.crates.some(c => c.active && this.grid[c.y] && this.grid[c.y][c.x] === C_SWITCH);
+        const mirrorDep = this.mirrors && this.mirrors.some(m => m.active && this.grid[m.y] && this.grid[m.y][m.x] === C_SWITCH);
+        return crateDep || mirrorDep;
+      }
+
+      getEffectivePhase() {
+        if (this.isSwitchDepressed()) {
+          return "BLUE"; // Held open by crate weight
+        }
+        return this.phaseState ? "RED" : "BLUE";
+      }
+
+      isTileValidForPushable(x, y) {
+        if (x < 0 || x >= this.level.w || y < 0 || y >= this.level.h) return false;
+        const cell = this.grid[y][x];
+        if (cell === C_WALL || cell === C_GOAL || cell === C_CHECKPOINT_1 || cell === C_CHECKPOINT_2 || cell === C_LASER_EMIT || cell === C_LASER_RECEPT) return false;
+        if (this.getCrateAt(x, y) || this.getMirrorAt(x, y)) return false;
+
+        const phase = this.getEffectivePhase();
+        if (cell === C_GATE_RED && phase === "RED") return false;
+        if (cell === C_GATE_BLUE && phase === "BLUE") return false;
+        if (cell === C_RUNE_GATE && (!this.keysHeld || !this.keysHeld.has(1))) return false;
+        if (cell === C_LASER_GATE && !this.laserGateOpen) return false;
+
+        return true;
+      }
+
+      isTileValidForCrate(x, y) {
+        return this.isTileValidForPushable(x, y);
+      }
+
       isTilePassable(x, y) {
         if (x < 0 || x >= this.level.w || y < 0 || y >= this.level.h) return false;
         const cell = this.grid[y][x];
-        if (cell === C_WALL || cell === C_CONSUMED || cell === C_VOID) return false;
+        if (cell === C_WALL || cell === C_CONSUMED || cell === C_VOID || cell === C_LASER_EMIT || cell === C_LASER_RECEPT) return false;
         if (cell === C_CHECKPOINT_2 && !this.c1Collected) return false;
-        if (cell === C_GATE_RED && this.phaseState) return false;
-        if (cell === C_GATE_BLUE && !this.phaseState) return false;
+        const effPhase = this.getEffectivePhase();
+        if (cell === C_GATE_RED && effPhase === "RED") return false;
+        if (cell === C_GATE_BLUE && effPhase === "BLUE") return false;
+        if (cell === C_RUNE_GATE && (!this.keysHeld || !this.keysHeld.has(1))) return false;
+        if (cell === C_LASER_GATE && !this.laserGateOpen) return false;
         if (cell === C_GOAL) return this.goalUnlocked;
         if (cell === C_CROSSROAD) {
           const visits = this.crossroads ? (this.crossroads.get(`${x},${y}`) || 0) : 0;
@@ -3811,6 +3733,9 @@
           dir: { ...dir },
           prevCellState: this.grid[this.player.y][this.player.x],
           gridSnapshot: this.grid.map(r => [...r]),
+          cratesSnapshot: this.crates ? this.crates.map(c => ({ ...c })) : [],
+          mirrorsSnapshot: this.mirrors ? this.mirrors.map(m => ({ ...m })) : [],
+          keysHeldSnapshot: this.keysHeld ? new Set(this.keysHeld) : new Set(),
           crossroadsSnapshot: new Map(this.crossroads),
           c1Collected: this.c1Collected,
           c2Collected: this.c2Collected,
@@ -3889,7 +3814,12 @@
           sound.playCheckpointChime(true);
         } else if (landingCell === C_CROSSROAD) {
           sound.playCrossroadChime(this.crossroads.get(`${cx},${cy}`) || 2);
+        } else if (landingCell === C_RUNE_KEY) {
+          if (!this.keysHeld) this.keysHeld = new Set();
+          this.keysHeld.add(1);
+          sound.playCheckpointChime(true);
         }
+        this.updateLaserSystem();
 
         this.fromPos = { ...this.player };
         this.toPos = { x: cx, y: cy };
@@ -3912,14 +3842,194 @@
       attemptMove(dir) {
         if (this.isVictorious || this.isDeadlocked) return;
 
-        const targetX = this.player.x + dir.x;
-        const targetY = this.player.y + dir.y;
+        let targetX = this.player.x + dir.x;
+        let targetY = this.player.y + dir.y;
+
+        // Pushable Crate or Mirror Check
+        const targetCrate = this.getCrateAt(targetX, targetY);
+        const targetMirror = this.getMirrorAt(targetX, targetY);
+        const pushable = targetCrate || targetMirror;
+
+        if (pushable) {
+          let pDestX = targetX + dir.x;
+          let pDestY = targetY + dir.y;
+
+          if (!this.isTileValidForPushable(pDestX, pDestY)) {
+            sound.playWallBump();
+            this.showToast(targetCrate ? "Crate path blocked!" : "Mirror path blocked!", "warning", 1000);
+            return;
+          }
+
+          // Push StateFrame for Undo before pushable moves
+          this.history.push({
+            player: { ...this.player },
+            target: { x: targetX, y: targetY },
+            dir: { ...dir },
+            prevCellState: this.grid[this.player.y][this.player.x],
+            targetCellPrevState: this.grid[targetY][targetX],
+            gridSnapshot: this.grid.map(r => [...r]),
+            cratesSnapshot: this.crates ? this.crates.map(c => ({ ...c })) : [],
+            mirrorsSnapshot: this.mirrors ? this.mirrors.map(m => ({ ...m })) : [],
+            keysHeldSnapshot: this.keysHeld ? new Set(this.keysHeld) : new Set(),
+            crossroadsSnapshot: new Map(this.crossroads),
+            c1Collected: this.c1Collected,
+            c2Collected: this.c2Collected,
+            phaseState: this.phaseState,
+            prevGoalUnlocked: this.goalUnlocked,
+            prevGoalExtinguished: this.goalExtinguished,
+            budget: this.budget,
+            moveCount: this.moveCount,
+            hasUndone: this.hasUndone,
+            isDeadlocked: this.isDeadlocked
+          });
+
+          const destCell = this.grid[pDestY][pDestX];
+          if (destCell === C_VOID || destCell === C_CRUMBLING) {
+            // Pushable sacrificed to bridge void or pulverize hazard
+            this.grid[pDestY][pDestX] = C_UNTOUCHED;
+            pushable.active = false;
+            pushable.x = -1;
+            pushable.y = -1;
+            sound.playCrateBridge();
+            this.spawnTileParticles(pDestX, pDestY, '#f59e0b', 16);
+            this.showToast(destCell === C_VOID ? "Void Bridged! 🌉" : "Hazard Pulverized! 💥", "info", 1500);
+          } else if (destCell === C_ICE) {
+            // Ice slide pushable until barrier
+            let cx = pDestX;
+            let cy = pDestY;
+            while (true) {
+              const nx = cx + dir.x;
+              const ny = cy + dir.y;
+              if (!this.isTileValidForPushable(nx, ny)) break;
+              cx = nx;
+              cy = ny;
+              if (this.grid[cy][cx] !== C_ICE) break;
+            }
+            pushable.x = cx;
+            pushable.y = cy;
+            sound.playIceImpact ? sound.playIceImpact() : sound.playWallBump();
+            this.spawnTileParticles(cx, cy, '#38bdf8', 12);
+          } else if (destCell >= C_CONVEYOR_U && destCell <= C_CONVEYOR_L) {
+            const convDir = [{x:0,y:-1},{x:0,y:1},{x:1,y:0},{x:-1,y:0}][destCell - C_CONVEYOR_U];
+            const nx = pDestX + convDir.x;
+            const ny = pDestY + convDir.y;
+            if (this.isTileValidForPushable(nx, ny)) {
+              pushable.x = nx;
+              pushable.y = ny;
+            } else {
+              pushable.x = pDestX;
+              pushable.y = pDestY;
+            }
+            sound.playCratePush();
+          } else {
+            pushable.x = pDestX;
+            pushable.y = pDestY;
+            sound.playCratePush();
+            this.spawnTileParticles(pDestX, pDestY, targetCrate ? '#f59e0b' : '#38bdf8', 8);
+          }
+
+          // Departure cell consumption
+          const departureCell = this.grid[this.player.y][this.player.x];
+          if (departureCell === C_CRUMBLING) {
+            this.grid[this.player.y][this.player.x] = C_VOID;
+            sound.playTileCrumble();
+            this.spawnTileParticles(this.player.x, this.player.y, '#4a5568', 14);
+          } else if (departureCell === C_CROSSROAD) {
+            const key = `${this.player.x},${this.player.y}`;
+            const visits = (this.crossroads.get(key) || 2) - 1;
+            this.crossroads.set(key, visits);
+            if (visits <= 0) {
+              this.grid[this.player.y][this.player.x] = C_CONSUMED;
+              this.spawnTileParticles(this.player.x, this.player.y, '#8a2be2', 8);
+            } else {
+              sound.playCrossroadChime(visits);
+              this.spawnTileParticles(this.player.x, this.player.y, '#ffaa00', 8);
+            }
+            this.metadata[this.player.y][this.player.x].exit = { ...dir };
+          } else {
+            this.grid[this.player.y][this.player.x] = C_CONSUMED;
+            this.metadata[this.player.y][this.player.x].exit = { ...dir };
+            this.spawnTileParticles(this.player.x, this.player.y, '#00f0ff', 6);
+          }
+
+          const now = performance.now();
+          if (now - this.lastMoveTime < 1000) {
+            this.moveStreak++;
+          } else {
+            this.moveStreak = 0;
+          }
+          this.lastMoveTime = now;
+          this.moveCount++;
+
+          if (this.initialBudget > 0) {
+            this.budget--;
+          }
+
+          const arrivedCell = this.grid[targetY][targetX];
+          if (arrivedCell === C_SWITCH) {
+            this.phaseState = !this.phaseState;
+            sound.playPhaseShift(this.phaseState);
+            this.spawnTileParticles(targetX, targetY, this.phaseState ? '#ff3b56' : '#00d4ff', 14);
+          } else if (arrivedCell === C_CHECKPOINT_1) {
+            this.c1Collected = true;
+            sound.playCheckpointChime(false);
+            this.spawnTileParticles(targetX, targetY, '#00f0ff', 14);
+          } else if (arrivedCell === C_CHECKPOINT_2) {
+            this.c2Collected = true;
+            sound.playCheckpointChime(true);
+            this.spawnTileParticles(targetX, targetY, '#ffd700', 16);
+          } else if (arrivedCell === C_RUNE_KEY) {
+            if (!this.keysHeld) this.keysHeld = new Set();
+            this.keysHeld.add(1);
+            sound.playCheckpointChime(true);
+            this.showToast("Rune Key Acquired! 🗝️", "info", 1500);
+          }
+
+          this.updateLaserSystem();
+
+          this.fromPos = { ...this.player };
+          this.toPos = { x: targetX, y: targetY };
+          this.player = { x: targetX, y: targetY };
+          this.metadata[targetY][targetX].entry = { ...dir };
+          this.metadata[targetY][targetX].step = this.moveCount;
+
+          this.isTransitioning = true;
+          this.transStart = performance.now();
+          this.activeDir = dir;
+
+          if (this.player.x === this.goalPos.x && this.player.y === this.goalPos.y && this.goalUnlocked) {
+            this.triggerVictory();
+          }
+
+          this.evaluateBoardState();
+          this.updateHUD();
+          return;
+        }
+
+        if (this.isLaserActiveAt(targetX, targetY)) {
+          sound.playGateDeny();
+          this.showToast("Solar Ray Lethal! ⚡", "warning", 1000);
+          return;
+        }
 
         if (!this.isTilePassable(targetX, targetY)) {
           if (targetX >= 0 && targetX < this.level.w && targetY >= 0 && targetY < this.level.h) {
             const tc = this.grid[targetY][targetX];
-            if ((tc === C_GATE_RED && this.phaseState) || (tc === C_GATE_BLUE && !this.phaseState)) {
+            const effPhase = this.getEffectivePhase();
+            if ((tc === C_GATE_RED && effPhase === "RED") || (tc === C_GATE_BLUE && effPhase === "BLUE")) {
               sound.playGateDeny();
+              this.showToast("Gate Locked — Toggle Polarity or Hold Switch", "warning", 1500);
+              return;
+            }
+            if (tc === C_GOAL && !this.goalUnlocked) {
+              sound.playGateDeny();
+              if (this.hasC1 && !this.c1Collected) {
+                this.showToast("Collect Checkpoint 1 First!", "warning", 1500);
+              } else if (this.hasC2 && !this.c2Collected) {
+                this.showToast("Collect Checkpoint 2 First!", "warning", 1500);
+              } else {
+                this.showToast("Goal Locked!", "warning", 1500);
+              }
               return;
             }
           }
@@ -3943,6 +4053,9 @@
           prevCellState: this.grid[this.player.y][this.player.x],
           targetCellPrevState: targetCell,
           gridSnapshot: this.grid.map(r => [...r]),
+          cratesSnapshot: this.crates ? this.crates.map(c => ({ ...c })) : [],
+          mirrorsSnapshot: this.mirrors ? this.mirrors.map(m => ({ ...m })) : [],
+          keysHeldSnapshot: this.keysHeld ? new Set(this.keysHeld) : new Set(),
           crossroadsSnapshot: new Map(this.crossroads),
           c1Collected: this.c1Collected,
           c2Collected: this.c2Collected,
@@ -3995,6 +4108,23 @@
         }
 
         // Checkpoint collection / Crumbling entry / Switch / Gate entry
+        if (targetCell >= C_CONVEYOR_U && targetCell <= C_CONVEYOR_L) {
+          const convDir = [{x:0,y:-1},{x:0,y:1},{x:1,y:0},{x:-1,y:0}][targetCell - C_CONVEYOR_U];
+          const nx = targetX + convDir.x;
+          const ny = targetY + convDir.y;
+          if (this.isTilePassable(nx, ny) && !this.getCrateAt(nx, ny) && !this.getMirrorAt(nx, ny)) {
+            targetX = nx;
+            targetY = ny;
+          }
+        }
+        if (targetCell === C_RUNE_KEY) {
+          if (!this.keysHeld) this.keysHeld = new Set();
+          this.keysHeld.add(1);
+          sound.playCheckpointChime(true);
+          this.showToast("Rune Key Acquired! 🗝️", "info", 1500);
+        }
+        this.updateLaserSystem();
+
         if (targetCell === C_CHECKPOINT_1) {
           this.c1Collected = true;
           sound.playCheckpointChime(false);
@@ -4079,6 +4209,7 @@
         for (let y = 0; y < this.level.h; y++) {
           for (let x = 0; x < this.level.w; x++) {
             if (x === this.player.x && y === this.player.y) continue;
+            if (this.getCrateAt(x, y)) continue;
             const cell = this.grid[y][x];
             if (cell === C_UNTOUCHED || cell === C_CHECKPOINT_1 || cell === C_CHECKPOINT_2 || cell === C_CRUMBLING) {
               untouchedCount++;
@@ -4099,18 +4230,25 @@
             this.lockGoal();
           }
         } else {
-          // Spatial Budget levels: Goal ONLY unlocks on final move (budget === 1)
+          // Spatial Budget levels: Goal unlocks when checkpoints met and budget >= 1!
           if (this.budget < 0) {
             this.extinguishGoal();
             this.triggerHardDeadlock();
-          } else if (checkpointsMet && this.budget === 1) {
+          } else if (checkpointsMet && this.budget >= 1) {
             this.unlockGoal();
           } else {
             this.lockGoal();
           }
         }
 
-        // Sequential Reachability Dominance (Pass B Ruling 2):
+        // Sequential Reachability Dominance:
+        // Skip static reachability for levels featuring crates or bridges
+        if ((this.level.crates && this.level.crates.length > 0) ||
+            (this.level.mirrors && this.level.mirrors.length > 0) ||
+            (this.level.world >= 6)) {
+          return;
+        }
+
         const pathExists = this.checkSequentialReachability();
         if (!pathExists && !this.isVictorious) {
           this.softDeadlock = true;
@@ -4218,18 +4356,27 @@
 
       isEntrapped(x, y) {
         const neighbors = [
-          { x: x + 1, y },
-          { x: x - 1, y },
-          { x, y: y + 1 },
-          { x, y: y - 1 }
+          { x: x + 1, y, dx: 1, dy: 0 },
+          { x: x - 1, y, dx: -1, dy: 0 },
+          { x, y: y + 1, dx: 0, dy: 1 },
+          { x, y: y - 1, dx: 0, dy: -1 }
         ];
 
         for (const n of neighbors) {
           if (n.x >= 0 && n.x < this.level.w && n.y >= 0 && n.y < this.level.h) {
+            const crate = this.getCrateAt(n.x, n.y);
+            if (crate) {
+              if (this.isTileValidForCrate(n.x + n.dx, n.y + n.dy)) {
+                return false; // Can push adjacent crate!
+              }
+              continue;
+            }
+
             const cell = this.grid[n.y][n.x];
             if (cell === C_UNTOUCHED || cell === C_CHECKPOINT_1 || (cell === C_CHECKPOINT_2 && this.c1Collected) || cell === C_CRUMBLING || cell === C_SWITCH || cell === C_ICE || (cell === C_CROSSROAD && (this.crossroads ? (this.crossroads.get(`${n.x},${n.y}`) || 0) > 0 : true))) return false;
-            if (cell === C_GATE_RED && this.phaseState) return false;
-            if (cell === C_GATE_BLUE && !this.phaseState) return false;
+            const effPhase = this.getEffectivePhase();
+            if (cell === C_GATE_RED && effPhase === "BLUE") return false; // Red gate open when phase is BLUE
+            if (cell === C_GATE_BLUE && effPhase === "RED") return false; // Blue gate open when phase is RED
             if (cell === C_GOAL && this.goalUnlocked) return false;
           }
         }
@@ -4289,12 +4436,21 @@
         sound.playVictory();
         this.spawnTileParticles(this.player.x, this.player.y, '#ffd700', 30);
 
-        // Update campaign progression and high-water star marks
+        // 14-Star Gate Economy: Undo-Based Star Math
+        // 0 Undos used = 3 Stars, 1 Undo = 2 Stars, 2 Undos = 1 Star, 3+ = 0 Stars
         const levelId = this.level.id;
         const delta = this.moveCount - this.level.par;
-        const stars = (!this.hasUndone && delta === 0) ? 3 : (delta <= 2 ? 2 : 1);
+        const undosUsed = Math.max(0, 3 - this.undosRemaining);
+        let stars = 3;
+        if (undosUsed === 0) stars = 3;
+        else if (undosUsed === 1) stars = 2;
+        else if (undosUsed === 2) stars = 1;
+        else stars = 0;
+
         if (!this.starsEarned) this.starsEarned = {};
         this.starsEarned[levelId] = Math.max(this.starsEarned[levelId] || 0, stars);
+        this.lastWonStars = stars;
+        this.lastWonLevelId = levelId;
 
         if (this.currentLevelIndex + 1 < LEVELS.length) {
           this.unlockedLevel = Math.max(this.unlockedLevel || 1, this.currentLevelIndex + 2);
@@ -4304,11 +4460,55 @@
         this.showModal();
       }
 
+      showAdGateModal() {
+        if (this.isVictorious) return;
+        this.adGateModalTriggered = true;
+        this.isAdGateOpen = true;
+        sound.playAdGateSting();
+        if (navigator.vibrate) {
+          try { navigator.vibrate([40, 60, 40]); } catch (_) {}
+        }
+        if (this.domAdGateModal) {
+          this.domAdGateModal.classList.add('show');
+        }
+      }
+
+      hideAdGateModal() {
+        this.isAdGateOpen = false;
+        if (this.domAdGateModal) {
+          this.domAdGateModal.classList.remove('show');
+        }
+      }
+
+      grantAdReward(count = 3) {
+        this.undosRemaining += count;
+        this.adGateModalTriggered = false;
+        this.hideAdGateModal();
+        sound.playAdRewardChime();
+        if (navigator.vibrate) {
+          try { navigator.vibrate([30, 40, 80]); } catch (_) {}
+        }
+        this.spawnScreenParticles(this.canvas.width * 0.5, this.canvas.height * 0.5, '#ffd700', 25);
+        this.showToast(`+${count} Undos Granted! Run Kept Alive! 🎥✨`, 'info', 2500);
+        this.updateHUD();
+      }
+
       /* ==========================================================================
          6. THE "FAT-FINGER GRACE" HUD UNDO (PASS B AMENDMENT)
          ========================================================================== */
       undo() {
-        if (this.history.length === 0 || this.isVictorious) return;
+        if (this.isVictorious) return;
+
+        // Block and trigger Ad-Gate modal when out of undos
+        if (this.undosRemaining <= 0) {
+          this.showAdGateModal();
+          return;
+        }
+
+        if (this.history.length === 0) return;
+
+        // Consume 1 undo
+        this.undosRemaining--;
 
         this.clearAutoResetTimer();
         sound.ensureContext();
@@ -4330,6 +4530,16 @@
         if (frame.crossroadsSnapshot) {
           this.crossroads = new Map(frame.crossroadsSnapshot);
         }
+        if (frame.cratesSnapshot) {
+          this.crates = frame.cratesSnapshot.map(c => ({ ...c }));
+        }
+        if (frame.mirrorsSnapshot) {
+          this.mirrors = frame.mirrorsSnapshot.map(m => ({ ...m }));
+        }
+        if (frame.keysHeldSnapshot) {
+          this.keysHeld = new Set(frame.keysHeldSnapshot);
+        }
+        this.updateLaserSystem();
         this.metadata[frame.player.y][frame.player.x].exit = null;
         this.metadata[frame.target.y][frame.target.x].entry = null;
 
@@ -4384,6 +4594,16 @@
       updateHUD() {
         this.domLevelNum.textContent = `LEVEL ${this.level.id}`;
         this.domLevelName.textContent = this.level.name;
+
+        // Update Undo HUD button and badge
+        if (this.domUndoBadge) {
+          this.domUndoBadge.textContent = `${this.undosRemaining}/3`;
+          this.domUndoBadge.classList.toggle('empty', this.undosRemaining <= 0);
+        }
+        if (this.domUndoBtn) {
+          this.domUndoBtn.classList.toggle('out-of-undos', this.undosRemaining <= 0);
+          this.domUndoBtn.title = `Undo Move (${this.undosRemaining}/3 remaining) (U / Z)`;
+        }
 
         // Unambiguous HUD badge
         if (this.initialBudget === 0) {
@@ -4551,11 +4771,45 @@
       initDOMEvents() {
         // Keyboard controls
         window.addEventListener('keydown', (e) => {
+          if (this.isAdGateOpen) {
+            if (e.key === 'Escape') {
+              e.preventDefault();
+              this.hideAdGateModal();
+              return;
+            }
+            if (e.key === 'Enter') {
+              e.preventDefault();
+              this.grantAdReward(3);
+              return;
+            }
+            if (e.key === 'r' || e.key === 'R') {
+              e.preventDefault();
+              this.hideAdGateModal();
+              this.restart();
+              return;
+            }
+            return;
+          }
+
+          if (this.isOverworldOpen) {
+            if (e.key === 'Escape' || e.key === 'm' || e.key === 'M') {
+              e.preventDefault();
+              this.closeOverworld();
+            }
+            return;
+          }
+
           if (this.isLevelSelectOpen) {
             if (e.key === 'Escape' || e.key === 'l' || e.key === 'L') {
               e.preventDefault();
               this.closeLevelSelect();
             }
+            return;
+          }
+
+          if (e.key === 'm' || e.key === 'M') {
+            e.preventDefault();
+            this.toggleOverworld();
             return;
           }
 
@@ -4642,7 +4896,7 @@
         };
 
         this.canvas.addEventListener('pointerdown', (e) => {
-          if (this.isLevelSelectOpen) return;
+          if (this.isLevelSelectOpen || this.isAdGateOpen) return;
           if (this.canvas.setPointerCapture) {
             try { this.canvas.setPointerCapture(e.pointerId); } catch (_) {}
           }
@@ -4662,6 +4916,26 @@
 
         // Buttons
         this.domUndoBtn.addEventListener('click', () => this.undo());
+
+        if (this.domBtnWatchAd) {
+          this.domBtnWatchAd.addEventListener('click', () => this.grantAdReward(3));
+        }
+        if (this.domBtnAdRestart) {
+          this.domBtnAdRestart.addEventListener('click', () => {
+            this.hideAdGateModal();
+            this.restart();
+          });
+        }
+        if (this.domAdGateClose) {
+          this.domAdGateClose.addEventListener('click', () => this.hideAdGateModal());
+        }
+        if (this.domAdGateModal) {
+          this.domAdGateModal.addEventListener('click', (e) => {
+            if (e.target === this.domAdGateModal) {
+              this.hideAdGateModal();
+            }
+          });
+        }
         this.domRestartBtn.addEventListener('click', () => this.restart());
         this.domNextBtn.addEventListener('click', () => this.nextLevel());
 
@@ -4671,6 +4945,21 @@
         }
         if (this.domLevelSelectBtn) {
           this.domLevelSelectBtn.addEventListener('click', () => this.toggleLevelSelect());
+        }
+        if (this.domHudMapBtn) {
+          this.domHudMapBtn.addEventListener('click', () => this.toggleOverworld());
+        }
+        if (this.domOverworldCloseBtn) {
+          this.domOverworldCloseBtn.addEventListener('click', () => this.closeOverworld());
+        }
+        if (this.domTollBridgeClose) {
+          this.domTollBridgeClose.addEventListener('click', () => this.hideTollBridgeModal());
+        }
+        if (this.domBtnTollCancel) {
+          this.domBtnTollCancel.addEventListener('click', () => this.hideTollBridgeModal());
+        }
+        if (this.domBtnWatchTollAd) {
+          this.domBtnWatchTollAd.addEventListener('click', () => this.watchTollSponsor());
         }
         if (this.domLevelSelectClose) {
           this.domLevelSelectClose.addEventListener('click', () => this.closeLevelSelect());
@@ -4768,8 +5057,8 @@
           const cols = this.level.w;
           const rows = this.level.h;
           // Dynamic Grid Centering & Clamping [48, 110]
-          const proposedSize = Math.floor(Math.min((rect.width * 0.85) / cols, (rect.height * 0.65) / rows));
-          this.tileSize = Math.max(32, Math.min(110, proposedSize));
+          const proposedSize = Math.floor(Math.min((rect.width * 0.90) / cols, (rect.height * 0.74) / rows));
+          this.tileSize = Math.max(34, Math.min(115, proposedSize));
           this.originX = Math.floor((rect.width - (cols * this.tileSize)) / 2);
           this.originY = Math.floor((rect.height - (rows * this.tileSize)) / 2);
           this.offsetX = this.originX;
@@ -4822,6 +5111,9 @@
 
         if (!this.level) return;
 
+        // Draw visible thematic world architectural blueprint in empty margin space
+        this.renderThematicBackground(w, h, now);
+
         // Draw grid manifold background substrate
         this.renderGridSubstrate();
 
@@ -4834,6 +5126,15 @@
             this.renderCell(x, y, now);
           }
         }
+
+        // Draw pushable crates
+        this.renderCrates(now);
+
+        // Draw pushable mirrors
+        this.renderMirrors(now);
+
+        // Draw active laser beams
+        this.renderLaserBeams(now);
 
         // Draw player avatar
         this.renderPlayer(now);
@@ -4857,6 +5158,409 @@
             this.ctx.fill();
           }
         }
+      }
+
+      
+      renderThematicBackground(w, h, now) {
+        if (!this.level) return;
+        const wId = this.level.world || 1;
+        const cx = w / 2;
+        const by = this.offsetY;
+        const pulse = (0.28 + 0.08 * Math.sin(now * 0.0025)).toFixed(3);
+
+        this.ctx.save();
+        this.ctx.lineCap = 'round';
+        this.ctx.lineJoin = 'round';
+
+        if (wId === 1) {
+          // World 1: Mayan Ruins (Emerald Stepped Pyramid)
+          this.ctx.strokeStyle = `rgba(0, 230, 118, ${pulse})`;
+          this.ctx.lineWidth = 1.8;
+          if (by > 30) {
+            const topY = by * 0.52;
+            const drawBox = (bx, bby, bw, bh) => {
+              this.ctx.strokeRect(bx - bw / 2, bby, bw, bh);
+            };
+            drawBox(cx, topY + 12, 64, 8);
+            drawBox(cx, topY + 4, 44, 8);
+            drawBox(cx, topY - 4, 24, 8);
+          }
+        } else if (wId === 2) {
+          // World 2: Ancient Egypt (Desert Gold Radiant Eye & Pyramid)
+          this.ctx.strokeStyle = `rgba(212, 163, 115, ${pulse})`;
+          this.ctx.lineWidth = 1.8;
+          if (by > 30) {
+            const topY = by * 0.52;
+            this.ctx.beginPath();
+            this.ctx.moveTo(cx, topY - 14);
+            this.ctx.lineTo(cx - 32, topY + 16);
+            this.ctx.lineTo(cx + 32, topY + 16);
+            this.ctx.closePath();
+            this.ctx.stroke();
+            this.ctx.beginPath();
+            this.ctx.arc(cx, topY + 4, 6, 0, Math.PI * 2);
+            this.ctx.stroke();
+          }
+        } else if (wId === 3) {
+          // World 3: Obsidian Vault (Deep Cyan Chiseled Diamond)
+          this.ctx.strokeStyle = `rgba(0, 240, 255, ${pulse})`;
+          this.ctx.lineWidth = 1.8;
+          if (by > 30) {
+            const topY = by * 0.52;
+            this.ctx.beginPath();
+            this.ctx.moveTo(cx, topY - 16);
+            this.ctx.lineTo(cx + 26, topY + 2);
+            this.ctx.lineTo(cx, topY + 18);
+            this.ctx.lineTo(cx - 26, topY + 2);
+            this.ctx.closePath();
+            this.ctx.stroke();
+          }
+        } else if (wId === 4) {
+          // World 4: Babylon Gardens (Amethyst Purple Floral Octagon)
+          this.ctx.strokeStyle = `rgba(213, 0, 249, ${pulse})`;
+          this.ctx.lineWidth = 1.8;
+          if (by > 30) {
+            const topY = by * 0.52;
+            this.ctx.beginPath();
+            for (let a = 0; a < 8; a++) {
+              const ang = (a * Math.PI) / 4;
+              const px = cx + Math.cos(ang) * 20;
+              const py = topY + Math.sin(ang) * 20;
+              if (a === 0) this.ctx.moveTo(px, py);
+              else this.ctx.lineTo(px, py);
+            }
+            this.ctx.closePath();
+            this.ctx.stroke();
+          }
+        } else if (wId === 5) {
+          // World 5: Roman Colosseum (Blood Red Arched Arena Colonnade)
+          this.ctx.strokeStyle = `rgba(255, 23, 68, ${pulse})`;
+          this.ctx.lineWidth = 1.8;
+          if (by > 30) {
+            const topY = by * 0.52;
+            this.ctx.strokeRect(cx - 32, topY - 10, 64, 26);
+            for (let i = -20; i <= 20; i += 10) {
+              this.ctx.beginPath();
+              this.ctx.arc(cx + i, topY + 4, 3.5, Math.PI, 0);
+              this.ctx.stroke();
+            }
+          }
+        } else if (wId === 6) {
+          // World 6: Feudal Japan (Crimson Sakura Torii Gate & Katana Arcs)
+          this.ctx.strokeStyle = `rgba(255, 77, 109, ${pulse})`;
+          this.ctx.lineWidth = 1.8;
+          if (by > 30) {
+            const topY = by * 0.52;
+            this.ctx.beginPath();
+            this.ctx.moveTo(cx - 36, topY - 14);
+            this.ctx.lineTo(cx + 36, topY - 14);
+            this.ctx.moveTo(cx - 32, topY - 8);
+            this.ctx.lineTo(cx + 32, topY - 8);
+            this.ctx.moveTo(cx - 20, topY - 8);
+            this.ctx.lineTo(cx - 20, topY + 16);
+            this.ctx.moveTo(cx + 20, topY - 8);
+            this.ctx.lineTo(cx + 20, topY + 16);
+            this.ctx.stroke();
+          }
+        } else if (wId === 7) {
+          // World 7: Viking Valhalla (Glacial Azure Vegvisir Runic Compass)
+          this.ctx.strokeStyle = `rgba(56, 189, 248, ${pulse})`;
+          this.ctx.lineWidth = 1.8;
+          if (by > 30) {
+            const topY = by * 0.52;
+            this.ctx.beginPath();
+            this.ctx.arc(cx, topY, 16, 0, Math.PI * 2);
+            for (let a = 0; a < 8; a++) {
+              const ang = (a * Math.PI) / 4;
+              this.ctx.moveTo(cx, topY);
+              this.ctx.lineTo(cx + Math.cos(ang) * 22, topY + Math.sin(ang) * 22);
+            }
+            this.ctx.stroke();
+          }
+        } else if (wId === 8) {
+          // World 8: Aztec Sun Temple (Solar Gold Sun Disc & Radiance)
+          this.ctx.strokeStyle = `rgba(245, 158, 11, ${pulse})`;
+          this.ctx.lineWidth = 1.8;
+          if (by > 30) {
+            const topY = by * 0.52;
+            this.ctx.beginPath();
+            this.ctx.arc(cx, topY, 15, 0, Math.PI * 2);
+            for (let a = 0; a < 12; a++) {
+              const ang = (a * Math.PI) / 6;
+              this.ctx.moveTo(cx + Math.cos(ang) * 15, topY + Math.sin(ang) * 15);
+              this.ctx.lineTo(cx + Math.cos(ang) * 24, topY + Math.sin(ang) * 24);
+            }
+            this.ctx.stroke();
+          }
+        } else if (wId === 9) {
+          // World 9: Persian Citadel (Emerald Turquoise Muqarnas Ribbed Dome)
+          this.ctx.strokeStyle = `rgba(16, 185, 129, ${pulse})`;
+          this.ctx.lineWidth = 1.8;
+          if (by > 30) {
+            const topY = by * 0.52;
+            this.ctx.beginPath();
+            this.ctx.arc(cx, topY + 8, 22, Math.PI, 0);
+            this.ctx.moveTo(cx - 22, topY + 8);
+            this.ctx.lineTo(cx + 22, topY + 8);
+            this.ctx.moveTo(cx, topY - 14);
+            this.ctx.lineTo(cx, topY - 22);
+            this.ctx.stroke();
+          }
+        } else if (wId === 10) {
+          // World 10: Celestial Olympus (Astral Violet Parthenon & Lightning)
+          this.ctx.strokeStyle = `rgba(168, 85, 247, ${pulse})`;
+          this.ctx.lineWidth = 1.8;
+          if (by > 30) {
+            const topY = by * 0.52;
+            this.ctx.beginPath();
+            this.ctx.moveTo(cx - 32, topY - 4);
+            this.ctx.lineTo(cx, topY - 20);
+            this.ctx.lineTo(cx + 32, topY - 4);
+            this.ctx.closePath();
+            this.ctx.stroke();
+            for (let col = -24; col <= 24; col += 12) {
+              this.ctx.beginPath();
+              this.ctx.moveTo(cx + col, topY - 4);
+              this.ctx.lineTo(cx + col, topY + 16);
+              this.ctx.stroke();
+            }
+          }
+        }
+        this.ctx.restore();
+      }
+
+      renderMirrors(now) {
+        if (!this.mirrors || this.mirrors.length === 0) return;
+        const pad = 6;
+        const tileSize = this.tileSize;
+
+        this.mirrors.forEach(m => {
+          if (!m.active || m.x < 0 || m.y < 0) return;
+          const px = this.offsetX + m.x * tileSize + pad;
+          const py = this.offsetY + m.y * tileSize + pad;
+          const size = tileSize - pad * 2;
+          const cx = px + size / 2;
+          const cy = py + size / 2;
+
+          this.ctx.save();
+          this.ctx.fillStyle = 'rgba(15, 23, 42, 0.9)';
+          this.ctx.strokeStyle = '#38bdf8';
+          this.ctx.lineWidth = 2;
+          this.ctx.shadowColor = 'rgba(56, 189, 248, 0.5)';
+          this.ctx.shadowBlur = 8;
+          this.ctx.beginPath();
+          this.roundRect(this.ctx, px, py, size, size, 6);
+          this.ctx.fill();
+          this.ctx.stroke();
+
+          this.ctx.shadowBlur = 0;
+          this.ctx.strokeStyle = '#f8fafc';
+          this.ctx.lineWidth = 3.5;
+          this.ctx.lineCap = 'round';
+          this.ctx.beginPath();
+          if (m.type === C_MIRROR_SLASH) {
+            this.ctx.moveTo(px + 6, py + size - 6);
+            this.ctx.lineTo(px + size - 6, py + 6);
+          } else {
+            this.ctx.moveTo(px + 6, py + 6);
+            this.ctx.lineTo(px + size - 6, py + size - 6);
+          }
+          this.ctx.stroke();
+
+          const pulse = (Math.sin(now * 0.006) + 1) * 0.5;
+          this.ctx.fillStyle = '#38bdf8';
+          this.ctx.beginPath();
+          this.ctx.arc(cx, cy, 3 + pulse * 1.5, 0, Math.PI * 2);
+          this.ctx.fill();
+          this.ctx.restore();
+        });
+      }
+
+      renderLaserBeams(now) {
+        if (!this.activeBeams || this.activeBeams.length === 0) return;
+        const tileSize = this.tileSize;
+
+        this.ctx.save();
+        this.ctx.shadowColor = 'rgba(251, 191, 36, 0.8)';
+        this.ctx.shadowBlur = 12;
+
+        this.activeBeams.forEach(b => {
+          const cx = this.offsetX + b.x * tileSize + tileSize / 2;
+          const cy = this.offsetY + b.y * tileSize + tileSize / 2;
+          const half = tileSize / 2;
+
+          this.ctx.strokeStyle = '#fde68a';
+          this.ctx.lineWidth = 3.5;
+          this.ctx.beginPath();
+
+          if (b.dir.dx !== 0) {
+            this.ctx.moveTo(cx - half, cy);
+            this.ctx.lineTo(cx + half, cy);
+          } else {
+            this.ctx.moveTo(cx, cy - half);
+            this.ctx.lineTo(cx, cy + half);
+          }
+          this.ctx.stroke();
+
+          this.ctx.strokeStyle = '#ffffff';
+          this.ctx.lineWidth = 1.5;
+          this.ctx.stroke();
+        });
+        this.ctx.restore();
+      }
+
+      renderRuneKeyTile(px, py, size, isHeld, now) {
+        this.ctx.save();
+        this.ctx.fillStyle = '#0f172a';
+        this.roundRect(this.ctx, px, py, size, size, 8);
+        this.ctx.fill();
+
+        if (!isHeld) {
+          const cx = px + size / 2;
+          const cy = py + size / 2;
+          const pulse = (Math.sin(now * 0.005) + 1) * 0.5;
+
+          this.ctx.strokeStyle = '#38bdf8';
+          this.ctx.shadowColor = 'rgba(56, 189, 248, 0.7)';
+          this.ctx.shadowBlur = 10 + pulse * 6;
+          this.ctx.lineWidth = 2.5;
+
+          this.ctx.beginPath();
+          this.ctx.arc(cx, cy - 4, size * 0.16, 0, Math.PI * 2);
+          this.ctx.stroke();
+          this.ctx.beginPath();
+          this.ctx.moveTo(cx, cy + size * 0.02);
+          this.ctx.lineTo(cx, cy + size * 0.3);
+          this.ctx.moveTo(cx - 4, cy + size * 0.2);
+          this.ctx.lineTo(cx + 4, cy + size * 0.2);
+          this.ctx.moveTo(cx - 3, cy + size * 0.28);
+          this.ctx.lineTo(cx + 3, cy + size * 0.28);
+          this.ctx.stroke();
+        }
+        this.ctx.restore();
+      }
+
+      renderRuneGateTile(px, py, size, isOpen, now) {
+        this.ctx.save();
+        this.ctx.fillStyle = isOpen ? 'rgba(56, 189, 248, 0.15)' : '#0f172a';
+        this.roundRect(this.ctx, px, py, size, size, 8);
+        this.ctx.fill();
+
+        this.ctx.strokeStyle = isOpen ? '#38bdf8' : '#64748b';
+        this.ctx.lineWidth = isOpen ? 2 : 2.5;
+        this.ctx.stroke();
+
+        const cx = px + size / 2;
+        const cy = py + size / 2;
+        this.ctx.strokeStyle = isOpen ? '#38bdf8' : '#e2e8f0';
+        this.ctx.lineWidth = 2;
+        this.ctx.beginPath();
+        this.ctx.moveTo(cx - size * 0.25, cy + size * 0.28);
+        this.ctx.lineTo(cx - size * 0.25, cy - size * 0.1);
+        this.ctx.arc(cx, cy - size * 0.1, size * 0.25, Math.PI, 0);
+        this.ctx.lineTo(cx + size * 0.25, cy + size * 0.28);
+        this.ctx.stroke();
+        this.ctx.restore();
+      }
+
+      renderLaserEmitTile(px, py, size, now) {
+        this.ctx.save();
+        this.ctx.fillStyle = '#1c1917';
+        this.roundRect(this.ctx, px, py, size, size, 8);
+        this.ctx.fill();
+
+        this.ctx.strokeStyle = '#f59e0b';
+        this.ctx.lineWidth = 2;
+        this.ctx.stroke();
+
+        const cx = px + size / 2;
+        const cy = py + size / 2;
+        this.ctx.fillStyle = '#fbbf24';
+        this.ctx.shadowColor = 'rgba(251, 191, 36, 0.8)';
+        this.ctx.shadowBlur = 10;
+        this.ctx.beginPath();
+        this.ctx.arc(cx, cy, size * 0.2, 0, Math.PI * 2);
+        this.ctx.fill();
+        this.ctx.restore();
+      }
+
+      renderLaserReceptTile(px, py, size, isActive, now) {
+        this.ctx.save();
+        this.ctx.fillStyle = isActive ? 'rgba(251, 191, 36, 0.25)' : '#1c1917';
+        this.roundRect(this.ctx, px, py, size, size, 8);
+        this.ctx.fill();
+
+        this.ctx.strokeStyle = isActive ? '#fbbf24' : '#78716c';
+        this.ctx.lineWidth = 2;
+        this.ctx.stroke();
+
+        const cx = px + size / 2;
+        const cy = py + size / 2;
+        this.ctx.strokeStyle = isActive ? '#fef08a' : '#a8a29e';
+        this.ctx.lineWidth = 2;
+        this.ctx.beginPath();
+        this.ctx.arc(cx, cy, size * 0.25, 0, Math.PI);
+        this.ctx.stroke();
+        this.ctx.restore();
+      }
+
+      renderLaserGateTile(px, py, size, isOpen, now) {
+        this.ctx.save();
+        this.ctx.fillStyle = isOpen ? 'rgba(251, 191, 36, 0.12)' : '#1c1917';
+        this.roundRect(this.ctx, px, py, size, size, 8);
+        this.ctx.fill();
+
+        this.ctx.strokeStyle = isOpen ? '#f59e0b' : '#dc2626';
+        this.ctx.lineWidth = 2;
+        this.ctx.stroke();
+
+        if (!isOpen) {
+          const cx = px + size / 2;
+          const cy = py + size / 2;
+          this.ctx.strokeStyle = 'rgba(239, 68, 68, 0.6)';
+          this.ctx.lineWidth = 2;
+          this.ctx.beginPath();
+          this.ctx.moveTo(px + 8, cy);
+          this.ctx.lineTo(px + size - 8, cy);
+          this.ctx.moveTo(cx, py + 8);
+          this.ctx.lineTo(cx, py + size - 8);
+          this.ctx.stroke();
+        }
+        this.ctx.restore();
+      }
+
+      renderConveyorTile(px, py, size, dirIndex, now) {
+        this.ctx.save();
+        this.ctx.fillStyle = '#064e3b';
+        this.roundRect(this.ctx, px, py, size, size, 8);
+        this.ctx.fill();
+
+        this.ctx.strokeStyle = '#10b981';
+        this.ctx.lineWidth = 1.5;
+        this.ctx.stroke();
+
+        const cx = px + size / 2;
+        const cy = py + size / 2;
+        const angles = [-Math.PI / 2, Math.PI / 2, 0, Math.PI]; // U, D, R, L
+        const rot = angles[dirIndex] || 0;
+
+        this.ctx.translate(cx, cy);
+        this.ctx.rotate(rot);
+
+        const phase = (now * 0.004) % 1;
+        this.ctx.strokeStyle = '#a7f3d0';
+        this.ctx.lineWidth = 2.5;
+        this.ctx.lineCap = 'round';
+
+        for (let i = -1; i <= 1; i++) {
+          const off = (i + phase) * (size * 0.25);
+          this.ctx.beginPath();
+          this.ctx.moveTo(-size * 0.18, off - size * 0.1);
+          this.ctx.lineTo(0, off);
+          this.ctx.lineTo(-size * 0.18, off + size * 0.1);
+          this.ctx.stroke();
+        }
+        this.ctx.restore();
       }
 
       renderCell(x, y, now) {
@@ -4930,6 +5634,18 @@
           this.renderIceTile(px, py, size, now);
         } else if (cell === C_GOAL) {
           this.renderGoalTile(px, py, size, now);
+        } else if (cell === C_RUNE_KEY) {
+          this.renderRuneKeyTile(px, py, size, this.keysHeld && this.keysHeld.has(1), now);
+        } else if (cell === C_RUNE_GATE) {
+          this.renderRuneGateTile(px, py, size, this.keysHeld && this.keysHeld.has(1), now);
+        } else if (cell === C_LASER_EMIT) {
+          this.renderLaserEmitTile(px, py, size, now);
+        } else if (cell === C_LASER_RECEPT) {
+          this.renderLaserReceptTile(px, py, size, this.laserGateOpen, now);
+        } else if (cell === C_LASER_GATE) {
+          this.renderLaserGateTile(px, py, size, this.laserGateOpen, now);
+        } else if (cell >= C_CONVEYOR_U && cell <= C_CONVEYOR_L) {
+          this.renderConveyorTile(px, py, size, cell - C_CONVEYOR_U, now);
         }
 
         // Creator Engine: Subtle Chess-Style Coordinates (A1-G7) for Chat Backseating & Comments
@@ -5528,6 +6244,78 @@
         this.ctx.beginPath();
         this.ctx.arc(cx, cy, 2, 0, Math.PI * 2);
         this.ctx.fill();
+      }
+
+      renderCrates(now) {
+        if (!this.crates || this.crates.length === 0) return;
+        const pad = 6;
+        const tileSize = this.tileSize;
+
+        this.crates.forEach(c => {
+          if (!c.active || c.x < 0 || c.y < 0) return;
+
+          const px = this.offsetX + c.x * tileSize + pad;
+          const py = this.offsetY + c.y * tileSize + pad;
+          const size = tileSize - pad * 2;
+          const cx = px + size / 2;
+          const cy = py + size / 2;
+
+          this.ctx.save();
+
+          // Ground shadow beneath crate
+          this.ctx.fillStyle = 'rgba(0, 0, 0, 0.45)';
+          this.ctx.beginPath();
+          this.ctx.ellipse(cx, py + size + 2, size * 0.4, 4, 0, 0, Math.PI * 2);
+          this.ctx.fill();
+
+          // Crate Body: Rounded Rect with cyber gradient
+          const grad = this.ctx.createLinearGradient(px, py, px + size, py + size);
+          grad.addColorStop(0, '#2d1f0f');
+          grad.addColorStop(0.5, '#1e140a');
+          grad.addColorStop(1, '#140d06');
+
+          this.ctx.fillStyle = grad;
+          this.ctx.strokeStyle = '#f59e0b'; // Amber / Gold neon border
+          this.ctx.lineWidth = 2;
+          this.ctx.shadowColor = 'rgba(245, 158, 11, 0.4)';
+          this.ctx.shadowBlur = 8;
+
+          const r = 6;
+          this.ctx.beginPath();
+          this.ctx.roundRect(px, py, size, size, r);
+          this.ctx.fill();
+          this.ctx.stroke();
+
+          // Inner bevel & cross-brace styling
+          this.ctx.shadowBlur = 0;
+          this.ctx.strokeStyle = 'rgba(245, 158, 11, 0.35)';
+          this.ctx.lineWidth = 1.5;
+
+          const inset = 4;
+          this.ctx.beginPath();
+          this.ctx.roundRect(px + inset, py + inset, size - inset * 2, size - inset * 2, 4);
+          this.ctx.stroke();
+
+          // Diagonal cross braces (X-pattern)
+          this.ctx.beginPath();
+          this.ctx.moveTo(px + inset + 2, py + inset + 2);
+          this.ctx.lineTo(px + size - inset - 2, py + size - inset - 2);
+          this.ctx.moveTo(px + size - inset - 2, py + inset + 2);
+          this.ctx.lineTo(px + inset + 2, py + size - inset - 2);
+          this.ctx.stroke();
+
+          // Central energy core / jewel
+          const pulse = (Math.sin(now * 0.005) + 1) * 0.5;
+          const coreSize = 6 + pulse * 2;
+          this.ctx.fillStyle = '#fbbf24';
+          this.ctx.shadowColor = '#fbbf24';
+          this.ctx.shadowBlur = 10;
+          this.ctx.beginPath();
+          this.ctx.arc(cx, cy, coreSize, 0, Math.PI * 2);
+          this.ctx.fill();
+
+          this.ctx.restore();
+        });
       }
 
       renderPlayer(now) {
