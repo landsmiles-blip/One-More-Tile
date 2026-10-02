@@ -85,36 +85,36 @@ const LEVELS = [
   {"id":18,"world":4,"name":"The Entangled Bastion","w":7,"h":6,"budget":0,"par":39,"spawn":{"x":1,"y":0},"goal":{"x":3,"y":1},"checkpoints":[{"id":1,"x":5,"y":0,"cellType":5},{"id":2,"x":1,"y":5,"cellType":6}],"grid":[[0,2,2,2,2,5,0],[2,11,2,4,2,2,2],[2,11,2,2,2,2,2],[2,2,2,2,2,2,2],[2,2,2,2,2,2,2],[0,6,2,2,2,2,0]],"trace":["RIGHT","RIGHT","RIGHT","RIGHT","DOWN","RIGHT","DOWN","DOWN","DOWN","LEFT","DOWN","LEFT","LEFT","LEFT","LEFT","UP","LEFT","UP","RIGHT","UP","UP","LEFT","DOWN","RIGHT","UP","RIGHT","DOWN","RIGHT","DOWN","LEFT","DOWN","RIGHT","RIGHT","UP","RIGHT","UP","LEFT","UP","LEFT"]},
   {"id":19,"world":4,"name":"The Crucible of Duality","w":7,"h":6,"budget":0,"par":41,"spawn":{"x":1,"y":0},"goal":{"x":3,"y":1},"checkpoints":[{"id":1,"x":6,"y":0,"cellType":5},{"id":2,"x":0,"y":5,"cellType":6}],"grid":[[0,2,2,2,2,2,5],[2,11,2,4,2,2,2],[2,11,2,2,2,2,2],[2,2,2,2,2,2,2],[2,2,2,2,2,2,2],[6,2,2,2,2,2,0]],"trace":["RIGHT","RIGHT","RIGHT","RIGHT","RIGHT","DOWN","DOWN","DOWN","DOWN","LEFT","DOWN","LEFT","UP","UP","RIGHT","UP","UP","LEFT","DOWN","LEFT","DOWN","DOWN","DOWN","LEFT","UP","UP","UP","LEFT","UP","LEFT","DOWN","DOWN","DOWN","DOWN","RIGHT","UP","UP","UP","UP","RIGHT","RIGHT"]},
   {"id":20,"world":4,"name":"The Grandmaster Singularity","w":7,"h":6,"budget":0,"par":43,"spawn":{"x":0,"y":0},"goal":{"x":0,"y":1},"checkpoints":[{"id":1,"x":6,"y":0,"cellType":5},{"id":2,"x":0,"y":5,"cellType":6}],"grid":[[2,2,2,2,2,2,5],[4,11,2,2,2,2,2],[2,11,2,2,2,2,2],[2,2,2,2,2,2,2],[2,2,2,2,2,2,2],[6,2,2,2,2,2,2]],"trace":["RIGHT","RIGHT","RIGHT","RIGHT","RIGHT","RIGHT","DOWN","DOWN","DOWN","DOWN","DOWN","LEFT","UP","UP","UP","UP","LEFT","DOWN","DOWN","DOWN","DOWN","LEFT","UP","UP","UP","UP","LEFT","LEFT","DOWN","RIGHT","DOWN","DOWN","DOWN","LEFT","LEFT","UP","RIGHT","UP","LEFT","UP","RIGHT","UP","LEFT"]},
-  {"id":21,"world":5,"name":"The Kinetic Fulcrum","w":5,"h":5,"budget":17,"par":14,"spawn":{"x":0,"y":0},"goal":{"x":4,"y":4},"initialPhase":"RED","checkpoints":[{"id":1,"x":4,"y":0,"cellType":5}],"crates":[{"id":1,"x":1,"y":3,"active":true}],"grid":[[2,2,1,2,5],[2,2,1,2,2],[2,2,9,2,2],[2,2,8,1,2],[2,2,1,2,4]],"trace":["DOWN","DOWN","DOWN","RIGHT","UP","RIGHT","RIGHT","UP","UP","RIGHT","DOWN","DOWN","DOWN","DOWN"]},
-  {"id":22,"world":5,"name":"The Chasm Bridge","w":5,"h":5,"budget":15,"par":12,"spawn":{"x":0,"y":0},"goal":{"x":4,"y":4},"initialPhase":"RED","checkpoints":[{"id":1,"x":4,"y":0,"cellType":5}],"crates":[{"id":1,"x":1,"y":2,"active":true}],"grid":[[2,2,1,2,5],[2,2,1,2,2],[2,2,0,2,2],[2,2,1,2,2],[2,2,1,2,4]],"trace":["DOWN","DOWN","RIGHT","RIGHT","RIGHT","UP","UP","RIGHT","DOWN","DOWN","DOWN","DOWN"]},
-  {"id":23,"world":5,"name":"The Crumbling Crusher","w":6,"h":5,"budget":16,"par":13,"spawn":{"x":0,"y":0},"goal":{"x":5,"y":4},"initialPhase":"RED","checkpoints":[{"id":1,"x":5,"y":0,"cellType":5}],"crates":[{"id":1,"x":1,"y":2,"active":true},{"id":2,"x":5,"y":2,"active":true}],"grid":[[2,2,1,2,2,5],[2,2,1,2,2,2],[2,2,7,2,2,2],[2,2,1,2,1,0],[2,2,1,2,1,4]],"trace":["DOWN","DOWN","RIGHT","RIGHT","RIGHT","UP","UP","RIGHT","RIGHT","DOWN","DOWN","DOWN","DOWN"]},
-  {"id":24,"world":5,"name":"The Dual Bastion Paradox","w":6,"h":5,"budget":18,"par":15,"spawn":{"x":0,"y":0},"goal":{"x":5,"y":4},"initialPhase":"RED","checkpoints":[{"id":1,"x":5,"y":0,"cellType":5}],"crates":[{"id":1,"x":1,"y":3,"active":true},{"id":2,"x":5,"y":2,"active":true}],"grid":[[2,2,1,2,2,5],[2,2,1,2,2,2],[2,2,9,2,2,2],[2,2,8,1,1,0],[2,2,1,1,1,4]],"trace":["DOWN","DOWN","DOWN","RIGHT","UP","RIGHT","RIGHT","UP","UP","RIGHT","RIGHT","DOWN","DOWN","DOWN","DOWN"]},
-  {"id":25,"world":5,"name":"The Singularity Engine","w":6,"h":5,"budget":16,"par":13,"spawn":{"x":0,"y":0},"goal":{"x":5,"y":4},"initialPhase":"RED","checkpoints":[{"id":1,"x":4,"y":0,"cellType":5},{"id":2,"x":5,"y":2,"cellType":6}],"crates":[{"id":1,"x":1,"y":2,"active":true},{"id":2,"x":4,"y":2,"active":true}],"grid":[[2,2,1,2,5,2],[2,2,1,2,2,10],[2,2,7,2,2,6],[2,2,1,2,8,9],[2,2,1,2,1,4]],"trace":["DOWN","DOWN","RIGHT","RIGHT","RIGHT","UP","UP","RIGHT","DOWN","DOWN","RIGHT","DOWN","DOWN"]},
-  {"id":26,"world":6,"name":"The Frozen Torii","w":5,"h":4,"spawn":{"x":0,"y":0},"goal":{"x":4,"y":3},"grid":[[2,12,12,12,2],[2,1,1,1,2],[2,1,1,1,2],[2,12,12,12,4]],"par":4,"budget":7,"trace":["RIGHT","DOWN","DOWN","DOWN"]},
-  {"id":27,"world":6,"name":"Glacial Katana Drift","w":5,"h":5,"spawn":{"x":0,"y":0},"goal":{"x":4,"y":4},"initialPhase":"RED","grid":[[2,12,12,2,2],[2,1,1,8,2],[2,1,1,1,2],[2,9,1,12,2],[2,2,2,2,4]],"par":6,"budget":9,"trace":["RIGHT","RIGHT","DOWN","DOWN","DOWN","DOWN"]},
-  {"id":28,"world":6,"name":"Crate Avalanche","w":6,"h":5,"spawn":{"x":0,"y":0},"goal":{"x":5,"y":4},"crates":[{"id":1,"x":1,"y":2,"active":true}],"grid":[[2,2,2,12,12,2],[2,2,1,1,1,2],[2,2,0,12,12,2],[2,1,1,1,1,2],[2,2,2,2,2,4]],"par":7,"budget":10,"trace":["RIGHT","RIGHT","RIGHT","DOWN","DOWN","DOWN","DOWN"]},
-  {"id":29,"world":6,"name":"Ronin's Narrow Escape","w":6,"h":6,"spawn":{"x":0,"y":0},"goal":{"x":5,"y":5},"checkpoints":[{"id":1,"x":5,"y":0,"cellType":5}],"grid":[[2,12,12,12,2,5],[2,1,1,1,2,2],[2,12,12,12,1,2],[2,2,1,12,12,2],[2,1,1,1,1,2],[2,2,2,2,2,4]],"par":7,"budget":10,"trace":["RIGHT","RIGHT","DOWN","DOWN","DOWN","DOWN","DOWN"]},
-  {"id":30,"world":6,"name":"Shogun's Kinetic Citadel","w":6,"h":6,"spawn":{"x":0,"y":0},"goal":{"x":5,"y":5},"initialPhase":"RED","crates":[{"id":1,"x":1,"y":2,"active":true}],"checkpoints":[{"id":1,"x":5,"y":0,"cellType":5}],"grid":[[2,2,2,12,2,5],[2,1,1,1,2,2],[2,2,8,12,1,2],[2,9,1,1,12,2],[2,2,1,2,2,2],[2,2,2,2,2,4]],"par":9,"budget":12,"trace":["RIGHT","RIGHT","RIGHT","RIGHT","DOWN","DOWN","DOWN","DOWN","DOWN"]},
-  {"id":31,"world":7,"name":"Vegvisir Compass","w":5,"h":4,"spawn":{"x":0,"y":0},"goal":{"x":0,"y":3},"grid":[[2,2,2,2,14],[2,2,2,2,2],[15,1,1,1,2],[4,1,2,2,2]],"par":11,"budget":14,"trace":["RIGHT","RIGHT","RIGHT","RIGHT","DOWN","LEFT","LEFT","LEFT","LEFT","DOWN","DOWN"]},
-  {"id":32,"world":7,"name":"Bifrost Shards","w":5,"h":5,"spawn":{"x":0,"y":0},"goal":{"x":4,"y":4},"grid":[[2,2,2,2,14],[2,1,1,1,2],[2,2,2,1,2],[2,1,15,1,2],[2,2,2,2,4]],"par":8,"budget":11,"trace":["RIGHT","RIGHT","RIGHT","RIGHT","DOWN","DOWN","DOWN","DOWN"]},
-  {"id":33,"world":7,"name":"The Crate Sled","w":6,"h":5,"spawn":{"x":0,"y":0},"goal":{"x":5,"y":4},"crates":[{"id":1,"x":1,"y":2,"active":true}],"grid":[[2,2,2,12,2,14],[2,1,1,1,1,2],[2,2,0,12,2,2],[2,1,1,1,1,15],[2,2,2,2,2,4]],"par":8,"budget":11,"trace":["RIGHT","RIGHT","RIGHT","RIGHT","DOWN","DOWN","DOWN","DOWN"]},
-  {"id":34,"world":7,"name":"Valkyrie Runematrix","w":6,"h":6,"spawn":{"x":0,"y":0},"goal":{"x":5,"y":5},"grid":[[2,12,12,2,2,14],[2,1,1,1,2,2],[2,11,2,2,1,2],[2,1,1,1,12,2],[2,2,1,1,1,15],[2,2,2,2,2,4]],"par":8,"budget":11,"trace":["RIGHT","RIGHT","RIGHT","DOWN","DOWN","DOWN","DOWN","DOWN"]},
-  {"id":35,"world":7,"name":"Valhalla's Gates","w":7,"h":6,"spawn":{"x":0,"y":0},"goal":{"x":6,"y":5},"crates":[{"id":1,"x":1,"y":2,"active":true}],"grid":[[2,2,2,12,12,2,14],[2,1,1,1,1,2,2],[2,2,0,12,2,1,2],[2,1,1,1,1,1,15],[2,2,2,2,2,2,2],[2,2,2,2,2,2,4]],"par":9,"budget":12,"trace":["RIGHT","RIGHT","RIGHT","RIGHT","DOWN","DOWN","DOWN","DOWN","DOWN"]},
-  {"id":36,"world":8,"name":"Solar Ray Awakening","w":5,"h":5,"spawn":{"x":0,"y":0},"goal":{"x":4,"y":4},"emitters":{"2,0":{"dx":0,"dy":1,"name":"DOWN"}},"mirrors":[{"id":1,"x":1,"y":2,"type":18,"active":true}],"grid":[[2,2,16,1,1],[2,1,2,1,1],[2,2,2,2,19],[2,2,2,1,1],[2,2,2,20,4]],"par":8,"budget":11,"trace":["DOWN","DOWN","RIGHT","DOWN","RIGHT","DOWN","RIGHT","RIGHT"]},
-  {"id":37,"world":8,"name":"Prismatic Reflection","w":6,"h":5,"spawn":{"x":0,"y":0},"goal":{"x":5,"y":4},"emitters":{"3,0":{"dx":0,"dy":1,"name":"DOWN"}},"mirrors":[{"id":1,"x":2,"y":2,"type":18,"active":true}],"grid":[[2,2,2,16,1,1],[2,1,2,2,1,1],[2,2,2,2,2,19],[2,2,2,2,1,1],[2,2,2,2,20,4]],"par":9,"budget":12,"trace":["DOWN","DOWN","RIGHT","RIGHT","DOWN","RIGHT","DOWN","RIGHT","RIGHT"]},
-  {"id":38,"world":8,"name":"Crate Beam Interceptor","w":6,"h":6,"spawn":{"x":0,"y":0},"goal":{"x":5,"y":5},"crates":[{"id":1,"x":2,"y":1,"active":true}],"emitters":{"3,0":{"dx":0,"dy":1,"name":"DOWN"}},"mirrors":[{"id":1,"x":2,"y":3,"type":18,"active":true}],"grid":[[2,2,2,16,1,1],[2,1,2,2,1,1],[2,2,2,2,1,1],[2,2,2,2,2,19],[2,2,2,2,1,1],[2,2,2,2,20,4]],"par":10,"budget":13,"trace":["DOWN","DOWN","RIGHT","DOWN","RIGHT","DOWN","RIGHT","DOWN","RIGHT","RIGHT"]},
-  {"id":39,"world":8,"name":"Tonatiuh's Solar Altar","w":7,"h":6,"spawn":{"x":0,"y":0},"goal":{"x":6,"y":5},"emitters":{"4,0":{"dx":0,"dy":1,"name":"DOWN"}},"mirrors":[{"id":1,"x":3,"y":3,"type":18,"active":true}],"grid":[[2,2,2,2,16,1,1],[2,1,1,2,2,1,1],[2,2,2,2,2,1,1],[2,2,2,2,2,2,19],[2,2,2,2,2,1,1],[2,2,2,2,2,20,4]],"par":11,"budget":14,"trace":["DOWN","DOWN","RIGHT","RIGHT","DOWN","RIGHT","DOWN","RIGHT","DOWN","RIGHT","RIGHT"]},
-  {"id":40,"world":8,"name":"Quetzalcoatl's Prism","w":7,"h":6,"spawn":{"x":0,"y":0},"goal":{"x":6,"y":5},"emitters":{"4,0":{"dx":0,"dy":1,"name":"DOWN"}},"mirrors":[{"id":1,"x":3,"y":2,"type":18,"active":true}],"checkpoints":[{"id":1,"x":1,"y":4,"cellType":5}],"grid":[[2,2,2,2,16,1,1],[2,1,2,2,2,1,1],[2,2,2,2,2,2,19],[2,2,2,2,2,1,1],[2,5,2,2,2,1,1],[2,2,2,2,2,20,4]],"par":15,"budget":18,"trace":["RIGHT","RIGHT","DOWN","DOWN","RIGHT","DOWN","DOWN","LEFT","LEFT","DOWN","RIGHT","RIGHT","RIGHT","RIGHT","RIGHT"]},
-  {"id":41,"world":9,"name":"Bazaar Flux Stream","w":5,"h":4,"spawn":{"x":0,"y":0},"goal":{"x":4,"y":1},"grid":[[2,23,2,22,2],[2,1,1,2,4],[2,1,1,2,2],[2,2,2,2,2]],"par":3,"budget":6,"trace":["RIGHT","RIGHT","RIGHT"]},
-  {"id":42,"world":9,"name":"Muqarnas Momentum","w":5,"h":5,"spawn":{"x":0,"y":0},"goal":{"x":4,"y":4},"grid":[[2,23,2,2,2],[2,1,1,1,2],[2,2,2,22,2],[2,1,1,1,2],[2,2,2,2,4]],"par":7,"budget":10,"trace":["RIGHT","RIGHT","RIGHT","DOWN","DOWN","DOWN","DOWN"]},
-  {"id":43,"world":9,"name":"Crate Conveyor Siphon","w":6,"h":5,"spawn":{"x":0,"y":0},"goal":{"x":5,"y":4},"initialPhase":"RED","crates":[{"id":1,"x":1,"y":2,"active":true}],"grid":[[2,2,2,2,2,2],[2,1,1,1,1,2],[2,2,23,8,1,2],[2,9,1,1,1,2],[2,2,2,2,2,4]],"par":9,"budget":12,"trace":["RIGHT","RIGHT","RIGHT","RIGHT","RIGHT","DOWN","DOWN","DOWN","DOWN"]},
-  {"id":44,"world":9,"name":"Flux Glacier Chaining","w":6,"h":6,"spawn":{"x":0,"y":0},"goal":{"x":5,"y":5},"grid":[[2,23,12,12,2,2],[2,1,1,1,2,2],[2,2,2,2,1,2],[2,1,1,1,12,2],[2,2,1,1,2,2],[2,2,2,2,2,4]],"par":8,"budget":11,"trace":["RIGHT","RIGHT","RIGHT","DOWN","DOWN","DOWN","DOWN","DOWN"]},
-  {"id":45,"world":9,"name":"Citadel of Perpetual Flow","w":7,"h":6,"spawn":{"x":0,"y":0},"goal":{"x":6,"y":5},"crates":[{"id":1,"x":1,"y":2,"active":true}],"grid":[[2,23,12,2,2,2,2],[2,1,1,1,1,1,2],[2,2,0,23,2,1,2],[2,1,1,1,1,1,2],[2,2,2,2,2,2,2],[2,2,2,2,2,2,4]],"par":10,"budget":13,"trace":["RIGHT","RIGHT","RIGHT","RIGHT","RIGHT","DOWN","DOWN","DOWN","DOWN","DOWN"]},
-  {"id":46,"world":10,"name":"Prometheus Spark","w":6,"h":6,"spawn":{"x":0,"y":0},"goal":{"x":5,"y":5},"emitters":{"3,0":{"dx":0,"dy":1,"name":"DOWN"}},"mirrors":[{"id":1,"x":2,"y":2,"type":18,"active":true}],"grid":[[2,23,12,16,1,1],[2,1,2,2,1,1],[2,2,2,2,2,19],[2,2,2,2,1,1],[2,2,2,2,1,1],[2,2,2,2,20,4]],"par":10,"budget":13,"trace":["DOWN","DOWN","RIGHT","RIGHT","DOWN","RIGHT","DOWN","DOWN","RIGHT","RIGHT"]},
-  {"id":47,"world":10,"name":"Hephaestus Crucible","w":7,"h":6,"spawn":{"x":0,"y":0},"goal":{"x":6,"y":5},"crates":[{"id":1,"x":1,"y":2,"active":true}],"grid":[[2,12,12,2,2,2,14],[2,1,1,1,1,1,2],[2,2,0,12,2,1,2],[2,1,1,1,1,1,15],[2,2,2,2,2,2,2],[2,2,2,2,2,2,4]],"par":9,"budget":12,"trace":["RIGHT","RIGHT","RIGHT","RIGHT","DOWN","DOWN","DOWN","DOWN","DOWN"]},
-  {"id":48,"world":10,"name":"The Aegis Matrix","w":7,"h":6,"spawn":{"x":0,"y":0},"goal":{"x":6,"y":5},"emitters":{"4,0":{"dx":0,"dy":1,"name":"DOWN"}},"mirrors":[{"id":1,"x":3,"y":2,"type":18,"active":true}],"grid":[[2,23,12,2,16,1,14],[2,1,2,2,2,1,2],[2,2,2,2,2,2,19],[2,2,1,2,2,1,1],[2,2,2,2,2,15,1],[2,2,2,2,2,20,4]],"par":10,"budget":13,"trace":["RIGHT","DOWN","DOWN","RIGHT","DOWN","RIGHT","DOWN","DOWN","RIGHT","RIGHT"]},
-  {"id":49,"world":10,"name":"Titan's Kinetic Gauntlet","w":8,"h":6,"spawn":{"x":0,"y":0},"goal":{"x":7,"y":5},"crates":[{"id":1,"x":1,"y":2,"active":true}],"emitters":{"4,0":{"dx":0,"dy":1,"name":"DOWN"}},"mirrors":[{"id":1,"x":3,"y":3,"type":18,"active":true}],"grid":[[2,23,12,12,16,1,1,14],[2,1,1,1,2,1,1,2],[2,2,0,12,2,2,1,2],[2,2,2,2,2,2,2,19],[2,2,1,2,2,2,15,1],[2,2,2,2,2,2,20,4]],"par":12,"budget":15,"trace":["DOWN","DOWN","RIGHT","RIGHT","DOWN","RIGHT","DOWN","RIGHT","RIGHT","DOWN","RIGHT","RIGHT"]},
-  {"id":50,"world":10,"name":"The Beaupre Singularity","w":8,"h":7,"spawn":{"x":0,"y":0},"goal":{"x":7,"y":6},"crates":[{"id":1,"x":1,"y":2,"active":true}],"emitters":{"4,0":{"dx":0,"dy":1,"name":"DOWN"}},"mirrors":[{"id":1,"x":3,"y":3,"type":18,"active":true}],"checkpoints":[{"id":1,"x":0,"y":4,"cellType":5}],"grid":[[2,23,12,12,16,1,1,14],[2,1,1,1,2,1,1,2],[2,2,0,12,2,2,1,2],[2,2,2,2,2,2,2,19],[5,2,1,2,2,2,1,2],[2,2,2,2,2,2,15,1],[2,2,2,2,2,2,20,4]],"par":15,"budget":18,"trace":["DOWN","DOWN","DOWN","DOWN","RIGHT","UP","RIGHT","RIGHT","DOWN","RIGHT","RIGHT","DOWN","DOWN","RIGHT","RIGHT"]}
+  {"id":21,"world":5,"name":"The Kinetic Fulcrum","w":5,"h":4,"budget":0,"par":17,"spawn":{"x":0,"y":0},"goal":{"x":4,"y":3},"initialPhase":"RED","crates":[{"id":1,"x":1,"y":2,"active":true}],"grid":[[2,2,1,2,2],[2,2,9,2,2],[2,2,8,2,2],[2,2,1,2,4]],"trace":["RIGHT","DOWN","LEFT","DOWN","DOWN","RIGHT","UP","RIGHT","UP","RIGHT","UP","RIGHT","DOWN","DOWN","LEFT","DOWN","RIGHT"]},
+  {"id":22,"world":5,"name":"The Chasm Bridge","w":6,"h":5,"budget":0,"par":25,"spawn":{"x":0,"y":0},"goal":{"x":5,"y":4},"checkpoints":[{"id":1,"x":5,"y":0,"cellType":5}],"crates":[{"id":1,"x":2,"y":2,"active":true}],"grid":[[2,2,2,1,2,5],[2,2,2,1,2,2],[2,2,2,0,2,2],[2,2,2,1,2,2],[2,2,2,1,2,4]],"trace":["RIGHT","RIGHT","DOWN","LEFT","LEFT","DOWN","DOWN","DOWN","RIGHT","RIGHT","UP","LEFT","UP","RIGHT","RIGHT","RIGHT","UP","UP","RIGHT","DOWN","DOWN","DOWN","LEFT","DOWN","RIGHT"]},
+  {"id":23,"world":5,"name":"The Crumbling Crusher","w":6,"h":5,"budget":0,"par":25,"spawn":{"x":0,"y":0},"goal":{"x":5,"y":4},"checkpoints":[{"id":1,"x":5,"y":0,"cellType":5}],"crates":[{"id":1,"x":2,"y":2,"active":true},{"id":2,"x":5,"y":2,"active":true}],"grid":[[2,2,2,1,2,5],[2,2,2,1,2,2],[2,2,2,7,2,2],[2,2,2,1,2,0],[2,2,2,1,2,4]],"trace":["RIGHT","RIGHT","DOWN","LEFT","LEFT","DOWN","RIGHT","DOWN","LEFT","DOWN","RIGHT","RIGHT","UP","UP","RIGHT","RIGHT","UP","UP","RIGHT","DOWN","DOWN","DOWN","LEFT","DOWN","RIGHT"]},
+  {"id":24,"world":5,"name":"The Dual Bastion Paradox","w":6,"h":5,"budget":0,"par":25,"spawn":{"x":0,"y":0},"goal":{"x":5,"y":4},"initialPhase":"RED","checkpoints":[{"id":1,"x":5,"y":0,"cellType":5}],"crates":[{"id":1,"x":2,"y":2,"active":true},{"id":2,"x":5,"y":2,"active":true}],"grid":[[2,2,2,1,2,5],[2,2,2,9,2,2],[2,2,2,8,2,2],[2,2,2,1,2,0],[2,2,2,1,2,4]],"trace":["RIGHT","RIGHT","DOWN","LEFT","LEFT","DOWN","DOWN","DOWN","RIGHT","RIGHT","UP","LEFT","UP","RIGHT","RIGHT","UP","RIGHT","UP","RIGHT","DOWN","DOWN","DOWN","LEFT","DOWN","RIGHT"]},
+  {"id":25,"world":5,"name":"The Singularity Engine","w":6,"h":5,"budget":0,"par":33,"spawn":{"x":0,"y":0},"goal":{"x":5,"y":4},"initialPhase":"RED","checkpoints":[{"id":1,"x":4,"y":0,"cellType":5},{"id":2,"x":5,"y":1,"cellType":6}],"crates":[{"id":1,"x":2,"y":2,"active":true},{"id":2,"x":4,"y":2,"active":true}],"grid":[[2,2,2,1,5,2],[2,2,2,9,2,6],[2,2,2,8,2,2],[2,2,2,1,2,0],[2,2,2,1,2,4]],"trace":["RIGHT","RIGHT","DOWN","DOWN","LEFT","DOWN","LEFT","DOWN","RIGHT","RIGHT","UP","UP","RIGHT","UP","RIGHT","UP","RIGHT","DOWN","DOWN","LEFT","LEFT","LEFT","UP","LEFT","LEFT","DOWN","RIGHT","RIGHT","RIGHT","RIGHT","DOWN","DOWN","RIGHT"]},
+  {"id":26,"world":6,"name":"The Frozen Torii","w":5,"h":4,"budget":0,"par":7,"spawn":{"x":0,"y":0},"goal":{"x":0,"y":1},"grid":[[2,12,12,12,2],[4,1,1,1,2],[2,1,1,1,2],[2,12,12,12,2]],"trace":["RIGHT","DOWN","DOWN","DOWN","LEFT","UP","UP"]},
+  {"id":27,"world":6,"name":"Glacial Katana Drift","w":5,"h":5,"budget":0,"par":20,"spawn":{"x":0,"y":0},"goal":{"x":4,"y":4},"initialPhase":"RED","grid":[[2,12,12,12,2],[2,8,1,2,2],[2,2,1,9,2],[2,2,2,2,2],[2,2,2,2,4]],"trace":["DOWN","RIGHT","DOWN","LEFT","DOWN","DOWN","RIGHT","UP","RIGHT","DOWN","RIGHT","UP","UP","UP","UP","RIGHT","DOWN","DOWN","DOWN","DOWN"]},
+  {"id":28,"world":6,"name":"Crate Avalanche","w":6,"h":5,"budget":0,"par":22,"spawn":{"x":0,"y":0},"goal":{"x":0,"y":4},"crates":[{"id":1,"x":3,"y":2,"active":true}],"grid":[[2,2,2,12,12,2],[2,2,1,2,1,2],[2,2,2,2,2,2],[2,2,1,0,1,2],[4,2,2,2,2,2]],"trace":["RIGHT","DOWN","LEFT","DOWN","RIGHT","RIGHT","RIGHT","UP","UP","LEFT","RIGHT","DOWN","DOWN","DOWN","DOWN","LEFT","LEFT","LEFT","LEFT","UP","LEFT","DOWN"]},
+  {"id":29,"world":6,"name":"Ronin's Narrow Escape","w":6,"h":6,"budget":0,"par":31,"spawn":{"x":0,"y":0},"goal":{"x":5,"y":5},"checkpoints":[{"id":1,"x":5,"y":0,"cellType":5}],"grid":[[2,12,12,12,2,5],[2,1,2,1,2,2],[2,2,2,2,2,2],[2,2,12,12,2,2],[2,1,2,1,2,2],[2,2,2,2,2,4]],"trace":["DOWN","DOWN","RIGHT","DOWN","LEFT","DOWN","DOWN","RIGHT","RIGHT","RIGHT","RIGHT","UP","UP","LEFT","RIGHT","UP","DOWN","LEFT","DOWN","UP","UP","UP","RIGHT","RIGHT","DOWN","LEFT","DOWN","RIGHT","DOWN","DOWN","DOWN"]},
+  {"id":30,"world":6,"name":"Shogun's Kinetic Citadel","w":6,"h":6,"budget":0,"par":30,"spawn":{"x":0,"y":0},"goal":{"x":5,"y":5},"initialPhase":"RED","checkpoints":[{"id":1,"x":5,"y":0,"cellType":5}],"crates":[{"id":1,"x":1,"y":2,"active":true}],"grid":[[2,12,12,2,2,5],[2,8,1,2,9,2],[2,2,2,2,2,2],[2,2,1,2,1,2],[2,2,12,12,2,2],[2,2,2,2,2,4]],"trace":["RIGHT","LEFT","DOWN","LEFT","DOWN","RIGHT","RIGHT","RIGHT","UP","RIGHT","UP","RIGHT","DOWN","DOWN","DOWN","DOWN","LEFT","LEFT","UP","LEFT","DOWN","DOWN","RIGHT","RIGHT","UP","RIGHT","UP","DOWN","RIGHT","RIGHT"]},
+  {"id":31,"world":7,"name":"Vegvisir Compass","w":5,"h":4,"budget":0,"par":15,"spawn":{"x":0,"y":0},"goal":{"x":0,"y":3},"grid":[[2,2,2,2,14],[2,2,1,2,2],[15,1,1,2,2],[4,2,2,2,2]],"trace":["DOWN","RIGHT","UP","RIGHT","RIGHT","RIGHT","DOWN","LEFT","DOWN","RIGHT","DOWN","LEFT","LEFT","LEFT","LEFT"]},
+  {"id":32,"world":7,"name":"Bifrost Shards","w":5,"h":5,"budget":0,"par":20,"spawn":{"x":0,"y":0},"goal":{"x":4,"y":4},"grid":[[2,2,2,2,14],[2,2,2,2,2],[1,1,15,1,1],[2,2,2,2,2],[2,2,2,2,4]],"trace":["DOWN","RIGHT","UP","RIGHT","RIGHT","RIGHT","DOWN","LEFT","LEFT","DOWN","DOWN","LEFT","LEFT","DOWN","RIGHT","RIGHT","RIGHT","UP","RIGHT","DOWN"]},
+  {"id":33,"world":7,"name":"The Crate Sled","w":6,"h":5,"budget":0,"par":21,"spawn":{"x":0,"y":0},"goal":{"x":5,"y":4},"crates":[{"id":1,"x":2,"y":3,"active":true}],"grid":[[2,2,12,12,2,14],[2,2,2,2,2,2],[15,1,1,1,1,1],[2,2,2,0,12,2],[2,2,1,2,2,4]],"trace":["RIGHT","RIGHT","RIGHT","DOWN","LEFT","LEFT","LEFT","LEFT","LEFT","DOWN","DOWN","DOWN","RIGHT","UP","RIGHT","RIGHT","DOWN","RIGHT","UP","RIGHT","DOWN"]},
+  {"id":34,"world":7,"name":"Valkyrie Runematrix","w":6,"h":6,"budget":0,"par":29,"spawn":{"x":0,"y":0},"goal":{"x":5,"y":5},"grid":[[2,12,12,2,2,14],[2,2,2,2,2,2],[1,1,15,1,1,1],[2,2,2,2,2,2],[2,2,2,2,2,2],[2,2,2,2,2,4]],"trace":["DOWN","RIGHT","UP","RIGHT","RIGHT","RIGHT","DOWN","LEFT","LEFT","LEFT","DOWN","DOWN","RIGHT","RIGHT","RIGHT","DOWN","LEFT","LEFT","LEFT","LEFT","UP","LEFT","DOWN","DOWN","RIGHT","RIGHT","RIGHT","RIGHT","RIGHT"]},
+  {"id":35,"world":7,"name":"Valhalla's Gates","w":7,"h":6,"budget":0,"par":30,"spawn":{"x":0,"y":0},"goal":{"x":6,"y":5},"grid":[[2,2,12,12,12,2,14],[2,2,1,2,2,2,2],[1,1,1,15,1,1,1],[2,2,2,2,2,2,2],[2,2,2,1,2,2,2],[2,2,2,2,2,2,4]],"trace":["DOWN","RIGHT","UP","RIGHT","RIGHT","DOWN","LEFT","LEFT","LEFT","DOWN","DOWN","LEFT","DOWN","LEFT","UP","LEFT","DOWN","DOWN","RIGHT","RIGHT","RIGHT","RIGHT","RIGHT","UP","LEFT","UP","RIGHT","RIGHT","DOWN","DOWN"]},
+  {"id":36,"world":8,"name":"Solar Ray Awakening","w":5,"h":5,"budget":0,"par":12,"spawn":{"x":0,"y":0},"goal":{"x":4,"y":4},"emitters":{"2,0":{"dx":0,"dy":1,"name":"DOWN"}},"mirrors":[{"id":1,"x":1,"y":2,"type":18,"active":true}],"grid":[[2,1,16,1,1],[2,1,0,1,1],[2,2,2,0,19],[2,2,2,2,1],[2,2,2,20,4]],"trace":["DOWN","DOWN","RIGHT","DOWN","LEFT","DOWN","RIGHT","RIGHT","UP","RIGHT","DOWN","RIGHT"]},
+  {"id":37,"world":8,"name":"Prismatic Reflection","w":6,"h":5,"budget":0,"par":19,"spawn":{"x":0,"y":0},"goal":{"x":5,"y":4},"emitters":{"3,0":{"dx":0,"dy":1,"name":"DOWN"}},"mirrors":[{"id":1,"x":2,"y":2,"type":18,"active":true}],"grid":[[2,2,2,16,1,1],[2,2,2,0,1,1],[2,2,2,2,0,19],[2,2,2,2,2,1],[2,2,2,2,20,4]],"trace":["RIGHT","RIGHT","DOWN","DOWN","LEFT","UP","LEFT","DOWN","DOWN","DOWN","RIGHT","UP","RIGHT","DOWN","RIGHT","UP","RIGHT","DOWN","RIGHT"]},
+  {"id":38,"world":8,"name":"Crate Beam Interceptor","w":6,"h":5,"budget":0,"par":19,"spawn":{"x":0,"y":0},"goal":{"x":5,"y":4},"crates":[{"id":1,"x":1,"y":1,"active":true}],"emitters":{"3,0":{"dx":0,"dy":1,"name":"DOWN"}},"mirrors":[{"id":1,"x":2,"y":2,"type":18,"active":true}],"grid":[[2,2,2,16,1,1],[2,2,2,0,1,1],[2,2,2,2,0,19],[2,2,2,2,2,1],[2,2,2,2,20,4]],"trace":["RIGHT","RIGHT","DOWN","DOWN","LEFT","UP","LEFT","DOWN","DOWN","DOWN","RIGHT","UP","RIGHT","DOWN","RIGHT","UP","RIGHT","DOWN","RIGHT"]},
+  {"id":39,"world":8,"name":"Tonatiuh's Solar Altar","w":7,"h":5,"budget":0,"par":24,"spawn":{"x":0,"y":0},"goal":{"x":6,"y":4},"emitters":{"4,0":{"dx":0,"dy":1,"name":"DOWN"}},"mirrors":[{"id":1,"x":3,"y":2,"type":18,"active":true}],"grid":[[2,2,2,2,16,1,1],[2,2,2,2,0,1,1],[2,2,2,2,2,0,19],[2,2,2,2,2,2,1],[2,2,2,2,2,20,4]],"trace":["RIGHT","RIGHT","RIGHT","DOWN","DOWN","LEFT","UP","LEFT","LEFT","DOWN","RIGHT","DOWN","LEFT","DOWN","RIGHT","RIGHT","UP","RIGHT","DOWN","RIGHT","UP","RIGHT","DOWN","RIGHT"]},
+  {"id":40,"world":8,"name":"Quetzalcoatl's Prism","w":7,"h":5,"budget":0,"par":24,"spawn":{"x":0,"y":0},"goal":{"x":6,"y":4},"checkpoints":[{"id":1,"x":1,"y":3,"cellType":5}],"emitters":{"4,0":{"dx":0,"dy":1,"name":"DOWN"}},"mirrors":[{"id":1,"x":3,"y":2,"type":18,"active":true}],"grid":[[2,2,2,2,16,1,1],[2,2,2,2,0,1,1],[2,2,2,2,2,0,19],[2,5,2,2,2,2,1],[2,2,2,2,2,20,4]],"trace":["RIGHT","RIGHT","RIGHT","DOWN","DOWN","LEFT","UP","LEFT","LEFT","DOWN","RIGHT","DOWN","LEFT","DOWN","RIGHT","RIGHT","UP","RIGHT","DOWN","RIGHT","UP","RIGHT","DOWN","RIGHT"]},
+  {"id":41,"world":9,"name":"Bazaar Flux Stream","w":5,"h":4,"budget":0,"par":16,"spawn":{"x":0,"y":0},"goal":{"x":0,"y":1},"grid":[[2,23,2,22,2],[4,1,2,2,2],[2,1,2,2,2],[2,2,2,2,2]],"trace":["RIGHT","DOWN","RIGHT","UP","RIGHT","DOWN","DOWN","DOWN","LEFT","UP","LEFT","DOWN","LEFT","LEFT","UP","UP"]},
+  {"id":42,"world":9,"name":"Muqarnas Momentum","w":5,"h":5,"budget":0,"par":22,"spawn":{"x":0,"y":0},"goal":{"x":4,"y":4},"grid":[[2,23,2,2,2],[2,2,2,22,2],[2,2,2,2,2],[2,24,2,2,2],[2,2,2,2,4]],"trace":["RIGHT","RIGHT","RIGHT","DOWN","DOWN","DOWN","LEFT","LEFT","UP","RIGHT","UP","LEFT","LEFT","LEFT","DOWN","RIGHT","DOWN","DOWN","RIGHT","RIGHT","RIGHT","RIGHT"]},
+  {"id":43,"world":9,"name":"Crate Conveyor Siphon","w":6,"h":5,"budget":0,"par":30,"spawn":{"x":0,"y":0},"goal":{"x":5,"y":4},"initialPhase":"RED","crates":[{"id":1,"x":1,"y":2,"active":true}],"grid":[[2,23,2,2,2,2],[2,2,8,2,2,2],[2,2,2,2,2,2],[2,2,2,2,9,2],[2,2,2,2,2,4]],"trace":["RIGHT","RIGHT","RIGHT","RIGHT","DOWN","DOWN","LEFT","LEFT","DOWN","DOWN","LEFT","LEFT","LEFT","UP","RIGHT","RIGHT","UP","UP","LEFT","LEFT","DOWN","RIGHT","RIGHT","RIGHT","UP","RIGHT","DOWN","DOWN","RIGHT","DOWN"]},
+  {"id":44,"world":9,"name":"Flux Glacier Chaining","w":6,"h":5,"budget":0,"par":27,"spawn":{"x":0,"y":0},"goal":{"x":5,"y":4},"grid":[[2,23,12,12,2,2],[2,2,2,2,2,2],[2,2,12,12,2,2],[2,2,2,2,2,2],[2,2,2,2,2,4]],"trace":["RIGHT","RIGHT","RIGHT","DOWN","DOWN","DOWN","LEFT","LEFT","LEFT","LEFT","UP","RIGHT","UP","LEFT","DOWN","LEFT","UP","LEFT","LEFT","DOWN","DOWN","DOWN","RIGHT","RIGHT","RIGHT","RIGHT","RIGHT"]},
+  {"id":45,"world":9,"name":"Citadel of Perpetual Flow","w":6,"h":5,"budget":0,"par":30,"spawn":{"x":0,"y":0},"goal":{"x":5,"y":4},"crates":[{"id":1,"x":1,"y":2,"active":true}],"grid":[[2,23,12,12,2,2],[2,2,2,2,2,2],[2,2,2,2,2,2],[2,2,2,2,2,2],[2,2,2,2,2,4]],"trace":["RIGHT","RIGHT","RIGHT","DOWN","DOWN","DOWN","LEFT","LEFT","LEFT","LEFT","UP","RIGHT","RIGHT","RIGHT","UP","LEFT","LEFT","UP","RIGHT","LEFT","DOWN","LEFT","DOWN","DOWN","DOWN","RIGHT","RIGHT","RIGHT","RIGHT","RIGHT"]},
+  {"id":46,"world":10,"name":"Prometheus Spark","w":6,"h":6,"budget":0,"par":21,"spawn":{"x":0,"y":0},"goal":{"x":5,"y":5},"emitters":{"3,0":{"dx":0,"dy":1,"name":"DOWN"}},"mirrors":[{"id":1,"x":2,"y":2,"type":18,"active":true}],"grid":[[2,23,12,16,1,1],[2,2,2,0,1,1],[2,2,2,2,0,19],[2,2,2,2,1,1],[2,2,2,2,1,1],[2,2,2,2,20,4]],"trace":["RIGHT","DOWN","LEFT","LEFT","DOWN","RIGHT","RIGHT","DOWN","RIGHT","DOWN","LEFT","LEFT","UP","LEFT","DOWN","DOWN","RIGHT","RIGHT","RIGHT","RIGHT","RIGHT"]},
+  {"id":47,"world":10,"name":"Hephaestus Crucible","w":7,"h":6,"budget":0,"par":43,"spawn":{"x":0,"y":0},"goal":{"x":6,"y":5},"crates":[{"id":1,"x":2,"y":2,"active":true}],"grid":[[2,12,12,2,2,2,2],[2,2,2,2,2,2,2],[2,2,2,2,2,2,2],[2,2,2,2,2,2,2],[2,2,2,2,2,2,2],[14,2,2,2,2,15,4]],"trace":["RIGHT","RIGHT","RIGHT","RIGHT","DOWN","DOWN","DOWN","DOWN","LEFT","LEFT","DOWN","LEFT","LEFT","LEFT","LEFT","UP","UP","UP","UP","RIGHT","DOWN","RIGHT","DOWN","RIGHT","RIGHT","RIGHT","UP","UP","LEFT","DOWN","LEFT","UP","LEFT","DOWN","DOWN","LEFT","DOWN","RIGHT","RIGHT","RIGHT","RIGHT","DOWN","RIGHT"]},
+  {"id":48,"world":10,"name":"The Aegis Matrix","w":7,"h":6,"budget":0,"par":31,"spawn":{"x":0,"y":0},"goal":{"x":6,"y":5},"emitters":{"4,0":{"dx":0,"dy":1,"name":"DOWN"}},"mirrors":[{"id":1,"x":3,"y":2,"type":18,"active":true}],"grid":[[2,23,12,2,16,1,1],[2,2,2,2,0,1,1],[2,2,2,2,2,0,19],[2,2,2,2,2,2,1],[14,2,2,2,2,2,1],[2,2,2,15,2,20,4]],"trace":["RIGHT","RIGHT","LEFT","RIGHT","DOWN","RIGHT","DOWN","DOWN","LEFT","UP","LEFT","UP","LEFT","DOWN","DOWN","RIGHT","DOWN","LEFT","DOWN","RIGHT","RIGHT","UP","RIGHT","DOWN","RIGHT","UP","UP","RIGHT","DOWN","DOWN","RIGHT"]},
+  {"id":49,"world":10,"name":"Titan's Kinetic Gauntlet","w":8,"h":6,"budget":0,"par":46,"spawn":{"x":0,"y":0},"goal":{"x":7,"y":5},"crates":[{"id":1,"x":1,"y":2,"active":true}],"emitters":{"5,0":{"dx":0,"dy":1,"name":"DOWN"}},"mirrors":[{"id":1,"x":4,"y":2,"type":18,"active":true}],"grid":[[2,23,12,12,2,16,1,1],[2,2,2,2,2,0,1,1],[2,2,2,2,2,2,0,19],[2,2,2,2,2,2,2,1],[14,2,2,2,2,2,2,1],[2,2,2,2,15,2,20,4]],"trace":["RIGHT","RIGHT","DOWN","DOWN","DOWN","LEFT","DOWN","DOWN","LEFT","UP","LEFT","UP","RIGHT","UP","RIGHT","UP","LEFT","LEFT","DOWN","DOWN","LEFT","DOWN","DOWN","RIGHT","UP","UP","UP","LEFT","UP","RIGHT","RIGHT","UP","RIGHT","DOWN","DOWN","DOWN","DOWN","RIGHT","DOWN","RIGHT","UP","UP","RIGHT","DOWN","DOWN","RIGHT"]},
+  {"id":50,"world":10,"name":"The Beaupre Singularity","w":8,"h":7,"budget":0,"par":53,"spawn":{"x":0,"y":0},"goal":{"x":7,"y":6},"checkpoints":[{"id":1,"x":0,"y":5,"cellType":5}],"crates":[{"id":1,"x":1,"y":2,"active":true}],"emitters":{"5,0":{"dx":0,"dy":1,"name":"DOWN"}},"mirrors":[{"id":1,"x":4,"y":2,"type":18,"active":true}],"grid":[[2,23,12,12,2,16,1,1],[2,2,2,2,2,0,1,1],[2,2,2,2,2,2,0,19],[14,2,2,2,2,2,2,1],[2,2,2,2,2,2,2,1],[5,2,2,2,2,2,2,1],[2,2,2,2,15,2,20,4]],"trace":["RIGHT","RIGHT","DOWN","DOWN","DOWN","DOWN","LEFT","DOWN","DOWN","LEFT","LEFT","LEFT","UP","RIGHT","RIGHT","UP","LEFT","UP","UP","LEFT","UP","RIGHT","UP","RIGHT","DOWN","LEFT","UP","RIGHT","LEFT","DOWN","DOWN","DOWN","LEFT","DOWN","RIGHT","RIGHT","UP","UP","RIGHT","DOWN","DOWN","DOWN","RIGHT","DOWN","RIGHT","UP","UP","UP","RIGHT","DOWN","DOWN","DOWN","RIGHT"]}
 ];
 // ============================================================================
 // SWIPE INPUT RESOLVER (SPECIFICATION SECTION 1)
@@ -1166,9 +1166,9 @@ runTest("Test 8: World 4 The Grandmaster Arenas & Playability", () => {
 });
 
 // ----------------------------------------------------------------------------
-// TEST 9: Full 20-Level Solvability Suite (All 20 Levels Solved at Exact Par)
+// TEST 9: Full 50-Level Solvability Suite (All 50 Levels Solved at Exact Par)
 // ----------------------------------------------------------------------------
-runTest("Test 9: Full 20-Level Solvability Suite (100% Deterministic Par Victory)", () => {
+runTest("Test 9: Full 50-Level Solvability Suite (100% Deterministic Par Victory Across All 10 Worlds)", () => {
   LEVELS.forEach((lvl) => {
     const engine = new GameEngineRig(lvl);
     const trace = lvl.trace;
@@ -1201,9 +1201,9 @@ runTest("Test 9: Full 20-Level Solvability Suite (100% Deterministic Par Victory
 });
 
 // ----------------------------------------------------------------------------
-// TEST 10: Full 20-Level Lossless Undo Rollback Suite
+// TEST 10: Full 50-Level Lossless Undo Rollback Suite
 // ----------------------------------------------------------------------------
-runTest("Test 10: Full 20-Level Lossless Undo Rollback Suite (Victory to Spawn)", () => {
+runTest("Test 10: Full 50-Level Lossless Undo Rollback Suite (Victory to Spawn Across All 10 Worlds)", () => {
   LEVELS.forEach((lvl) => {
     const engine = new GameEngineRig(lvl);
     const trace = lvl.trace;
@@ -1285,8 +1285,8 @@ runTest("Test 8C: Phase 5 Pushable Crate, Bridge/Crush & Switch Weight Invariant
   const lvl21 = LEVELS.find(l => l.id === 21);
   assert(lvl21, "Level 21 must exist");
   assert.strictEqual(lvl21.crates.length, 1, "Level 21 must have 1 crate");
-  assert.strictEqual(lvl21.par, 14, "Level 21 par must be 14");
-  assert.strictEqual(lvl21.budget, 17, "Level 21 budget must be 17");
+  assert.strictEqual(lvl21.par, 17, "Level 21 par must be 17");
+  assert.strictEqual(lvl21.budget, 0, "Level 21 budget must be 0");
 
   const engine21 = new GameEngineRig(lvl21);
   assert.strictEqual(engine21.crates[0].active, true);
@@ -1296,29 +1296,29 @@ runTest("Test 8C: Phase 5 Pushable Crate, Bridge/Crush & Switch Weight Invariant
   const lvl22 = LEVELS.find(l => l.id === 22);
   assert(lvl22, "Level 22 must exist");
   assert.strictEqual(lvl22.crates.length, 1, "Level 22 must have 1 crate");
-  assert.strictEqual(lvl22.par, 12, "Level 22 par must be 12");
-  assert.strictEqual(lvl22.budget, 15, "Level 22 budget must be 15");
+  assert.strictEqual(lvl22.par, 25, "Level 22 par must be 25");
+  assert.strictEqual(lvl22.budget, 0, "Level 22 budget must be 0");
 
   // Test Level 23 Crumbling Crush & Void Bridging
   const lvl23 = LEVELS.find(l => l.id === 23);
   assert(lvl23, "Level 23 must exist");
   assert.strictEqual(lvl23.crates.length, 2, "Level 23 must have 2 crates");
-  assert.strictEqual(lvl23.par, 13, "Level 23 par must be 13");
-  assert.strictEqual(lvl23.budget, 16, "Level 23 budget must be 16");
+  assert.strictEqual(lvl23.par, 25, "Level 23 par must be 25");
+  assert.strictEqual(lvl23.budget, 0, "Level 23 budget must be 0");
 
   // Test Level 24 Dual Bastion Paradox
   const lvl24 = LEVELS.find(l => l.id === 24);
   assert(lvl24, "Level 24 must exist");
   assert.strictEqual(lvl24.crates.length, 2, "Level 24 must have 2 crates");
-  assert.strictEqual(lvl24.par, 15, "Level 24 par must be 15");
-  assert.strictEqual(lvl24.budget, 18, "Level 24 budget must be 18");
+  assert.strictEqual(lvl24.par, 25, "Level 24 par must be 25");
+  assert.strictEqual(lvl24.budget, 0, "Level 24 budget must be 0");
 
   // Test Level 25 The Singularity Engine
   const lvl25 = LEVELS.find(l => l.id === 25);
   assert(lvl25, "Level 25 must exist");
   assert.strictEqual(lvl25.crates.length, 2, "Level 25 must have 2 crates");
-  assert.strictEqual(lvl25.par, 13, "Level 25 par must be 13");
-  assert.strictEqual(lvl25.budget, 16, "Level 25 budget must be 16");
+  assert.strictEqual(lvl25.par, 33, "Level 25 par must be 33");
+  assert.strictEqual(lvl25.budget, 0, "Level 25 budget must be 0");
 });
 
 // ----------------------------------------------------------------------------
@@ -1515,6 +1515,27 @@ runTest("Test 15: 10-World Architecture, Dual Navigation & 14-Star Gate Economy"
   assert.strictEqual(calcStars(2), 2, "1 Undo = 2 Stars");
   assert.strictEqual(calcStars(1), 1, "2 Undos = 1 Star");
   assert.strictEqual(calcStars(0), 0, "3 Undos = 0 Stars");
+
+  // 6. Complete Zero-Budget Clear-All Hamiltonian Weave Audit (Levels 1-50)
+  LEVELS.forEach(lvl => {
+    assert.strictEqual(lvl.budget, 0, `Level ${lvl.id} (${lvl.name}) must have budget 0`);
+  });
+
+  // 7. Verify index.html LEVELS sync
+  const match = html.match(/const LEVELS = (\[[\s\S]*?\]);\s*\/\* =/);
+  assert(match, "index.html must contain LEVELS array");
+  const htmlLevels = JSON.parse(match[1]);
+  assert.strictEqual(htmlLevels.length, 50, "index.html must contain exactly 50 levels");
+  for (let i = 0; i < 50; i++) {
+    assert.strictEqual(htmlLevels[i].id, LEVELS[i].id, `Level ID mismatch at index ${i}`);
+    assert.strictEqual(htmlLevels[i].par, LEVELS[i].par, `Par mismatch on Level ${htmlLevels[i].id}`);
+    assert.strictEqual(htmlLevels[i].budget, 0, `Budget mismatch on Level ${htmlLevels[i].id}`);
+    assert.deepStrictEqual(htmlLevels[i].trace, LEVELS[i].trace, `Trace mismatch on Level ${htmlLevels[i].id}`);
+  }
+
+  // 8. Verify index.html critical bug fixes
+  assert(html.includes('this.getCrateAt(x, y) || this.getMirrorAt(x, y)'), "index.html evaluateBoardState must check mirrors");
+  assert(html.includes('departureCell !== C_ICE'), "index.html must preserve ice tiles upon departure");
 });
 
 console.log("\n================================================================================");
