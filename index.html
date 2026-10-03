@@ -5374,7 +5374,7 @@
         this.ctx.lineCap = 'round';
         this.ctx.lineJoin = 'round';
 
-        // 1. Deep-ocean ambient phosphorescent radial glow in margins
+        // 1. Deep-ocean ambient phosphorescent radial glow in void margins
         const bgGrad = this.ctx.createRadialGradient(cx, cy, Math.min(w, h) * 0.2, cx, cy, Math.max(w, h) * 0.68);
         bgGrad.addColorStop(0, `rgba(${rgb}, ${breath * 0.12})`);
         bgGrad.addColorStop(0.55, `rgba(${rgb}, ${breath * 0.04})`);
@@ -5388,165 +5388,386 @@
         this.ctx.shadowColor = `rgba(${rgb}, ${glowAlpha})`;
         this.ctx.shadowBlur = 14;
 
-        // Floating bioluminescent micro-plankton particles in margins
-        for (let p = 0; p < 8; p++) {
-          const px = (cx + Math.sin(now * 0.0006 + p * 1.5) * (w * 0.42)) % w;
-          const py = (cy + Math.cos(now * 0.0008 + p * 1.3) * (h * 0.45)) % h;
-          if (px < leftW || px > rightX || py < topH || py > botY) {
-            const pSize = 1.2 + 0.8 * Math.sin(now * 0.003 + p);
-            this.ctx.fillStyle = `rgba(${rgb}, ${breath * 0.5})`;
+        // ====================================================================
+        // R1. SWIMMING BIOLUMINESCENT VOID SWARMS (14 Entities)
+        // Gentle ambient swarm fading in/out of deep distance across void margins
+        // ====================================================================
+        const swarmCount = 14;
+        for (let i = 0; i < swarmCount; i++) {
+          const phi = i * 2.39996;
+          const speed = 0.00045 + (i % 5) * 0.00008;
+          const t = now * speed + phi;
+          
+          // Smooth depth modulation (fade from deep distance into view and submerge)
+          const depthCycle = Math.sin(now * 0.0007 + i * 1.73);
+          const depth = 0.5 + 0.5 * depthCycle;
+          const swimAlpha = Math.max(0.12, Math.min(0.38, 0.12 + 0.22 * depth * (0.65 + 0.35 * Math.sin(t * 2.1))));
+          
+          const baseScale = 0.6 + 0.5 * depth;
+          let sx, sy, entityScale = baseScale;
+          const band = i % 4;
+          if (band === 0) {
+            if (topH < 18) continue;
+            entityScale = Math.min(baseScale, (topH - 4) / 22);
+            const rBound = 9 * entityScale;
+            sx = cx + Math.sin(t * 1.3) * (w * 0.40) + Math.cos(t * 0.7) * (w * 0.06);
+            sy = Math.max(rBound + 3, Math.min(topH - rBound - 3, topH * 0.48 + Math.sin(t * 2.7) * (topH * 0.25)));
+          } else if (band === 1) {
+            if (botH < 18) continue;
+            entityScale = Math.min(baseScale, (botH - 4) / 22);
+            const rBound = 9 * entityScale;
+            sx = cx + Math.cos(t * 1.1) * (w * 0.40) + Math.sin(t * 0.8) * (w * 0.06);
+            sy = Math.min(h - rBound - 3, Math.max(botY + rBound + 3, botY + botH * 0.52 + Math.cos(t * 2.5) * (botH * 0.25)));
+          } else if (band === 2) {
+            if (leftW < 18) continue;
+            entityScale = Math.min(baseScale, (leftW - 4) / 22);
+            const rBound = 9 * entityScale;
+            sx = Math.max(rBound + 3, Math.min(leftW - rBound - 3, leftW * 0.5 + Math.cos(t * 1.9) * (leftW * 0.25)));
+            sy = cy + Math.sin(t * 1.2) * (h * 0.40) + Math.cos(t * 0.6) * (h * 0.06);
+          } else {
+            if (rightW < 18) continue;
+            entityScale = Math.min(baseScale, (rightW - 4) / 22);
+            const rBound = 9 * entityScale;
+            sx = Math.min(w - rBound - 3, Math.max(rightX + rBound + 3, rightX + rightW * 0.5 + Math.sin(t * 1.8) * (rightW * 0.25)));
+            sy = cy + Math.cos(t * 1.4) * (h * 0.40) + Math.sin(t * 0.5) * (h * 0.06);
+          }
+
+          // Strict Void & Margin Invariant: Never obstruct puzzle tiles
+          const inMargin = (sx < leftW || sx > rightX || sy < topH || sy > botY);
+          const cellX = Math.floor((sx - leftW) / this.tileSize);
+          const cellY = Math.floor((sy - topH) / this.tileSize);
+          const inVoid = !inMargin && (this.grid && this.grid[cellY] && this.grid[cellY][cellX] === 0);
+          if (!inMargin && !inVoid) continue;
+
+          // Swimming shape archetypes
+          const entityType = i % 4;
+          const swimAngle = t * 1.5 + Math.sin(t * 3.0) * 0.5;
+
+          this.ctx.save();
+          this.ctx.translate(sx, sy);
+          this.ctx.rotate(swimAngle);
+          this.ctx.strokeStyle = `rgba(${rgb}, ${(swimAlpha * 0.9).toFixed(3)})`;
+          this.ctx.fillStyle = `rgba(${rgb}, ${(swimAlpha * 0.6).toFixed(3)})`;
+          this.ctx.shadowColor = `rgba(${rgb}, ${(swimAlpha * 1.2).toFixed(3)})`;
+          this.ctx.shadowBlur = 8 * entityScale;
+          this.ctx.lineWidth = 1.2 * entityScale;
+
+          if (entityType === 0) {
+            // Glowing Orb
+            const rCore = 2.4 * entityScale;
+            const rHalo = (5.5 + 2.0 * Math.sin(t * 3.5)) * entityScale;
             this.ctx.beginPath();
-            this.ctx.arc(px, py, pSize, 0, Math.PI * 2);
+            this.ctx.arc(0, 0, rCore, 0, Math.PI * 2);
+            this.ctx.fill();
+            this.ctx.beginPath();
+            this.ctx.arc(0, 0, rHalo, 0, Math.PI * 2);
+            this.ctx.stroke();
+          } else if (entityType === 1) {
+            // Orbital Ring
+            this.ctx.beginPath();
+            this.ctx.arc(0, 0, 2.0 * entityScale, 0, Math.PI * 2);
+            this.ctx.fill();
+            this.ctx.beginPath();
+            this.ctx.ellipse(0, 0, 7.5 * entityScale, 3.2 * entityScale, Math.PI * 0.25, 0, Math.PI * 2);
+            this.ctx.stroke();
+          } else if (entityType === 2) {
+            // Micro-Spiral
+            this.ctx.beginPath();
+            for (let a = 0; a < 3.8; a += 0.35) {
+              const sr = (1.2 + a * 1.8) * entityScale;
+              const px = Math.cos(a) * sr;
+              const py = Math.sin(a) * sr;
+              if (a === 0) this.ctx.moveTo(px, py);
+              else this.ctx.lineTo(px, py);
+            }
+            this.ctx.stroke();
+            this.ctx.beginPath();
+            this.ctx.arc(0, 0, 1.6 * entityScale, 0, Math.PI * 2);
+            this.ctx.fill();
+          } else if (entityType === 3) {
+            // Type 3: Drifting Stardust
+            const sLen = 6.0 * entityScale;
+            const sInner = 1.8 * entityScale;
+            this.ctx.beginPath();
+            this.ctx.moveTo(0, -sLen);
+            this.ctx.lineTo(sInner, 0);
+            this.ctx.lineTo(0, sLen);
+            this.ctx.lineTo(-sInner, 0);
+            this.ctx.closePath();
+            this.ctx.stroke();
+            this.ctx.beginPath();
+            this.ctx.arc(0, 0, 1.2 * entityScale, 0, Math.PI * 2);
             this.ctx.fill();
           }
+          this.ctx.restore();
         }
 
-        // Gentle organic floating drift offsets (constellation orbit)
-        const drift1 = Math.sin(now * 0.0011) * 3;
-        const drift2 = Math.cos(now * 0.0014) * 3;
-        const drift3 = Math.sin(now * 0.0016 + 1.2) * 2.5;
+        // ====================================================================
+        // R2. EXPANDED CULTURAL CONSTELLATION (8 Symbols per World)
+        // Anchored at Top, Bottom, Left, Right, TL, TR, BL, BR
+        // ====================================================================
+        const drift1 = Math.sin(now * 0.0011) * 2;
+        const drift2 = Math.cos(now * 0.0014) * 2;
+        const drift3 = Math.sin(now * 0.0016 + 1.2) * 1.8;
 
-        // Procedural authentic civilization sacred geometry & cultural art per world
+        // Dynamic 8 Anchor Coordinates in Empty Canvas Margins
+        const topY = Math.max(12, Math.min(topH - 20, topH * 0.44 + drift1));
+        const botYPos = Math.min(h - 14, Math.max(botY + 20, botY + botH * 0.52 + drift1));
+        const leftX = Math.max(10, Math.min(leftW - 14, leftW * 0.48));
+        const rightXPos = Math.min(w - 10, Math.max(rightX + 14, rightX + rightW * 0.52));
+
+        const tlX = Math.max(10, Math.min(leftW - 12, leftW * 0.48));
+        const tlY = Math.max(10, Math.min(topH - 12, topH * 0.46 + drift2));
+        const trX = Math.min(w - 10, Math.max(rightX + 12, rightX + rightW * 0.52));
+        const trY = Math.max(10, Math.min(topH - 12, topH * 0.46 + drift3));
+        const blX = Math.max(10, Math.min(leftW - 12, leftW * 0.48));
+        const blY = Math.min(h - 10, Math.max(botY + 12, botY + botH * 0.52 + drift3));
+        const brX = Math.min(w - 10, Math.max(rightX + 12, rightX + rightW * 0.52));
+        const brY = Math.min(h - 10, Math.max(botY + 12, botY + botH * 0.52 + drift2));
+
+        const canTop = topH >= 34;
+        const canBot = botH >= 34;
+        const canLeft = leftW >= 22;
+        const canRight = rightW >= 22;
+        const canTL = topH >= 26 && leftW >= 20;
+        const canTR = topH >= 26 && rightW >= 20;
+        const canBL = botH >= 26 && leftW >= 20;
+        const canBR = botH >= 26 && rightW >= 20;
+
         if (wId === 1) {
           // World 1: Mayan Ruins (Emerald #00e676)
-          // Top: Mayan Solar Glyph / Sun Seal
-          if (topH > 28) {
-            const my = topH * 0.52 + drift1;
-            const r = Math.min(22, topH * 0.36);
+          // 1. Top: Mayan Solar Glyph / Sun Seal
+          if (canTop) {
+            const r = Math.min(16, topH * 0.26);
             this.ctx.beginPath();
-            this.ctx.arc(cx, my, r, 0, Math.PI * 2);
-            this.ctx.arc(cx, my, r * 0.6, 0, Math.PI * 2);
+            this.ctx.arc(cx, topY, r, 0, Math.PI * 2);
+            this.ctx.arc(cx, topY, r * 0.6, 0, Math.PI * 2);
             this.ctx.stroke();
             for (let a = 0; a < 4; a++) {
               const ang = (a * Math.PI) / 2;
               this.ctx.beginPath();
-              this.ctx.moveTo(cx + Math.cos(ang) * (r * 0.6), my + Math.sin(ang) * (r * 0.6));
-              this.ctx.lineTo(cx + Math.cos(ang) * (r + 7), my + Math.sin(ang) * (r + 7));
+              this.ctx.moveTo(cx + Math.cos(ang) * (r * 0.6), topY + Math.sin(ang) * (r * 0.6));
+              this.ctx.lineTo(cx + Math.cos(ang) * (r + 4), topY + Math.sin(ang) * (r + 4));
               this.ctx.stroke();
             }
           }
-          // Left: Mayan Feathered Serpent spiral coil
-          if (leftW > 25) {
-            const lx = leftW * 0.48;
+          // 2. Bottom: Stepped Mayan Pyramid of Kukulcan
+          if (canBot) {
+            this.ctx.strokeRect(cx - 28, botYPos + 10, 56, 5);
+            this.ctx.strokeRect(cx - 20, botYPos + 4, 40, 5);
+            this.ctx.strokeRect(cx - 12, botYPos - 2, 24, 5);
+            this.ctx.beginPath();
+            this.ctx.moveTo(cx - 5, botYPos - 2);
+            this.ctx.lineTo(cx - 5, botYPos - 7);
+            this.ctx.lineTo(cx + 5, botYPos - 7);
+            this.ctx.lineTo(cx + 5, botYPos - 2);
+            this.ctx.stroke();
+          }
+          // 3. Left: Mayan Feathered Serpent Spiral Coil
+          if (canLeft) {
             const ly = cy + drift2;
             this.ctx.beginPath();
-            this.ctx.arc(lx, ly, 12, 0, Math.PI * 1.5);
-            this.ctx.quadraticCurveTo(lx - 12, ly + 20, lx, ly + 28);
+            this.ctx.arc(leftX, ly, 8, 0, Math.PI * 1.5);
+            this.ctx.quadraticCurveTo(leftX - 8, ly + 14, leftX, ly + 20);
             this.ctx.stroke();
             this.ctx.beginPath();
-            this.ctx.arc(lx, ly, 3, 0, Math.PI * 2);
+            this.ctx.arc(leftX, ly, 2.5, 0, Math.PI * 2);
             this.ctx.fill();
           }
-          // Right: Stepped Mayan geometric fret lattice
-          if (rightW > 25) {
-            const rx = rightX + rightW * 0.52;
+          // 4. Right: Stepped Mayan Geometric Fret Lattice
+          if (canRight) {
+            const rx = rightXPos;
             const startY = Math.max(topH + 12, 80);
             const endY = Math.min(botY - 12, h - 80);
             for (let fy = startY; fy < endY; fy += 36) {
               this.ctx.beginPath();
               this.ctx.moveTo(rx, fy);
-              this.ctx.lineTo(rx - 10, fy);
-              this.ctx.lineTo(rx - 10, fy + 12);
+              this.ctx.lineTo(rx - 6, fy);
+              this.ctx.lineTo(rx - 6, fy + 12);
               this.ctx.lineTo(rx, fy + 12);
               this.ctx.lineTo(rx, fy + 24);
               this.ctx.stroke();
             }
           }
-          // Bottom: Stepped Mayan Pyramid of Kukulcán
-          if (botH > 32) {
-            const pyBase = botY + botH * 0.5 + drift3;
-            this.ctx.strokeRect(cx - 36, pyBase + 8, 72, 7);
-            this.ctx.strokeRect(cx - 24, pyBase, 48, 7);
-            this.ctx.strokeRect(cx - 12, pyBase - 8, 24, 7);
+          // 5. Top-Left: Mayan Calendrical Day Cartouche
+          if (canTL) {
             this.ctx.beginPath();
-            this.ctx.moveTo(cx - 6, pyBase - 8);
-            this.ctx.lineTo(cx - 6, pyBase - 14);
-            this.ctx.lineTo(cx + 6, pyBase - 14);
-            this.ctx.lineTo(cx + 6, pyBase - 8);
+            this.ctx.ellipse(tlX, tlY, 8, 7, 0, 0, Math.PI * 2);
+            this.ctx.stroke();
+            this.ctx.beginPath();
+            this.ctx.moveTo(tlX - 6, tlY - 2);
+            this.ctx.lineTo(tlX + 6, tlY - 2);
+            this.ctx.moveTo(tlX - 6, tlY + 2);
+            this.ctx.lineTo(tlX + 6, tlY + 2);
+            this.ctx.stroke();
+            this.ctx.beginPath();
+            this.ctx.arc(tlX, tlY - 4, 1.5, 0, Math.PI * 2);
+            this.ctx.fill();
+          }
+          // 6. Top-Right: Mayan Jade Lunar Crescent & Star
+          if (canTR) {
+            this.ctx.beginPath();
+            this.ctx.arc(trX, trY, 8, Math.PI * 0.4, Math.PI * 1.7);
+            this.ctx.quadraticCurveTo(trX + 2, trY, trX, trY + 8);
+            this.ctx.stroke();
+            this.ctx.beginPath();
+            this.ctx.arc(trX + 2, trY - 1, 2, 0, Math.PI * 2);
+            this.ctx.fill();
+          }
+          // 7. Bottom-Left: Chac Rain God Spiral Volute
+          if (canBL) {
+            this.ctx.beginPath();
+            this.ctx.arc(blX, blY - 3, 6, 0, Math.PI * 1.4);
+            this.ctx.arc(blX + 4, blY + 4, 5, Math.PI, Math.PI * 2.3);
+            this.ctx.stroke();
+          }
+          // 8. Bottom-Right: Mayan Kan Cross (Cosmic 4 Directions)
+          if (canBR) {
+            this.ctx.beginPath();
+            this.ctx.moveTo(brX, brY - 8);
+            this.ctx.lineTo(brX + 8, brY);
+            this.ctx.lineTo(brX, brY + 8);
+            this.ctx.lineTo(brX - 8, brY);
+            this.ctx.closePath();
+            this.ctx.moveTo(brX - 5, brY);
+            this.ctx.lineTo(brX + 5, brY);
+            this.ctx.moveTo(brX, brY - 5);
+            this.ctx.lineTo(brX, brY + 5);
             this.ctx.stroke();
           }
         } else if (wId === 2) {
           // World 2: Ancient Egypt (Desert Gold #ffd700)
-          // Top: The Eye of Horus (Wedjat)
-          if (topH > 28) {
-            const my = topH * 0.52 + drift1;
+          // 1. Top: The Eye of Horus (Wedjat)
+          if (canTop) {
             this.ctx.beginPath();
-            this.ctx.moveTo(cx - 26, my);
-            this.ctx.quadraticCurveTo(cx, my - 15, cx + 24, my);
-            this.ctx.quadraticCurveTo(cx, my + 13, cx - 26, my);
+            this.ctx.moveTo(cx - 20, topY);
+            this.ctx.quadraticCurveTo(cx, topY - 12, cx + 18, topY);
+            this.ctx.quadraticCurveTo(cx, topY + 10, cx - 20, topY);
             this.ctx.stroke();
             this.ctx.beginPath();
-            this.ctx.arc(cx - 1, my - 1, 5, 0, Math.PI * 2);
+            this.ctx.arc(cx - 1, topY - 1, 3.5, 0, Math.PI * 2);
             this.ctx.stroke();
             this.ctx.beginPath();
-            this.ctx.moveTo(cx - 3, my + 9);
-            this.ctx.quadraticCurveTo(cx - 12, my + 15, cx - 16, my + 24);
+            this.ctx.moveTo(cx - 3, topY + 6);
+            this.ctx.quadraticCurveTo(cx - 9, topY + 9, cx - 12, topY + 12);
             this.ctx.stroke();
           }
-          // Left: Sacred Ankh (Key of Life)
-          if (leftW > 25) {
-            const ax = leftW * 0.48;
+          // 2. Bottom: Sacred Lotus Bloom
+          if (canBot) {
+            this.ctx.beginPath();
+            this.ctx.moveTo(cx, botYPos + 8);
+            this.ctx.quadraticCurveTo(cx - 15, botYPos - 2, cx, botYPos - 8);
+            this.ctx.quadraticCurveTo(cx + 15, botYPos - 2, cx, botYPos + 8);
+            this.ctx.moveTo(cx, botYPos + 8);
+            this.ctx.quadraticCurveTo(cx - 24, botYPos + 2, cx - 18, botYPos - 6);
+            this.ctx.moveTo(cx, botYPos + 8);
+            this.ctx.quadraticCurveTo(cx + 24, botYPos + 2, cx + 18, botYPos - 6);
+            this.ctx.stroke();
+          }
+          // 3. Left: Sacred Ankh (Key of Life)
+          if (canLeft) {
             const ay = cy + drift2;
             this.ctx.beginPath();
-            this.ctx.ellipse(ax, ay - 10, 6, 9, 0, 0, Math.PI * 2);
-            this.ctx.moveTo(ax, ay - 1);
-            this.ctx.lineTo(ax, ay + 18);
-            this.ctx.moveTo(ax - 10, ay + 6);
-            this.ctx.lineTo(ax + 10, ay + 6);
+            this.ctx.ellipse(leftX, ay - 6, 4, 6, 0, 0, Math.PI * 2);
+            this.ctx.moveTo(leftX, ay);
+            this.ctx.lineTo(leftX, ay + 12);
+            this.ctx.moveTo(leftX - 6, ay + 4);
+            this.ctx.lineTo(leftX + 6, ay + 4);
             this.ctx.stroke();
           }
-          // Right: Sacred Scarab silhouette
-          if (rightW > 25) {
-            const sx = rightX + rightW * 0.52;
+          // 4. Right: Sacred Scarab Silhouette
+          if (canRight) {
+            const sx = rightXPos;
             const sy = cy + drift3;
             this.ctx.beginPath();
-            this.ctx.ellipse(sx, sy, 8, 12, 0, 0, Math.PI * 2);
-            this.ctx.moveTo(sx, sy - 12);
-            this.ctx.lineTo(sx, sy + 12);
-            this.ctx.moveTo(sx - 8, sy - 4);
-            this.ctx.lineTo(sx - 14, sy - 10);
-            this.ctx.moveTo(sx + 8, sy - 4);
-            this.ctx.lineTo(sx + 14, sy - 10);
-            this.ctx.moveTo(sx - 8, sy + 4);
-            this.ctx.lineTo(sx - 14, sy + 10);
-            this.ctx.moveTo(sx + 8, sy + 4);
-            this.ctx.lineTo(sx + 14, sy + 10);
+            this.ctx.ellipse(sx, sy, 5, 8, 0, 0, Math.PI * 2);
+            this.ctx.moveTo(sx, sy - 8);
+            this.ctx.lineTo(sx, sy + 8);
+            this.ctx.moveTo(sx - 5, sy - 2);
+            this.ctx.lineTo(sx - 6, sy - 6);
+            this.ctx.moveTo(sx + 5, sy - 2);
+            this.ctx.lineTo(sx + 6, sy - 6);
+            this.ctx.moveTo(sx - 5, sy + 2);
+            this.ctx.lineTo(sx - 6, sy + 6);
+            this.ctx.moveTo(sx + 5, sy + 2);
+            this.ctx.lineTo(sx + 6, sy + 6);
             this.ctx.stroke();
           }
-          // Bottom: Sacred Lotus bloom
-          if (botH > 30) {
-            const ly = botY + botH * 0.5 + drift1;
+          // 5. Top-Left: Djed Pillar of Stability
+          if (canTL) {
             this.ctx.beginPath();
-            this.ctx.moveTo(cx, ly + 14);
-            this.ctx.quadraticCurveTo(cx - 20, ly - 6, cx, ly - 18);
-            this.ctx.quadraticCurveTo(cx + 20, ly - 6, cx, ly + 14);
-            this.ctx.moveTo(cx, ly + 14);
-            this.ctx.quadraticCurveTo(cx - 34, ly, cx - 26, ly - 14);
-            this.ctx.moveTo(cx, ly + 14);
-            this.ctx.quadraticCurveTo(cx + 34, ly, cx + 28, ly - 14);
+            this.ctx.moveTo(tlX, tlY - 8);
+            this.ctx.lineTo(tlX, tlY + 8);
+            for (let k = -7; k <= -1; k += 2.5) {
+              this.ctx.moveTo(tlX - 5, tlY + k);
+              this.ctx.lineTo(tlX + 5, tlY + k);
+            }
+            this.ctx.moveTo(tlX - 6, tlY + 8);
+            this.ctx.lineTo(tlX + 6, tlY + 8);
+            this.ctx.stroke();
+          }
+          // 6. Top-Right: Was Scepter of Dominion
+          if (canTR) {
+            this.ctx.beginPath();
+            this.ctx.moveTo(trX + 2, trY - 9);
+            this.ctx.quadraticCurveTo(trX - 5, trY - 8, trX - 1, trY - 4);
+            this.ctx.lineTo(trX - 1, trY + 6);
+            this.ctx.lineTo(trX - 4, trY + 9);
+            this.ctx.moveTo(trX - 1, trY + 6);
+            this.ctx.lineTo(trX + 3, trY + 9);
+            this.ctx.stroke();
+          }
+          // 7. Bottom-Left: Winged Sun Disc of Ra
+          if (canBL) {
+            this.ctx.beginPath();
+            this.ctx.arc(blX, blY, 4, 0, Math.PI * 2);
+            this.ctx.stroke();
+            this.ctx.beginPath();
+            this.ctx.moveTo(blX - 4, blY - 2);
+            this.ctx.quadraticCurveTo(blX - 8, blY - 6, blX - 11, blY + 1);
+            this.ctx.moveTo(blX + 4, blY - 2);
+            this.ctx.quadraticCurveTo(blX + 8, blY - 6, blX + 11, blY + 1);
+            this.ctx.stroke();
+          }
+          // 8. Bottom-Right: Shen Ring of Eternity
+          if (canBR) {
+            this.ctx.beginPath();
+            this.ctx.arc(brX, brY - 2, 5, 0, Math.PI * 2);
+            this.ctx.moveTo(brX - 6, brY + 5);
+            this.ctx.lineTo(brX + 6, brY + 5);
             this.ctx.stroke();
           }
         } else if (wId === 3) {
           // World 3: Obsidian Vault (Deep Cyan #00f0ff)
-          // Top: Multi-faceted geometric Obsidian Star Crystal
-          if (topH > 28) {
-            const my = topH * 0.52 + drift1;
-            const r = Math.min(22, topH * 0.36);
+          // 1. Top: Multi-faceted Obsidian Star Crystal
+          if (canTop) {
+            const r = Math.min(16, topH * 0.28);
             this.ctx.beginPath();
-            this.ctx.moveTo(cx, my - r);
-            this.ctx.lineTo(cx + r * 1.1, my);
-            this.ctx.lineTo(cx, my + r);
-            this.ctx.lineTo(cx - r * 1.1, my);
+            this.ctx.moveTo(cx, topY - r);
+            this.ctx.lineTo(cx + r * 1.1, topY);
+            this.ctx.lineTo(cx, topY + r);
+            this.ctx.lineTo(cx - r * 1.1, topY);
             this.ctx.closePath();
-            this.ctx.moveTo(cx - r * 1.1, my);
-            this.ctx.lineTo(cx + r * 1.1, my);
-            this.ctx.moveTo(cx, my - r);
-            this.ctx.lineTo(cx, my + r);
+            this.ctx.moveTo(cx - r * 1.1, topY);
+            this.ctx.lineTo(cx + r * 1.1, topY);
+            this.ctx.moveTo(cx, topY - r);
+            this.ctx.lineTo(cx, topY + r);
             this.ctx.stroke();
           }
-          // Left: Columnar Basalt Hexagonal Lattice
-          if (leftW > 25) {
-            const bx = leftW * 0.48;
+          // 2. Bottom: Metatron Basalt Rosette
+          if (canBot) {
+            const hr = 8;
+            this.ctx.beginPath();
+            this.ctx.arc(cx, botYPos, hr, 0, Math.PI * 2);
+            for (let i = 0; i < 6; i++) {
+              const a = (i * Math.PI) / 3;
+              this.ctx.moveTo(cx, botYPos);
+              this.ctx.lineTo(cx + Math.cos(a) * hr * 1.3, botYPos + Math.sin(a) * hr * 1.3);
+            }
+            this.ctx.stroke();
+          }
+          // 3. Left: Columnar Basalt Hexagonal Lattice
+          if (canLeft) {
             const by2 = cy + drift2;
             const hex = (hx, hy, hr) => {
               this.ctx.beginPath();
@@ -5560,233 +5781,373 @@
               this.ctx.closePath();
               this.ctx.stroke();
             };
-            hex(bx, by2 - 14, 9);
-            hex(bx, by2 + 14, 9);
-            hex(bx - 10, by2, 7);
+            hex(leftX, by2 - 10, 6);
+            hex(leftX, by2 + 10, 6);
+            hex(leftX - 7, by2, 5);
           }
-          // Right: Geometric Crystalline Basalt Fracture Lines
-          if (rightW > 25) {
-            const fx = rightX + rightW * 0.52;
+          // 4. Right: Geometric Crystalline Basalt Fracture Lines
+          if (canRight) {
+            const fx = rightXPos;
             const fy = cy + drift3;
             this.ctx.beginPath();
-            this.ctx.moveTo(fx, fy - 26);
-            this.ctx.lineTo(fx + 10, fy - 10);
-            this.ctx.lineTo(fx - 8, fy + 8);
-            this.ctx.lineTo(fx + 6, fy + 26);
+            this.ctx.moveTo(fx, fy - 20);
+            this.ctx.lineTo(fx + 7, fy - 7);
+            this.ctx.lineTo(fx - 6, fy + 7);
+            this.ctx.lineTo(fx + 5, fy + 20);
             this.ctx.stroke();
             this.ctx.beginPath();
-            this.ctx.arc(fx + 10, fy - 10, 2, 0, Math.PI * 2);
-            this.ctx.arc(fx - 8, fy + 8, 2, 0, Math.PI * 2);
+            this.ctx.arc(fx + 7, fy - 7, 2, 0, Math.PI * 2);
+            this.ctx.arc(fx - 6, fy + 7, 2, 0, Math.PI * 2);
             this.ctx.fill();
           }
-          // Bottom: Metatron Basalt Rosette
-          if (botH > 30) {
-            const ry = botY + botH * 0.5 + drift1;
-            const hr = 12;
+          // 5. Top-Left: Octahedral Crystalline Shard Node
+          if (canTL) {
             this.ctx.beginPath();
-            this.ctx.arc(cx, ry, hr, 0, Math.PI * 2);
-            for (let i = 0; i < 6; i++) {
-              const a = (i * Math.PI) / 3;
-              this.ctx.moveTo(cx, ry);
-              this.ctx.lineTo(cx + Math.cos(a) * hr * 1.5, ry + Math.sin(a) * hr * 1.5);
+            this.ctx.moveTo(tlX, tlY - 8);
+            this.ctx.lineTo(tlX + 7, tlY - 1);
+            this.ctx.lineTo(tlX, tlY + 8);
+            this.ctx.lineTo(tlX - 7, tlY - 1);
+            this.ctx.closePath();
+            this.ctx.moveTo(tlX - 7, tlY - 1);
+            this.ctx.lineTo(tlX + 7, tlY - 1);
+            this.ctx.stroke();
+          }
+          // 6. Top-Right: Geothermal Thermal Vortex
+          if (canTR) {
+            this.ctx.strokeRect(trX - 6, trY - 6, 12, 12);
+            this.ctx.strokeRect(trX - 3, trY - 3, 6, 6);
+            this.ctx.beginPath();
+            this.ctx.arc(trX, trY, 1.2, 0, Math.PI * 2);
+            this.ctx.fill();
+          }
+          // 7. Bottom-Left: Basalt Subduction Fault Chevrons
+          if (canBL) {
+            for (let off = -6; off <= 6; off += 6) {
+              this.ctx.beginPath();
+              this.ctx.moveTo(blX - 7, blY + off - 3);
+              this.ctx.lineTo(blX, blY + off + 3);
+              this.ctx.lineTo(blX + 7, blY + off - 3);
+              this.ctx.stroke();
             }
+          }
+          // 8. Bottom-Right: Obsidian Scrying Mirror of Tezcatlipoca
+          if (canBR) {
+            this.ctx.beginPath();
+            this.ctx.arc(brX, brY, 6, 0, Math.PI * 2);
+            this.ctx.arc(brX, brY, 3, 0, Math.PI * 2);
             this.ctx.stroke();
           }
         } else if (wId === 4) {
           // World 4: Babylon Gardens (Amethyst Purple #d500f9)
-          // Top: 8-pointed Ishtar Rosette Star
-          if (topH > 28) {
-            const my = topH * 0.52 + drift1;
-            const r1 = Math.min(24, topH * 0.38);
+          // 1. Top: 8-pointed Ishtar Rosette Star
+          if (canTop) {
+            const r1 = Math.min(16, topH * 0.28);
             const r2 = r1 * 0.42;
             this.ctx.beginPath();
             for (let i = 0; i < 16; i++) {
               const ang = (i * Math.PI) / 8 - Math.PI / 2;
               const rad = (i % 2 === 0) ? r1 : r2;
               const px = cx + Math.cos(ang) * rad;
-              const py = my + Math.sin(ang) * rad;
+              const py = topY + Math.sin(ang) * rad;
               if (i === 0) this.ctx.moveTo(px, py);
               else this.ctx.lineTo(px, py);
             }
             this.ctx.closePath();
             this.ctx.stroke();
             this.ctx.beginPath();
-            this.ctx.arc(cx, my, r1 * 0.65, 0, Math.PI * 2);
+            this.ctx.arc(cx, topY, r1 * 0.65, 0, Math.PI * 2);
             this.ctx.stroke();
           }
-          // Left: Winged Lamassu silhouette
-          if (leftW > 25) {
-            const lx = leftW * 0.48;
+          // 2. Bottom: Grand Stepped Arched Ziggurat
+          if (canBot) {
+            this.ctx.beginPath();
+            this.ctx.arc(cx, botYPos + 4, 14, Math.PI, 0);
+            this.ctx.arc(cx, botYPos + 4, 9, Math.PI, 0);
+            this.ctx.stroke();
+            this.ctx.strokeRect(cx - 24, botYPos + 4, 48, 4);
+          }
+          // 3. Left: Winged Lamassu Silhouette
+          if (canLeft) {
             const ly = cy + drift2;
             this.ctx.beginPath();
-            this.ctx.moveTo(lx - 12, ly + 14);
-            this.ctx.lineTo(lx + 10, ly + 14);
-            this.ctx.lineTo(lx + 10, ly - 4);
-            this.ctx.quadraticCurveTo(lx + 14, ly - 18, lx, ly - 14);
-            this.ctx.quadraticCurveTo(lx - 12, ly - 10, lx - 12, ly + 14);
-            this.ctx.moveTo(lx + 4, ly - 8);
-            this.ctx.lineTo(lx + 16, ly - 16);
+            this.ctx.moveTo(leftX - 8, ly + 8);
+            this.ctx.lineTo(leftX + 5, ly + 8);
+            this.ctx.lineTo(leftX + 5, ly - 2);
+            this.ctx.quadraticCurveTo(leftX + 6, ly - 10, leftX, ly - 8);
+            this.ctx.quadraticCurveTo(leftX - 8, ly - 6, leftX - 8, ly + 8);
+            this.ctx.moveTo(leftX + 1, ly - 4);
+            this.ctx.lineTo(leftX + 6, ly - 10);
             this.ctx.stroke();
           }
-          // Right: Cuneiform Tablet frieze
-          if (rightW > 25) {
-            const rx = rightX + rightW * 0.52;
+          // 4. Right: Cuneiform Tablet Frieze
+          if (canRight) {
+            const rx = rightXPos;
             const ry = cy + drift3;
-            for (let row = -14; row <= 14; row += 9) {
+            for (let row = -10; row <= 10; row += 7) {
               this.ctx.beginPath();
-              this.ctx.moveTo(rx - 8, ry + row);
-              this.ctx.lineTo(rx + 8, ry + row);
-              this.ctx.moveTo(rx - 4, ry + row - 3);
+              this.ctx.moveTo(rx - 6, ry + row);
+              this.ctx.lineTo(rx + 6, ry + row);
+              this.ctx.moveTo(rx - 3, ry + row - 2);
               this.ctx.lineTo(rx - 1, ry + row);
               this.ctx.stroke();
             }
           }
-          // Bottom: Grand Stepped Arched Ziggurat
-          if (botH > 30) {
-            const zy = botY + botH * 0.5 + drift1;
+          // 5. Top-Left: Babylonian Sacred Tree of Life (Palmette)
+          if (canTL) {
             this.ctx.beginPath();
-            this.ctx.arc(cx, zy + 6, 22, Math.PI, 0);
-            this.ctx.arc(cx, zy + 6, 13, Math.PI, 0);
+            this.ctx.moveTo(tlX, tlY + 8);
+            this.ctx.lineTo(tlX, tlY - 7);
+            for (let d = -3; d <= 3; d++) {
+              const a = -Math.PI / 2 + d * 0.35;
+              this.ctx.moveTo(tlX, tlY - 2);
+              this.ctx.lineTo(tlX + Math.cos(a) * 8, tlY - 2 + Math.sin(a) * 8);
+            }
             this.ctx.stroke();
-            this.ctx.strokeRect(cx - 30, zy + 6, 60, 4);
+          }
+          // 6. Top-Right: Horned Divine Crown of the Anunnaki
+          if (canTR) {
+            this.ctx.beginPath();
+            this.ctx.moveTo(trX - 7, trY + 6);
+            this.ctx.quadraticCurveTo(trX, trY + 10, trX + 7, trY + 6);
+            this.ctx.moveTo(trX - 6, trY + 1);
+            this.ctx.quadraticCurveTo(trX, trY + 5, trX + 6, trY + 1);
+            this.ctx.moveTo(trX, trY + 3);
+            this.ctx.lineTo(trX, trY - 7);
+            this.ctx.stroke();
+          }
+          // 7. Bottom-Left: Striding Lion of Babylon
+          if (canBL) {
+            this.ctx.beginPath();
+            this.ctx.moveTo(blX - 8, blY + 6);
+            this.ctx.lineTo(blX + 6, blY + 6);
+            this.ctx.lineTo(blX + 7, blY - 1);
+            this.ctx.quadraticCurveTo(blX + 3, blY - 7, blX - 3, blY - 4);
+            this.ctx.quadraticCurveTo(blX - 9, blY - 1, blX - 8, blY + 6);
+            this.ctx.stroke();
+          }
+          // 8. Bottom-Right: Rod and Ring of Shamash
+          if (canBR) {
+            this.ctx.beginPath();
+            this.ctx.arc(brX - 2, brY, 5, 0, Math.PI * 2);
+            this.ctx.moveTo(brX + 4, brY - 8);
+            this.ctx.lineTo(brX + 4, brY + 8);
+            this.ctx.stroke();
           }
         } else if (wId === 5) {
           // World 5: Roman Colosseum (Blood Red #ff1744)
-          // Top: Roman Legionary Aquila eagle wings
-          if (topH > 28) {
-            const my = topH * 0.52 + drift1;
+          // 1. Top: Roman Legionary Aquila Eagle Wings
+          if (canTop) {
             this.ctx.beginPath();
-            this.ctx.moveTo(cx, my - 6);
-            this.ctx.quadraticCurveTo(cx - 24, my - 16, cx - 36, my + 6);
-            this.ctx.moveTo(cx, my - 6);
-            this.ctx.quadraticCurveTo(cx + 24, my - 16, cx + 36, my + 6);
+            this.ctx.moveTo(cx, topY - 4);
+            this.ctx.quadraticCurveTo(cx - 20, topY - 12, cx - 30, topY + 4);
+            this.ctx.moveTo(cx, topY - 4);
+            this.ctx.quadraticCurveTo(cx + 20, topY - 12, cx + 30, topY + 4);
             this.ctx.stroke();
-            this.ctx.strokeRect(cx - 18, my + 4, 36, 10);
+            this.ctx.strokeRect(cx - 14, topY + 2, 28, 8);
           }
-          // Left: Laurel Victory Wreath
-          if (leftW > 25) {
-            const wx = leftW * 0.48;
+          // 2. Bottom: Colosseum Tiered Arches
+          if (canBot) {
+            this.ctx.beginPath();
+            this.ctx.ellipse(cx, botYPos, 32, 10, 0, 0, Math.PI * 2);
+            this.ctx.ellipse(cx, botYPos, 20, 6, 0, 0, Math.PI * 2);
+            this.ctx.stroke();
+          }
+          // 3. Left: Laurel Victory Wreath
+          if (canLeft) {
             const wy = cy + drift2;
             this.ctx.beginPath();
-            this.ctx.arc(wx, wy, 14, Math.PI * 0.5, Math.PI * 1.5);
+            this.ctx.arc(leftX, wy, 10, Math.PI * 0.5, Math.PI * 1.5);
             this.ctx.stroke();
             for (let i = 0; i < 4; i++) {
               const a = Math.PI * 0.7 + i * 0.25;
               this.ctx.beginPath();
-              this.ctx.ellipse(wx + Math.cos(a) * 14, wy + Math.sin(a) * 14, 4, 2, a, 0, Math.PI * 2);
+              this.ctx.ellipse(leftX + Math.cos(a) * 10, wy + Math.sin(a) * 10, 3, 1.5, a, 0, Math.PI * 2);
               this.ctx.stroke();
             }
           }
-          // Right: Gladiator Scutum Shield & Gladius
-          if (rightW > 25) {
-            const sx = rightX + rightW * 0.52;
+          // 4. Right: Gladiator Scutum Shield & Gladius
+          if (canRight) {
+            const sx = rightXPos;
             const sy = cy + drift3;
-            if (this.ctx.roundRect) {
-              this.ctx.beginPath();
-              this.ctx.roundRect(sx - 8, sy - 18, 16, 36, 4);
-              this.ctx.stroke();
-            } else {
-              this.ctx.strokeRect(sx - 8, sy - 18, 16, 36);
-            }
+            this.ctx.strokeRect(sx - 6, sy - 14, 12, 28);
             this.ctx.beginPath();
-            this.ctx.arc(sx, sy, 3, 0, Math.PI * 2);
+            this.ctx.arc(sx, sy, 2.5, 0, Math.PI * 2);
             this.ctx.fill();
           }
-          // Bottom: Colosseum tiered arches
-          if (botH > 30) {
-            const cyBase = botY + botH * 0.5 + drift1;
+          // 5. Top-Left: SPQR Vexillum Military Standard
+          if (canTL) {
             this.ctx.beginPath();
-            this.ctx.ellipse(cx, cyBase, 42, 16, 0, 0, Math.PI * 2);
-            this.ctx.ellipse(cx, cyBase, 28, 10, 0, 0, Math.PI * 2);
+            this.ctx.moveTo(tlX, tlY - 8);
+            this.ctx.lineTo(tlX, tlY + 8);
+            this.ctx.moveTo(tlX - 6, tlY - 5);
+            this.ctx.lineTo(tlX + 6, tlY - 5);
+            this.ctx.strokeRect(tlX - 5, tlY - 4, 10, 8);
+            this.ctx.stroke();
+          }
+          // 6. Top-Right: Roman Corinthian Column Capital
+          if (canTR) {
+            this.ctx.beginPath();
+            this.ctx.arc(trX - 5, trY - 3, 3, 0, Math.PI * 2);
+            this.ctx.arc(trX + 5, trY - 3, 3, 0, Math.PI * 2);
+            this.ctx.moveTo(trX - 7, trY + 3);
+            this.ctx.lineTo(trX + 7, trY + 3);
+            this.ctx.moveTo(trX - 4, trY + 3);
+            this.ctx.lineTo(trX - 4, trY + 8);
+            this.ctx.moveTo(trX + 4, trY + 3);
+            this.ctx.lineTo(trX + 4, trY + 8);
+            this.ctx.stroke();
+          }
+          // 7. Bottom-Left: Galea Centurion Crested Helmet
+          if (canBL) {
+            this.ctx.beginPath();
+            this.ctx.arc(blX, blY, 6, Math.PI, 0);
+            this.ctx.moveTo(blX - 8, blY - 3);
+            this.ctx.quadraticCurveTo(blX, blY - 8, blX + 8, blY - 3);
+            this.ctx.moveTo(blX - 5, blY);
+            this.ctx.lineTo(blX - 5, blY + 6);
+            this.ctx.stroke();
+          }
+          // 8. Bottom-Right: Roman Fasces Axe Bundle
+          if (canBR) {
+            this.ctx.strokeRect(brX - 3, brY - 8, 6, 16);
+            this.ctx.beginPath();
+            this.ctx.moveTo(brX + 3, brY - 3);
+            this.ctx.lineTo(brX + 7, brY - 3);
+            this.ctx.lineTo(brX + 5, brY + 3);
+            this.ctx.lineTo(brX + 3, brY + 3);
             this.ctx.stroke();
           }
         } else if (wId === 6) {
           // World 6: Feudal Japan (Crimson Sakura #ff4d6d)
-          // Top: Grand Torii Shrine Gate
-          if (topH > 28) {
-            const my = topH * 0.52 + drift1;
+          // 1. Top: Grand Torii Shrine Gate
+          if (canTop) {
             this.ctx.beginPath();
-            this.ctx.moveTo(cx - 38, my - 14);
-            this.ctx.quadraticCurveTo(cx, my - 19, cx + 38, my - 14);
-            this.ctx.moveTo(cx - 32, my - 8);
-            this.ctx.lineTo(cx + 32, my - 8);
-            this.ctx.moveTo(cx - 20, my - 8);
-            this.ctx.lineTo(cx - 22, my + 16);
-            this.ctx.moveTo(cx + 20, my - 8);
-            this.ctx.lineTo(cx + 22, my + 16);
-            this.ctx.moveTo(cx - 26, my + 2);
-            this.ctx.lineTo(cx + 26, my + 2);
+            this.ctx.moveTo(cx - 32, topY - 10);
+            this.ctx.quadraticCurveTo(cx, topY - 14, cx + 32, topY - 10);
+            this.ctx.moveTo(cx - 26, topY - 5);
+            this.ctx.lineTo(cx + 26, topY - 5);
+            this.ctx.moveTo(cx - 16, topY - 5);
+            this.ctx.lineTo(cx - 18, topY + 10);
+            this.ctx.moveTo(cx + 16, topY - 5);
+            this.ctx.lineTo(cx + 18, topY + 10);
+            this.ctx.moveTo(cx - 22, topY + 2);
+            this.ctx.lineTo(cx + 22, topY + 2);
             this.ctx.stroke();
           }
-          // Left: Mitsudomoe triple swirl crest
-          if (leftW > 25) {
-            const mx = leftW * 0.48;
+          // 2. Bottom: Japanese Pagoda Roof Tiers
+          if (canBot) {
+            this.ctx.beginPath();
+            this.ctx.moveTo(cx - 24, botYPos + 8);
+            this.ctx.quadraticCurveTo(cx, botYPos + 4, cx + 24, botYPos + 8);
+            this.ctx.moveTo(cx - 18, botYPos);
+            this.ctx.quadraticCurveTo(cx, botYPos - 4, cx + 18, botYPos);
+            this.ctx.moveTo(cx - 12, botYPos - 8);
+            this.ctx.quadraticCurveTo(cx, botYPos - 8, cx + 12, botYPos - 8);
+            this.ctx.stroke();
+          }
+          // 3. Left: Mitsudomoe Triple Swirl Crest
+          if (canLeft) {
             const my = cy + drift2;
             this.ctx.beginPath();
-            this.ctx.arc(mx, my, 12, 0, Math.PI * 2);
+            this.ctx.arc(leftX, my, 8, 0, Math.PI * 2);
             this.ctx.stroke();
             for (let i = 0; i < 3; i++) {
               const a = (i * Math.PI * 2) / 3;
               this.ctx.beginPath();
-              this.ctx.arc(mx + Math.cos(a) * 5, my + Math.sin(a) * 5, 2.5, 0, Math.PI * 2);
+              this.ctx.arc(leftX + Math.cos(a) * 3.5, my + Math.sin(a) * 3.5, 1.8, 0, Math.PI * 2);
               this.ctx.fill();
             }
           }
-          // Right: Asanoha geometric motif & sakura petal
-          if (rightW > 25) {
-            const ax = rightX + rightW * 0.52;
+          // 4. Right: Asanoha Geometric Motif & Sakura Petal
+          if (canRight) {
             const ay = cy + drift3;
-            const r = 12;
+            const r = 8;
             this.ctx.beginPath();
             for (let a = 0; a < 6; a++) {
               const ang = (a * Math.PI) / 3;
-              this.ctx.moveTo(ax, ay);
-              this.ctx.lineTo(ax + Math.cos(ang) * r, ay + Math.sin(ang) * r);
+              this.ctx.moveTo(rightXPos, ay);
+              this.ctx.lineTo(rightXPos + Math.cos(ang) * r, ay + Math.sin(ang) * r);
             }
             this.ctx.stroke();
             this.ctx.beginPath();
-            this.ctx.ellipse(ax, ay + 22, 5, 2.5, Math.PI / 4, 0, Math.PI * 2);
+            this.ctx.ellipse(rightXPos, ay + 14, 4, 2, Math.PI / 4, 0, Math.PI * 2);
             this.ctx.stroke();
           }
-          // Bottom: Japanese Pagoda Roof Tiers
-          if (botH > 30) {
-            const py = botY + botH * 0.5 + drift1;
+          // 5. Top-Left: Sensu Folding Fan (Ogi)
+          if (canTL) {
             this.ctx.beginPath();
-            this.ctx.moveTo(cx - 30, py + 8);
-            this.ctx.quadraticCurveTo(cx, py + 4, cx + 30, py + 8);
-            this.ctx.moveTo(cx - 22, py);
-            this.ctx.quadraticCurveTo(cx, py - 4, cx + 22, py);
-            this.ctx.moveTo(cx - 14, py - 8);
-            this.ctx.quadraticCurveTo(cx, py - 12, cx + 14, py - 8);
+            this.ctx.arc(tlX, tlY + 5, 8, Math.PI * 1.15, Math.PI * 1.85);
+            this.ctx.lineTo(tlX, tlY + 5);
+            this.ctx.closePath();
+            this.ctx.moveTo(tlX, tlY + 5);
+            this.ctx.lineTo(tlX - 3, tlY - 3);
+            this.ctx.moveTo(tlX, tlY + 5);
+            this.ctx.lineTo(tlX + 3, tlY - 3);
+            this.ctx.stroke();
+          }
+          // 6. Top-Right: Katana Tsuba (Sword Handguard)
+          if (canTR) {
+            this.ctx.beginPath();
+            this.ctx.ellipse(trX, trY, 7, 8, 0, 0, Math.PI * 2);
+            this.ctx.stroke();
+            this.ctx.strokeRect(trX - 2, trY - 4, 4, 8);
+          }
+          // 7. Bottom-Left: Origami Peace Crane (Orizuru)
+          if (canBL) {
+            this.ctx.beginPath();
+            this.ctx.moveTo(blX - 8, blY - 2);
+            this.ctx.lineTo(blX, blY + 5);
+            this.ctx.lineTo(blX + 8, blY - 2);
+            this.ctx.lineTo(blX, blY - 6);
+            this.ctx.closePath();
+            this.ctx.moveTo(blX, blY - 6);
+            this.ctx.lineTo(blX - 4, blY - 8);
+            this.ctx.stroke();
+          }
+          // 8. Bottom-Right: Imperial Chrysanthemum Crest (Kiku-kamon)
+          if (canBR) {
+            this.ctx.beginPath();
+            this.ctx.arc(brX, brY, 3, 0, Math.PI * 2);
+            for (let i = 0; i < 8; i++) {
+              const a = (i * Math.PI) / 4;
+              this.ctx.moveTo(brX + Math.cos(a) * 3, brY + Math.sin(a) * 3);
+              this.ctx.lineTo(brX + Math.cos(a) * 7.5, brY + Math.sin(a) * 7.5);
+            }
             this.ctx.stroke();
           }
         } else if (wId === 7) {
           // World 7: Viking Valhalla (Frost Azure #38bdf8)
-          // Top: Vegvisir Runic Compass
-          if (topH > 28) {
-            const my = topH * 0.52 + drift1;
-            const r = Math.min(22, topH * 0.36);
+          // 1. Top: Vegvisir Runic Compass
+          if (canTop) {
+            const r = Math.min(14, topH * 0.24);
             this.ctx.beginPath();
-            this.ctx.arc(cx, my, r * 0.32, 0, Math.PI * 2);
+            this.ctx.arc(cx, topY, r * 0.32, 0, Math.PI * 2);
             this.ctx.stroke();
             for (let a = 0; a < 8; a++) {
               const ang = (a * Math.PI) / 4;
               const x1 = cx + Math.cos(ang) * (r * 0.32);
-              const y1 = my + Math.sin(ang) * (r * 0.32);
-              const x2 = cx + Math.cos(ang) * (r * 1.15);
-              const y2 = my + Math.sin(ang) * (r * 1.15);
+              const y1 = topY + Math.sin(ang) * (r * 0.32);
+              const x2 = cx + Math.cos(ang) * (r * 1.05);
+              const y2 = topY + Math.sin(ang) * (r * 1.05);
               this.ctx.beginPath();
               this.ctx.moveTo(x1, y1);
               this.ctx.lineTo(x2, y2);
               const perpAng = ang + Math.PI / 2;
-              this.ctx.moveTo(x2 - Math.cos(perpAng) * 4, y2 - Math.sin(perpAng) * 4);
-              this.ctx.lineTo(x2 + Math.cos(perpAng) * 4, y2 + Math.sin(perpAng) * 4);
+              this.ctx.moveTo(x2 - Math.cos(perpAng) * 2.5, y2 - Math.sin(perpAng) * 2.5);
+              this.ctx.lineTo(x2 + Math.cos(perpAng) * 2.5, y2 + Math.sin(perpAng) * 2.5);
               this.ctx.stroke();
             }
           }
-          // Left: Valknut (interlocking triangles)
-          if (leftW > 25) {
-            const vx = leftW * 0.48;
+          // 2. Bottom: Drakkar Dragon Prow Curve
+          if (canBot) {
+            this.ctx.beginPath();
+            this.ctx.moveTo(cx - 26, botYPos + 4);
+            this.ctx.quadraticCurveTo(cx - 10, botYPos + 8, cx + 12, botYPos + 4);
+            this.ctx.quadraticCurveTo(cx + 22, botYPos - 2, cx + 26, botYPos - 8);
+            this.ctx.stroke();
+          }
+          // 3. Left: Valknut (Interlocking Triangles)
+          if (canLeft) {
             const vy = cy + drift2;
             const tri = (tx, ty, tr) => {
               this.ctx.beginPath();
@@ -5796,193 +6157,333 @@
               this.ctx.closePath();
               this.ctx.stroke();
             };
-            tri(vx, vy - 4, 10);
-            tri(vx - 5, vy + 4, 10);
-            tri(vx + 5, vy + 4, 10);
+            tri(leftX, vy - 3, 6);
+            tri(leftX - 3, vy + 3, 6);
+            tri(leftX + 3, vy + 3, 6);
           }
-          // Right: Helm of Awe (Aegishjalmr rune star)
-          if (rightW > 25) {
-            const rx = rightX + rightW * 0.52;
+          // 4. Right: Helm of Awe (Aegishjalmr Rune Star)
+          if (canRight) {
             const ry = cy + drift3;
             this.ctx.beginPath();
-            this.ctx.moveTo(rx, ry - 14);
-            this.ctx.lineTo(rx, ry + 14);
-            this.ctx.moveTo(rx - 14, ry);
-            this.ctx.lineTo(rx + 14, ry);
-            this.ctx.moveTo(rx - 6, ry - 10);
-            this.ctx.lineTo(rx + 6, ry - 10);
-            this.ctx.moveTo(rx - 6, ry + 10);
-            this.ctx.lineTo(rx + 6, ry + 10);
+            this.ctx.moveTo(rightXPos, ry - 8);
+            this.ctx.lineTo(rightXPos, ry + 8);
+            this.ctx.moveTo(rightXPos - 8, ry);
+            this.ctx.lineTo(rightXPos + 8, ry);
+            this.ctx.moveTo(rightXPos - 5, ry - 6);
+            this.ctx.lineTo(rightXPos + 5, ry - 6);
+            this.ctx.moveTo(rightXPos - 5, ry + 6);
+            this.ctx.lineTo(rightXPos + 5, ry + 6);
             this.ctx.stroke();
           }
-          // Bottom: Drakkar Dragon Prow Curve
-          if (botH > 30) {
-            const dy = botY + botH * 0.5 + drift1;
+          // 5. Top-Left: Mjolnir (Thor's Hammer)
+          if (canTL) {
+            this.ctx.strokeRect(tlX - 6, tlY + 1, 12, 6);
             this.ctx.beginPath();
-            this.ctx.moveTo(cx - 36, dy + 6);
-            this.ctx.quadraticCurveTo(cx - 16, dy + 14, cx + 16, dy + 6);
-            this.ctx.quadraticCurveTo(cx + 34, dy - 6, cx + 38, dy - 16);
+            this.ctx.moveTo(tlX, tlY + 1);
+            this.ctx.lineTo(tlX, tlY - 8);
+            this.ctx.moveTo(tlX - 3, tlY - 8);
+            this.ctx.lineTo(tlX + 3, tlY - 8);
+            this.ctx.stroke();
+          }
+          // 6. Top-Right: Odin's Triple Horns (Horned Triskelion)
+          if (canTR) {
+            for (let i = 0; i < 3; i++) {
+              const a = (i * Math.PI * 2) / 3;
+              this.ctx.beginPath();
+              this.ctx.arc(trX + Math.cos(a) * 4, trY + Math.sin(a) * 4, 4.5, a, a + Math.PI);
+              this.ctx.stroke();
+            }
+          }
+          // 7. Bottom-Left: Raven of Odin (Huginn Silhouette)
+          if (canBL) {
+            this.ctx.beginPath();
+            this.ctx.moveTo(blX - 7, blY);
+            this.ctx.quadraticCurveTo(blX - 1, blY - 8, blX + 7, blY - 4);
+            this.ctx.quadraticCurveTo(blX, blY + 3, blX - 7, blY);
+            this.ctx.moveTo(blX + 7, blY - 4);
+            this.ctx.lineTo(blX + 10, blY - 3);
+            this.ctx.stroke();
+          }
+          // 8. Bottom-Right: Yggdrasil World Tree Root Lattice
+          if (canBR) {
+            this.ctx.beginPath();
+            this.ctx.arc(brX, brY - 3, 6, Math.PI, 0);
+            this.ctx.moveTo(brX, brY - 3);
+            this.ctx.lineTo(brX, brY + 7);
+            this.ctx.arc(brX - 3, brY + 7, 3, 0, Math.PI);
+            this.ctx.arc(brX + 3, brY + 7, 3, 0, Math.PI);
             this.ctx.stroke();
           }
         } else if (wId === 8) {
           // World 8: Aztec Sun Temple (Solar Gold #fbbf24)
-          // Top: Aztec Sun Stone (Tonatiuh) solar disc
-          if (topH > 28) {
-            const my = topH * 0.52 + drift1;
-            const r = Math.min(23, topH * 0.38);
+          // 1. Top: Aztec Sun Stone (Tonatiuh) Solar Disc
+          if (canTop) {
+            const r = Math.min(14, topH * 0.24);
             this.ctx.beginPath();
-            this.ctx.arc(cx, my, r, 0, Math.PI * 2);
-            this.ctx.arc(cx, my, r * 0.55, 0, Math.PI * 2);
+            this.ctx.arc(cx, topY, r, 0, Math.PI * 2);
+            this.ctx.arc(cx, topY, r * 0.55, 0, Math.PI * 2);
             this.ctx.stroke();
             for (let a = 0; a < 8; a++) {
               const ang = (a * Math.PI) / 4;
-              const tipX = cx + Math.cos(ang) * (r + 8);
-              const tipY = my + Math.sin(ang) * (r + 8);
+              const tipX = cx + Math.cos(ang) * (r + 4);
+              const tipY = topY + Math.sin(ang) * (r + 4);
               this.ctx.beginPath();
-              this.ctx.moveTo(cx + Math.cos(ang) * r, my + Math.sin(ang) * r);
+              this.ctx.moveTo(cx + Math.cos(ang) * r, topY + Math.sin(ang) * r);
               this.ctx.lineTo(tipX, tipY);
               this.ctx.stroke();
             }
           }
-          // Left: Quetzalcoatl Feathered Serpent coil
-          if (leftW > 25) {
-            const sx = leftW * 0.48;
-            const sy = cy + drift2;
+          // 2. Bottom: Aztec Step Altar
+          if (canBot) {
+            this.ctx.strokeRect(cx - 24, botYPos + 4, 48, 5);
+            this.ctx.strokeRect(cx - 15, botYPos - 1, 30, 5);
             this.ctx.beginPath();
-            this.ctx.moveTo(sx - 8, sy - 20);
-            this.ctx.quadraticCurveTo(sx + 10, sy - 10, sx - 8, sy);
-            this.ctx.quadraticCurveTo(sx + 10, sy + 10, sx - 8, sy + 20);
+            this.ctx.arc(cx, botYPos - 4, 4, 0, Math.PI * 2);
             this.ctx.stroke();
           }
-          // Right: Aztec Solar Ray Conduits
-          if (rightW > 25) {
-            const rx = rightX + rightW * 0.52;
+          // 3. Left: Quetzalcoatl Feathered Serpent Coil
+          if (canLeft) {
+            const sy = cy + drift2;
+            this.ctx.beginPath();
+            this.ctx.moveTo(leftX - 6, sy - 14);
+            this.ctx.quadraticCurveTo(leftX + 6, sy - 7, leftX - 6, sy);
+            this.ctx.quadraticCurveTo(leftX + 6, sy + 7, leftX - 6, sy + 14);
+            this.ctx.stroke();
+          }
+          // 4. Right: Aztec Solar Ray Conduits
+          if (canRight) {
             const ry = cy + drift3;
-            for (let i = -14; i <= 14; i += 7) {
+            for (let i = -10; i <= 10; i += 5) {
               this.ctx.beginPath();
-              this.ctx.moveTo(rx - 8, ry + i);
-              this.ctx.lineTo(rx + 8, ry + i);
+              this.ctx.moveTo(rightXPos - 6, ry + i);
+              this.ctx.lineTo(rightXPos + 6, ry + i);
               this.ctx.stroke();
             }
           }
-          // Bottom: Aztec Step Altar
-          if (botH > 30) {
-            const ay = botY + botH * 0.5 + drift1;
-            this.ctx.strokeRect(cx - 32, ay + 6, 64, 6);
-            this.ctx.strokeRect(cx - 20, ay, 40, 6);
+          // 5. Top-Left: Aztec Ollin Glyph (Movement / Cosmic Heart)
+          if (canTL) {
             this.ctx.beginPath();
-            this.ctx.arc(cx, ay - 6, 6, 0, Math.PI * 2);
+            this.ctx.arc(tlX, tlY, 3, 0, Math.PI * 2);
+            this.ctx.moveTo(tlX - 6, tlY - 6);
+            this.ctx.lineTo(tlX + 6, tlY + 6);
+            this.ctx.moveTo(tlX + 6, tlY - 6);
+            this.ctx.lineTo(tlX - 6, tlY + 6);
+            this.ctx.stroke();
+          }
+          // 6. Top-Right: Macuahuitl Obsidian War Sword
+          if (canTR) {
+            this.ctx.beginPath();
+            this.ctx.moveTo(trX, trY - 9);
+            this.ctx.lineTo(trX, trY + 9);
+            for (let k = -6; k <= 4; k += 4) {
+              this.ctx.moveTo(trX - 4, k + trY);
+              this.ctx.lineTo(trX, k + trY);
+              this.ctx.moveTo(trX + 4, k + trY);
+              this.ctx.lineTo(trX, k + trY);
+            }
+            this.ctx.stroke();
+          }
+          // 7. Bottom-Left: Cuauhxicalli Jaguar Sun Vessel
+          if (canBL) {
+            this.ctx.beginPath();
+            this.ctx.arc(blX, blY, 6, 0, Math.PI * 1.5);
+            this.ctx.lineTo(blX - 2, blY + 5);
+            this.ctx.stroke();
+            this.ctx.beginPath();
+            this.ctx.arc(blX + 1, blY - 2, 1.5, 0, Math.PI * 2);
+            this.ctx.fill();
+          }
+          // 8. Bottom-Right: Aztec Chimalli Warrior Shield
+          if (canBR) {
+            this.ctx.beginPath();
+            this.ctx.arc(brX, brY - 2, 6, 0, Math.PI * 2);
+            this.ctx.moveTo(brX - 4, brY + 4);
+            this.ctx.lineTo(brX - 4, brY + 8);
+            this.ctx.moveTo(brX, brY + 4);
+            this.ctx.lineTo(brX, brY + 8);
+            this.ctx.moveTo(brX + 4, brY + 4);
+            this.ctx.lineTo(brX + 4, brY + 8);
             this.ctx.stroke();
           }
         } else if (wId === 9) {
           // World 9: Persian Citadel (Emerald Turquoise #10b981)
-          // Top: Faravahar Winged Guardian emblem
-          if (topH > 28) {
-            const my = topH * 0.52 + drift1;
+          // 1. Top: Faravahar Winged Guardian Emblem
+          if (canTop) {
             this.ctx.beginPath();
-            this.ctx.arc(cx, my, 8, 0, Math.PI * 2);
-            this.ctx.moveTo(cx - 8, my);
-            this.ctx.lineTo(cx - 36, my - 6);
-            this.ctx.lineTo(cx - 34, my + 4);
-            this.ctx.lineTo(cx - 8, my + 4);
-            this.ctx.moveTo(cx + 8, my);
-            this.ctx.lineTo(cx + 36, my - 6);
-            this.ctx.lineTo(cx + 34, my + 4);
-            this.ctx.lineTo(cx + 8, my + 4);
+            this.ctx.arc(cx, topY, 6, 0, Math.PI * 2);
+            this.ctx.moveTo(cx - 6, topY);
+            this.ctx.lineTo(cx - 30, topY - 4);
+            this.ctx.lineTo(cx - 28, topY + 4);
+            this.ctx.lineTo(cx - 6, topY + 4);
+            this.ctx.moveTo(cx + 6, topY);
+            this.ctx.lineTo(cx + 30, topY - 4);
+            this.ctx.lineTo(cx + 28, topY + 4);
+            this.ctx.lineTo(cx + 6, topY + 4);
             this.ctx.stroke();
           }
-          // Left: Persian Cypress Tree of Life
-          if (leftW > 25) {
-            const tx = leftW * 0.48;
+          // 2. Bottom: Ribbed Muqarnas Dome & Fire Altar
+          if (canBot) {
+            this.ctx.beginPath();
+            this.ctx.arc(cx - 10, botYPos + 4, 6, Math.PI, 0);
+            this.ctx.arc(cx + 10, botYPos + 4, 6, Math.PI, 0);
+            this.ctx.arc(cx, botYPos, 7, Math.PI, 0);
+            this.ctx.stroke();
+          }
+          // 3. Left: Persian Cypress Tree of Life
+          if (canLeft) {
             const ty = cy + drift2;
             this.ctx.beginPath();
-            this.ctx.ellipse(tx, ty - 4, 7, 18, 0, 0, Math.PI * 2);
-            this.ctx.moveTo(tx, ty + 14);
-            this.ctx.lineTo(tx, ty + 22);
+            this.ctx.ellipse(leftX, ty - 2, 5, 12, 0, 0, Math.PI * 2);
+            this.ctx.moveTo(leftX, ty + 10);
+            this.ctx.lineTo(leftX, ty + 15);
             this.ctx.stroke();
           }
-          // Right: Persian Girih 8-fold star pattern
-          if (rightW > 25) {
-            const gx = rightX + rightW * 0.52;
+          // 4. Right: Persian Girih 8-fold Star Pattern
+          if (canRight) {
             const gy = cy + drift3;
-            this.ctx.strokeRect(gx - 9, gy - 9, 18, 18);
+            this.ctx.strokeRect(rightXPos - 6, gy - 6, 12, 12);
             this.ctx.beginPath();
             for (let i = 0; i < 8; i++) {
               const a = (i * Math.PI) / 4;
-              this.ctx.moveTo(gx, gy);
-              this.ctx.lineTo(gx + Math.cos(a) * 12, gy + Math.sin(a) * 12);
+              this.ctx.moveTo(rightXPos, gy);
+              this.ctx.lineTo(rightXPos + Math.cos(a) * 8, gy + Math.sin(a) * 8);
             }
             this.ctx.stroke();
           }
-          // Bottom: Ribbed Muqarnas Dome & Fire Altar
-          if (botH > 30) {
-            const my = botY + botH * 0.5 + drift1;
+          // 5. Top-Left: Persepolis Twin-Headed Griffin Capital
+          if (canTL) {
             this.ctx.beginPath();
-            this.ctx.arc(cx - 16, my + 6, 10, Math.PI, 0);
-            this.ctx.arc(cx + 16, my + 6, 10, Math.PI, 0);
-            this.ctx.arc(cx, my - 2, 13, Math.PI, 0);
+            this.ctx.arc(tlX - 4, tlY - 3, 3.5, Math.PI * 0.7, Math.PI * 1.9);
+            this.ctx.arc(tlX + 4, tlY - 3, 3.5, Math.PI * 1.1, Math.PI * 2.3);
+            this.ctx.moveTo(tlX - 6, tlY + 5);
+            this.ctx.lineTo(tlX + 6, tlY + 5);
+            this.ctx.stroke();
+          }
+          // 6. Top-Right: Shamshir Curved Scimitar
+          if (canTR) {
+            this.ctx.beginPath();
+            this.ctx.moveTo(trX - 5, trY + 8);
+            this.ctx.quadraticCurveTo(trX + 6, trY, trX + 2, trY - 8);
+            this.ctx.moveTo(trX - 8, trY + 5);
+            this.ctx.lineTo(trX - 2, trY + 9);
+            this.ctx.stroke();
+          }
+          // 7. Bottom-Left: Persian Boteh (Paisley Flame)
+          if (canBL) {
+            this.ctx.beginPath();
+            this.ctx.moveTo(blX, blY + 8);
+            this.ctx.quadraticCurveTo(blX - 6, blY + 3, blX - 3, blY - 4);
+            this.ctx.quadraticCurveTo(blX - 8, blY - 7, blX + 4, blY - 7);
+            this.ctx.quadraticCurveTo(blX + 6, blY, blX, blY + 8);
+            this.ctx.stroke();
+          }
+          // 8. Bottom-Right: Simurgh Feather Crest
+          if (canBR) {
+            this.ctx.beginPath();
+            this.ctx.moveTo(brX - 4, brY + 8);
+            this.ctx.quadraticCurveTo(brX + 5, brY, brX - 1, brY - 8);
+            this.ctx.stroke();
+            this.ctx.beginPath();
+            this.ctx.arc(brX + 1, brY - 3, 2, 0, Math.PI * 2);
             this.ctx.stroke();
           }
         } else if (wId === 10) {
           // World 10: Celestial Olympus (Astral Violet #a855f7)
-          // Top: Parthenon Colonnade Pediment
-          if (topH > 28) {
-            const my = topH * 0.52 + drift1;
+          // 1. Top: Parthenon Colonnade Pediment
+          if (canTop) {
             this.ctx.beginPath();
-            this.ctx.moveTo(cx - 34, my - 4);
-            this.ctx.lineTo(cx, my - 18);
-            this.ctx.lineTo(cx + 34, my - 4);
+            this.ctx.moveTo(cx - 28, topY - 3);
+            this.ctx.lineTo(cx, topY - 14);
+            this.ctx.lineTo(cx + 28, topY - 3);
             this.ctx.closePath();
             this.ctx.stroke();
-            for (let col = -24; col <= 24; col += 12) {
+            for (let col = -20; col <= 20; col += 10) {
               this.ctx.beginPath();
-              this.ctx.moveTo(cx + col, my - 4);
-              this.ctx.lineTo(cx + col, my + 14);
+              this.ctx.moveTo(cx + col, topY - 3);
+              this.ctx.lineTo(cx + col, topY + 10);
               this.ctx.stroke();
             }
           }
-          // Left: Zeus Thunderbolt
-          if (leftW > 25) {
-            const zx = leftW * 0.48;
+          // 2. Bottom: Greek Meander & Apollo Sun
+          if (canBot) {
+            this.ctx.beginPath();
+            this.ctx.arc(cx, botYPos, 6, 0, Math.PI * 2);
+            this.ctx.stroke();
+            this.ctx.beginPath();
+            this.ctx.moveTo(cx - 28, botYPos);
+            this.ctx.lineTo(cx - 16, botYPos);
+            this.ctx.lineTo(cx - 16, botYPos - 5);
+            this.ctx.lineTo(cx - 22, botYPos - 5);
+            this.ctx.moveTo(cx + 28, botYPos);
+            this.ctx.lineTo(cx + 16, botYPos);
+            this.ctx.lineTo(cx + 16, botYPos - 5);
+            this.ctx.lineTo(cx + 22, botYPos - 5);
+            this.ctx.stroke();
+          }
+          // 3. Left: Zeus Thunderbolt
+          if (canLeft) {
             const zy = cy + drift2;
             this.ctx.beginPath();
-            this.ctx.moveTo(zx - 5, zy - 20);
-            this.ctx.lineTo(zx + 3, zy - 4);
-            this.ctx.lineTo(zx - 3, zy);
-            this.ctx.lineTo(zx + 6, zy + 20);
+            this.ctx.moveTo(leftX - 4, zy - 14);
+            this.ctx.lineTo(leftX + 2, zy - 3);
+            this.ctx.lineTo(leftX - 2, zy);
+            this.ctx.lineTo(leftX + 4, zy + 14);
             this.ctx.stroke();
             this.ctx.beginPath();
-            this.ctx.arc(zx + 6, zy + 20, 2, 0, Math.PI * 2);
+            this.ctx.arc(leftX + 4, zy + 14, 1.5, 0, Math.PI * 2);
             this.ctx.fill();
           }
-          // Right: Poseidon Trident
-          if (rightW > 25) {
-            const px = rightX + rightW * 0.52;
+          // 4. Right: Poseidon Trident
+          if (canRight) {
             const py = cy + drift3;
             this.ctx.beginPath();
-            this.ctx.moveTo(px, py - 20);
-            this.ctx.lineTo(px, py + 20);
-            this.ctx.moveTo(px - 8, py - 18);
-            this.ctx.lineTo(px - 8, py - 6);
-            this.ctx.lineTo(px + 8, py - 6);
-            this.ctx.lineTo(px + 8, py - 18);
+            this.ctx.moveTo(rightXPos, py - 14);
+            this.ctx.lineTo(rightXPos, py + 14);
+            this.ctx.moveTo(rightXPos - 6, py - 12);
+            this.ctx.lineTo(rightXPos - 6, py - 4);
+            this.ctx.lineTo(rightXPos + 6, py - 4);
+            this.ctx.lineTo(rightXPos + 6, py - 12);
             this.ctx.stroke();
           }
-          // Bottom: Greek Meander (Key of Eternity) & Apollo Sun
-          if (botH > 30) {
-            const my = botY + botH * 0.5 + drift1;
+          // 5. Top-Left: Caduceus Staff of Hermes
+          if (canTL) {
             this.ctx.beginPath();
-            this.ctx.arc(cx, my, 8, 0, Math.PI * 2);
+            this.ctx.moveTo(tlX, tlY - 8);
+            this.ctx.lineTo(tlX, tlY + 8);
+            this.ctx.arc(tlX, tlY - 2, 3.5, 0, Math.PI * 2);
+            this.ctx.arc(tlX, tlY + 3, 3.5, 0, Math.PI * 2);
             this.ctx.stroke();
+          }
+          // 6. Top-Right: Owl of Athena (Glaux)
+          if (canTR) {
             this.ctx.beginPath();
-            this.ctx.moveTo(cx - 36, my);
-            this.ctx.lineTo(cx - 20, my);
-            this.ctx.lineTo(cx - 20, my - 6);
-            this.ctx.lineTo(cx - 28, my - 6);
-            this.ctx.moveTo(cx + 36, my);
-            this.ctx.lineTo(cx + 20, my);
-            this.ctx.lineTo(cx + 20, my - 6);
-            this.ctx.lineTo(cx + 28, my - 6);
+            this.ctx.arc(trX - 3.5, trY, 3.5, 0, Math.PI * 2);
+            this.ctx.arc(trX + 3.5, trY, 3.5, 0, Math.PI * 2);
+            this.ctx.moveTo(trX, trY - 1);
+            this.ctx.lineTo(trX, trY + 4);
+            this.ctx.stroke();
+          }
+          // 7. Bottom-Left: Apollo's Lyre (Kithara)
+          if (canBL) {
+            this.ctx.beginPath();
+            this.ctx.arc(blX, blY + 3, 6, 0, Math.PI);
+            this.ctx.moveTo(blX - 6, blY + 3);
+            this.ctx.lineTo(blX - 6, blY - 6);
+            this.ctx.moveTo(blX + 6, blY + 3);
+            this.ctx.lineTo(blX + 6, blY - 6);
+            this.ctx.moveTo(blX - 7, blY - 6);
+            this.ctx.lineTo(blX + 7, blY - 6);
+            this.ctx.stroke();
+          }
+          // 8. Bottom-Right: Hades Bident & Helm
+          if (canBR) {
+            this.ctx.beginPath();
+            this.ctx.moveTo(brX, brY + 8);
+            this.ctx.lineTo(brX, brY - 8);
+            this.ctx.moveTo(brX - 4, brY - 8);
+            this.ctx.lineTo(brX - 4, brY - 2);
+            this.ctx.lineTo(brX + 4, brY - 2);
+            this.ctx.lineTo(brX + 4, brY - 8);
             this.ctx.stroke();
           }
         }
